@@ -251,7 +251,7 @@ const AddDoctor = () => {
         email: doctorData.user.email || "",
         phone_number: doctorData.user.phone_number || "",
         specialization: doctorData.specialization || "",
-        medical_license: doctorData.medical_license || "",
+        medical_license: doctorData.medical_license || null,
         education: doctorData.education || "",
         clinic_name: doctorData.clinic_name || "",
         clinic_address: doctorData.clinic_address || "",
@@ -260,7 +260,7 @@ const AddDoctor = () => {
         end_working_hr: doctorData.end_working_hr || "",
         working_days: doctorData.working_days || [],
         priority: doctorData.priority || "",
-        profile_image: doctorData.user.profile_image || "",
+        profile_image: doctorData.user?.profile_image || null,
         summary: doctorData.summary || "",
         appointment_charges: doctorData.appointment_charges || "",
         salary: doctorData.salary || "",
@@ -639,6 +639,7 @@ const AddDoctor = () => {
                 setFormData={setFormData}
                 label="Browse"
               />
+             
             </Grid>
             <Grid item xs={12} md={8}>
               <InputLabel className="customLabel">

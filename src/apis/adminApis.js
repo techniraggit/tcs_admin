@@ -1,10 +1,6 @@
 import axios from './axiosConfig';
 
 
-// const api = axios.create({
-//     baseURL: 'http://192.168.54.189:9000',
-// });
-
 export const logIn = ({ email, password }) => {
     return axios.post('/accounts/login', { email, password });
 }
@@ -47,4 +43,16 @@ export const  createNotification = (data) => {
 
 export const getNotificationListing = () => {
     return axios.get('admin/push-notification')
+}
+
+export const getUpcomingAppointment = (id) => {
+    return axios.get(`admin/appointment?search_query=pending&id=${id}`)
+}
+
+export const getCompletedAppointment = (id) => {
+    return axios.get(`admin/appointment?search_query=completed?id=${id}`)
+}
+
+export const getRescheduleAppointment = (id) => {
+    return axios.get(`admin/appointment?search_query=reschedule?id=${id}`)
 }

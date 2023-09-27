@@ -15,7 +15,6 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
-import DoctorImg from '../../assets/images/dummy-doctor.svg';
 import DownloadIcon from '../../assets/images/download.svg';
 import Chart from 'react-apexcharts';
 import PropTypes from 'prop-types';
@@ -25,7 +24,8 @@ import Box from '@mui/material/Box';
 import AppointmentDetailDialog from "./AppointmentDetailDialog";
 import BlueIcon from '../../assets/images/blue-icon.svg';
 import GreenIcon from '../../assets/images/green-icon.svg';
-import { editDoctorDetail } from '../../apis/adminApis';
+import NoDoctorImg from '../../assets/images/no-doctor.svg';
+import { editDoctorDetail, getUpcomingAppointment } from '../../apis/adminApis';
 
 const columns = [
   { id: "sno", label: "S.no.", minWidth: 40 },
@@ -84,7 +84,7 @@ const ViewDoctor = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [value, setValue] = useState(0);
   const [openDialog, setDetailDialog] = useState(false);
-
+  const [upcomingAppointment, setUpcomingAppointment] = useState([]);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const editDoctorId = queryParams.get("id");
@@ -107,7 +107,7 @@ const ViewDoctor = () => {
     editDoctorDetail(editDoctorId)
       .then((response) => {
         if (response.data) {
-          console.log('Edit Doctor Response', response.data?.data)
+          // console.log('Edit Doctor Response', response.data?.data)
           setDoctorDetails(response.data?.data);
         } else {
           console.error("API response is not valid:", response);
@@ -116,7 +116,24 @@ const ViewDoctor = () => {
       .catch((error) => {
         console.error("Error fetching doctor details:", error);
       });
+  
+    // Fetch upcoming appointments
+    getUpcomingAppointment(editDoctorId)
+      .then((response) => {
+        if (response.data) {
+          const upcomingAppointmentsData = response?.data?.data || [];
+          console.log('Upcoming appoinmenet', upcomingAppointmentsData)
+          setUpcomingAppointment(upcomingAppointmentsData);
+        } else {
+          console.error("API response for upcoming appointments is not valid:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching upcoming appointments:", error);
+      });
   }, [editDoctorId]);
+  
+  
 
   // total revenue
   const [chartDate] = useState({
@@ -362,9 +379,9 @@ const ViewDoctor = () => {
                     <p>{doctorDetails.salary}</p>
                   </Grid>
 
-                  <Stack style={{ marginTop: '40px', width: '100%' }}>
+                  {/* <Stack style={{ marginTop: '40px', width: '100%' }}>
                     <Button className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Salary and Payment Reports</Button>
-                  </Stack>
+                  </Stack> */}
 
                 </Grid>
               </div>
@@ -388,9 +405,9 @@ const ViewDoctor = () => {
                 width="100%"
               />
             </div>
-            <Stack style={{ marginTop: '40px', width: '100%' }}>
+            {/* <Stack style={{ marginTop: '40px', width: '100%' }}>
               <Button className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Financial Reports</Button>
-            </Stack>
+            </Stack> */}
           </Grid>
 
           <Grid item xs={12} md={5}>
@@ -447,6 +464,7 @@ const ViewDoctor = () => {
         </Box>
         <CustomTabPanel value={value} index={0}>
           <TableContainer className="customTable">
+            {/* {upcomingAppointment.length > 0 ?  */}
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -462,23 +480,33 @@ const ViewDoctor = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map((row) => (
+                
+                {upcomingAppointment?.map((data, index) => (
+                   console.log('Upcoming appoinmenet not showing', upcomingAppointment),
                   <TableRow
-                    key={row.name}
+                    key={data.patient.patient_id}
+                    index={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
-                    <TableCell> {row.sno} </TableCell>
-                    <TableCell> {row.id} </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.age}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.appointmentTime}</TableCell>
-                    <TableCell>{row.appointementDate}</TableCell>
+                    <TableCell> {index + 1} </TableCell>
+                    <TableCell> {data.patient.patient_id} </TableCell>
+                    <TableCell>{data.patient.name}</TableCell>
+                    <TableCell>{data.patient.age}</TableCell>
+                    <TableCell>{data.patient.phone}</TableCell>
+                    <TableCell>{data.patient.email}</TableCell>
+                    <TableCell>{data.patient.appointmentTime}</TableCell>
+                    <TableCell>{data.patient.appointementDate}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
+              {/* :
+              <div className="no-doc-list" style={{ display: 'none' }}>
+                <img src={NoDoctorImg} alt="No Doctor" />
+                <h5>No doctor added yet</h5>
+                <p>Lorem ipsum dolor sit amet consectetur.</p>
+              </div>
+            } */}
           </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
