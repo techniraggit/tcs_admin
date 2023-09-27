@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;0,1000;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900;1,1000&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.tabContainer {
+  margin: 0 auto;
+}
+
+.login-wrap>main {
+  width: 100%;
+  /* height: auto; */
+}
+
+.login-wrap .right-wrap {
+  width: calc(100% - 540px);
+  padding-left: 6rem;
+}
+
+.login-wrap .left-wrap {
+  background: linear-gradient(180deg, #4596F3 0%, #015490 100%);
+  width: 540px;
+  position: relative;
+}
+
+.login-wrap  .big-img {
+  text-align: right;
+  margin-right: -8rem;
+  padding-bottom: 3rem;
+}
+
+.login-wrap  .img-outer {
+  position: relative;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: bottom;
+}
+
+.topContentWrap {
+  text-align: center;
+  padding: 8rem 15px 0px;
+}
+
+body {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.87);
+  font-family: Nunito,sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.5;
+  background-color: #fff;
+}
+
+a {
+  color: #4596F3;
+  cursor: pointer;
+}
+
+a:hover {
+  color: rgb(48, 105, 170);
+}
+
+.body-wrapper {
+  display: flex;
+  margin: 0 auto;
+  background-color: #FAFBFC;
+  min-height: 100vh;
+  box-shadow: 0px 0px 5px 0px #00000020;
+}
+
+.body-wrapper .sidebar {
+  width: 305px;
+  box-shadow: 1px 4px 34px 0px #FFFFFF40;
+  background-color: #fff;
+  padding: 28px 0px;
+  text-align: center;
+}
+
+.body-wrapper .bodyWrap {
+  width: calc(100% - 305px);
+}
+
+/* login sidebar */
+@media only screen and (min-width: 1820px) {
+  .login-wrap .left-wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}
+
+
+@media only screen and (max-width: 1600px) {
+  .body-wrapper .sidebar {
+    width: 260px;
+  }
+
+  .body-wrapper .bodyWrap {
+    width: calc(100% - 260px);
+  }
+
+}
+
+
+@media only screen and (max-width: 1400px) {
+  .body-wrapper .sidebar {
+    width: 220px;
+  }
+
+  .body-wrapper .bodyWrap {
+    width: calc(100% - 220px);
+  }
+
+}

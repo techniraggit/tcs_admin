@@ -1,0 +1,1430 @@
+// loader style
+.loader-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.head-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    @media (max-width: 1400px) {
+        margin-bottom: 15px;
+    }
+
+    h1.MuiTypography-root {
+        margin: 0;
+    }
+}
+
+.back-btn {
+    svg {
+        transition: transform 0.3s ease-out;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    &:hover {
+        svg {
+            transform: translateX(6px);
+        }
+    }
+}
+
+// h1.MuiTypography-root {
+//     @media (max-width: 1400px) {
+//         margin-bottom: 15px;
+//     }
+// }
+
+.MuiButtonBase-root {
+    &.MuiButton-root {
+        border-radius: 0px;
+        box-shadow: none;
+        text-transform: none;
+        padding: 5px 25px;
+
+        &.buttonPrimary {
+            background: #4596F3;
+
+            &:hover {
+                background-color: rgb(48, 105, 170);
+            }
+        }
+
+        &.buttonOutline {
+            background-color: #fff;
+            border: 1px solid #4596F3;
+            color: #4596F3;
+
+            &:hover {
+                background: #F7F7F7;
+            }
+        }
+        &.Mui-disabled {
+            background: #8dbbef;
+            color: #fff;
+        }
+
+        &.big {
+            height: 58px;
+            font-size: 16px;
+        }
+
+        &.medium {
+            height: 50px;
+            font-size: 15px;
+        }
+
+        &.small {
+            height: 40px;
+            font-size: 12px;
+        }
+
+        &.uppercase {
+            text-transform: uppercase;
+        }
+
+        svg {
+            margin-left: 10px;
+        }
+
+        &.prescriptionButton {
+            border: 1px solid #4596F3;
+            border-radius: 5px;
+            background: linear-gradient(90deg, #C4DEFD 0%, #BFEFFA 100%);
+            color: #5B5B5B;
+            padding: 15px 10px;
+            width: 100%;
+            font-size: 10px;
+            line-height: 1.2;
+            flex-direction: column;
+            font-weight: 600;
+
+            img {
+                margin-bottom: 10px;
+            }
+        }
+
+        &.MuiButton-disableElevation {
+            opacity: 0.6;
+        }
+    }
+
+
+}
+
+.eyePosition {
+    position: absolute;
+    right: 20px;
+}
+
+.MuiLink-root.MuiLink-underlineAlways {
+    text-decoration-color: black;
+}
+
+.mainContentWrap {
+    padding: 40px 35px 70px;
+    position: relative;
+    min-height: calc(100vh - 80px);
+
+    @media (max-width: 1400px) {
+        padding: 30px 30px 70px;
+    }
+}
+
+.form-outer {
+    width: 480px;
+    margin: 0 auto;
+}
+
+.customForm {
+    .customLabel {
+        color: #000;
+        margin-bottom: 5px;
+        font-size: 14px;
+        text-align: left;
+
+        span {
+            color: #ff0000;
+        }
+
+        @media (max-width: 1400px) {
+            font-size: 12px;
+        }
+    }
+
+    .subLabel {
+        font-size: 13px;
+        font-weight: 400;
+        color: #5B5B5B;
+    }
+
+    .customField {
+        margin-bottom: 25px;
+        border-radius: 0;
+
+        .MuiInputBase {
+            &-root {
+                border-radius: 0;
+                padding: 0;
+            }
+
+            &-input {
+                border: 1px solid #CCC;
+                background: #F7F7F7;
+                border-radius: 0;
+                font-weight: 500;
+                padding: 0px 10px;
+                height: 48.4px;
+                font-size: 16px;
+
+                @media (max-width: 1400px) {
+                    font-size: 14px;
+                    height: 40px;
+                }
+            }
+        }
+
+        .MuiSelect-select {
+            display: flex;
+            align-items: center;
+        }
+
+        textarea {
+            padding: 10px !important;
+        }
+
+        fieldset {
+            border: none;
+        }
+        .error {
+            color: red;
+            font-size: 13px;
+            padding: 6px 0 0;
+        }
+    }
+
+    .error {
+        color: red;
+        font-size: 13px;
+        padding: 6px 0 0;
+    }
+
+    .passwordField {
+        .MuiInputBase-root {
+            border: 1px solid #CCC;
+            background: #F7F7F7;
+            border-radius: 0;
+
+            .MuiInputBase-input {
+                border: 0;
+                background: transparent;
+            }
+
+            button.MuiButtonBase-root {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .customOtpField {
+        border: 1px solid #CCC;
+        background: #F7F7F7;
+        border-radius: 0;
+        width: 100% !important;
+        height: 50px;
+        margin: 0 3px;
+
+        &:focus {
+            outline: none;
+            border: 1px solid #4596F3;
+        }
+    }
+
+    &.newInput {
+        .customField {
+            margin-bottom: 0px;
+            width: 100%;
+
+            .MuiInputBase {
+                &-input {
+                    border: 1px solid #D7D6D6;
+                    background: #fff;
+                    font-size: 16px;
+
+                    @media (max-width: 1400px) {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.formMainWrap {
+    border-radius: 0px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05) !important;
+    padding: 15px 30px 40px;
+    margin-bottom: 40px;
+
+    @media (max-width: 1400px) {
+        margin-bottom: 30px;
+    }
+}
+
+.tableMainWrap {
+    background: none;
+    border-radius: 0px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05) !important;
+}
+
+.customOuter {
+    background: none;
+    border-radius: 0px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.customTable {
+
+    /* width */
+    &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+        border-radius: 10px;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #AACBEB;
+        border-radius: 10px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #2B7DCD;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #000;
+    }
+
+    thead {
+        th {
+            color: #015490;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+    }
+
+    tbody {
+        tr {
+            background-color: #fff;
+
+            &:hover {
+                background-color: #F1F8FF;
+            }
+
+            &:last-child {
+                td {
+                    border-bottom: none;
+                }
+            }
+
+            td {
+                border-bottom: 5px solid #FAFBFC;
+                color: #707683;
+                font-size: 12px;
+                height: 64px;
+                padding: 0 16px;
+
+                &.customPriceColumn {
+                    color: #000;
+                    font-weight: 600;
+                }
+
+                .inStock {
+                    color: #228200;
+                    font-size: 12px;
+                    font-weight: 700;
+                    display: block;
+                }
+
+                .outStock {
+                    color: #FF1010;
+                    font-size: 12px;
+                    font-weight: 700;
+                    display: block;
+                }
+
+                .action-wrap {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    button {
+                        // margin: 0 2px;
+
+                        svg {
+                            color: #015490;
+                            width: 18px;
+                        }
+                    }
+                }
+
+                .stock-wrap {
+                    display: inline-block;
+
+                    .upload-link {
+                        font-size: 10px;
+                        text-align: center;
+                        display: block;
+                        color: #4596F3;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+
+                .MuiFormControlLabel-label {
+                    color: #707683;
+                    font-size: 12px;
+                }
+
+            }
+        }
+    }
+
+}
+
+.tableMainWrap {
+    .head-wrap {
+        padding: 12px 15px 0;
+        margin-bottom: 10px;
+
+        .headerSearchWrap {
+            display: flex;
+            width: 220px;
+            padding: 5px 14px 5px 14px;
+            height: 40px;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            align-self: stretch;
+            box-shadow: none;
+            border: 1px solid var(--gray-11, #E8E8EA);
+            background: var(--gray-12, #F9F9F9);
+            border-radius: 0;
+
+            svg {
+                margin-right: 10px;
+            }
+        }
+
+        .fillterButton {
+            width: 40px;
+            height: 40px;
+            border-radius: 0px;
+            background: #AACBEB;
+            margin-left: 10px;
+
+        }
+    }
+}
+
+.customTablePagination {
+    margin-top: 10px;
+
+    .MuiTablePagination {
+        &-toolbar {
+            padding: 0;
+            position: absolute;
+            bottom: 10px;
+            width: calc(100% - 70px);
+
+            p {
+                color: #2C7DCD;
+                font-size: 14px;
+                font-family: Nunito;
+                font-weight: 700;
+                line-height: 20px;
+                letter-spacing: 0.3px;
+            }
+
+            .MuiInputBase-root {
+                margin: 0;
+
+                .MuiSelect-select {
+                    font-weight: 700;
+                }
+            }
+
+            .MuiTablePagination-displayedRows {
+                position: absolute;
+                right: 90px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            .MuiTablePagination-actions {
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+
+                .MuiIconButton-root {
+                    background-image: url(./../images/pagination-arrow.svg);
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: contain;
+                    border-radius: 10px;
+                    color: #2C7DCD;
+                    width: 30px;
+                    height: 30px;
+                    margin-left: 10px;
+                    font-size: 0;
+
+                    &:first-child {
+                        transform: rotate(180deg);
+                    }
+
+                    &.Mui-disabled {
+                        opacity: .5;
+                    }
+
+                    svg {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+        &-spacer {
+            display: none;
+        }
+
+    }
+}
+
+/*********************/
+.MuiPaper-root {
+    border-radius: 0px !important;
+
+    .popupHeader {
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 18px 18px;
+
+        .MuiDialogTitle-root {
+            color: #000;
+            font-size: 22px;
+            font-family: Nunito;
+            font-weight: 600;
+            padding: 0px;
+
+        }
+
+        .MuiIconButton-root {
+            &:hover {
+                color: #2C7DCD;
+            }
+        }
+
+    }
+
+    .dialog-msg {
+        background: #aacbeb;
+        padding: 30px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: 600;
+    }
+
+    .MuiDialogContent-root {
+        padding: 18px 18px;
+    }
+}
+
+.checkupFormWrap {
+    .customField {
+        margin-bottom: 0px;
+
+        .MuiInputBase {
+            &-input {
+                border: 1px solid #D7D6D6;
+                background: #fff;
+                font-size: 16px;
+
+                @media (max-width: 1400px) {
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}
+
+
+// md-dialog start
+.md-dialog {
+    .MuiDialog-paperWidthSm {
+        max-width: none;
+    }
+
+    .MuiInputBase-formControl {
+        border-radius: 0;
+
+        fieldset {
+            legend span {
+                display: none !important;
+            }
+        }
+    }
+
+    .MuiPaper-root {
+        .MuiDialogContent-root {
+            padding: 18px 30px;
+        }
+    }
+
+    .customForm {
+        .customField {
+            .MuiInputBase-input {
+                background: transparent;
+            }
+        }
+    }
+
+}
+
+// md-dialog ends
+
+// file upload style start
+.file-upload {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 0;
+    font-weight: 500;
+
+    .upload-btn {
+        position: relative;
+        background: #4596F3;
+        display: flex;
+        align-items: center;
+        color: #fff;
+        padding: 0 20px;
+
+        input {
+            position: absolute;
+            opacity: 0;
+            z-index: 2;
+            cursor: pointer;
+            height: 100%;
+            left: 0;
+            top: 0;
+            width: 90px;
+        }
+
+        span {
+            display: inline-block;
+            font-size: 14px;
+
+            @media (max-width: 1400px) {
+                font-size: 13px;
+            }
+        }
+    }
+
+    span.file-name {
+        padding: 0px 10px;
+        border: 1px solid #CCC;
+        width: 100%;
+        height: 49px;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+
+        @media (max-width: 1400px) {
+            height: 41px;
+            font-size: 13px;
+        }
+    }
+}
+
+// file upload style ends
+
+// view-retailer style start
+.view-outer {
+    ul {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+
+        li {
+            width: 33.333%;
+            color: #5B5B5B;
+            font-size: 14px;
+            font-weight: 600;
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #E6E6E6;
+            padding-right: 10px;
+            min-height: 66px;
+
+            span {
+                font-size: 12px;
+                font-weight: 400;
+                display: block;
+                margin-bottom: 6px;
+            }
+
+            &:nth-child(1) {
+                width: 20%;
+            }
+
+            &:nth-child(2) {
+                width: 60%;
+            }
+
+            &:nth-child(3) {
+                width: 20%;
+            }
+
+            h6 {
+                color: #5B5B5B;
+                font-size: 14px;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .all-common {
+        ul {
+            li {
+                width: 33.333%;
+            }
+        }
+    }
+}
+
+.sale-select {
+    .MuiSelect-select {
+        width: 70px;
+        padding: 2px 6px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #4F4F4F;
+        padding-right: 20px !important;
+        background: url(../images/select-arrow.svg);
+        background-repeat: no-repeat;
+        background-position: calc(100% - 8px) center;
+    }
+
+    legend {
+        span {
+            display: none;
+        }
+    }
+
+    fieldset {
+        border-radius: 8px;
+        border-color: #A8A8A8;
+    }
+
+    svg {
+        opacity: 0;
+    }
+
+}
+
+// view retailer style ends
+
+.MuiMenu-paper {
+    ul {
+        padding: 0;
+
+        li {
+            font-size: 14px;
+            border-bottom: 1px solid #ede7e7;
+            padding: 10px;
+            text-transform: capitalize;
+        }
+    }
+}
+
+// error style
+.MuiFormHelperText-root.Mui-error {
+    margin-left: 0;
+    font-size: 13px;
+}
+
+.error-text,
+.MuiFormHelperText-root {
+    color: #d32f2f !important;
+    font-size: 13px !important;
+    font-weight: 400 !important;
+
+    @media (max-width: 1400px) {
+        font-size: 12px;
+    }
+}
+
+
+// calender icon
+.customDatepicker {
+    width: 100%;
+
+    button {
+        background-image: url(../images/calender.svg);
+        background-repeat: no-repeat;
+        background-size: auto;
+        width: 24px;
+        height: 24px;
+        margin-right: 0;
+
+        svg {
+            display: none;
+        }
+    }
+}
+
+.add-coupon-screen {
+    .customForm {
+        .customLabel {
+            padding-top: 10px;
+        }
+    }
+
+    .borderClass {
+        position: relative;
+
+        &::after {
+            position: absolute;
+            content: '';
+            background: #EBEBEB;
+            width: calc(100% - 32px);
+            height: 1px;
+            bottom: -10px;
+            right: 0;
+        }
+    }
+}
+
+//radio-checkbox
+.customRadiobtn {
+    label.MuiFormControlLabel-root {
+        margin-right: 5rem;
+
+        .MuiButtonBase-root {
+            color: #4596F3;
+        }
+    }
+}
+
+.customCheckbox {
+    label.MuiFormControlLabel-root {
+        margin-right: 5rem;
+
+        .MuiButtonBase-root {
+            color: #B0B8CB;
+
+            &.Mui-checked {
+                color: #2B7DCD;
+            }
+        }
+    }
+}
+
+span.hint-text {
+    font-size: 12px;
+    font-weight: 400;
+    color: #2B2F32;
+}
+
+// search- select dropdown custom
+.sug-wrap {
+    position: relative;
+
+    .suggestion-list {
+        position: absolute;
+        width: 100%;
+        background: #fff;
+        border-radius: 5px;
+        box-shadow: 1px 1px 15px rgb(0 0 0 / 15%);
+        max-height: 400px;
+        overflow-y: auto;
+        z-index: 10;
+
+        .search-input {
+            display: flex;
+            align-items: center;
+            border: 0;
+            background-color: #F7F7F7;
+            width: 100%;
+            height: 55px;
+            border-radius: 0;
+
+            input {
+                border: 0;
+                background: transparent;
+            }
+
+            span {
+                padding: 0 15px;
+
+                i {
+                    color: #015490;
+
+                    &::before {
+                        font-weight: 700 !important;
+                    }
+                }
+            }
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+
+            li {
+                border: 1px solid #707070;
+                border-radius: 22px;
+                padding: 6px 18px;
+                margin: 8px 10px 8px 0;
+                color: #050708;
+                font-weight: 600;
+                font-size: 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                border: 0;
+                padding: 8px 10px;
+                border-radius: unset;
+                border-bottom: 1px solid rgb(112 112 112 / 30%);
+                width: 100%;
+                justify-content: flex-start;
+
+                @media screen and (max-width: 1600px) {
+                    font-size: 15px;
+                    padding: 4px 12px;
+                    margin: 6px 6px 6px 0;
+                }
+
+                @media screen and (max-width: 1400px) {
+                    font-size: 14px;
+                }
+
+                @media screen and (max-width: 1200px) {
+                    padding: 2px 8px;
+                }
+
+                span {
+                    color: #015490;
+                    cursor: pointer;
+                    display: flex;
+
+                    i {
+                        font-size: 14px;
+
+                        @media screen and (max-width: 1600px) {
+                            font-size: 11px;
+                        }
+
+                        @media screen and (max-width: 1200px) {
+                            font-size: 10px;
+                        }
+
+                        &::before {
+                            font-weight: 800 !important;
+                        }
+                    }
+                }
+
+                &:last-child {
+                    border-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+// end select dropdown
+
+// datepicker style start
+.filter-outer {
+    display: flex;
+    align-items: center;
+
+    .filter-wrap.custom-datepicker {
+
+        .MuiStack-root,
+        .MuiStack-root>span {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            margin: 0;
+            padding: 0 5px;
+            font-size: 13px;
+        }
+
+        .MuiInputBase-root {
+            border-radius: 0;
+
+            input {
+                padding: 11px;
+                font-size: 12px;
+                width: 100px;
+            }
+        }
+
+        button {
+            padding: 0 8px 0 0;
+
+            svg {
+                font-size: 16px;
+            }
+        }
+    }
+}
+
+
+// cards 
+.custom-card {
+    background: #fff;
+    padding: 20px 25px;
+    box-shadow: 0px 4px 30px 0px #0000000D;
+    margin-bottom: 30px;
+}
+
+.patient-detail-page {
+
+    .head-wrap {
+        margin-bottom: 20px;
+
+        h5 {
+            font-size: 18px;
+        }
+
+        span {
+            color: #4399FE;
+            font-size: 12px;
+            cursor: pointer;
+        }
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: flex;
+            padding-bottom: 15px;
+
+            span {
+                font-size: 14px;
+                width: 25%;
+            }
+
+            p {
+                font-size: 14px;
+                font-weight: 700;
+                width: 75%;
+                margin: 0;
+            }
+
+            &:last-child {
+                padding-bottom: 0;
+            }
+        }
+    }
+
+
+    .bottom-bar {
+        display: flex;
+        align-items: center;
+        background: #EAF3FE;
+        margin: 0 -25px;
+        padding: 0 0 0 20px;
+        margin-top: 40px;
+
+        span {
+            border-right: 1px solid #BCBCBC;
+            padding: 0 12px;
+            font-size: 14px;
+        }
+
+        button {
+            margin-left: auto;
+            width: 240px;
+        }
+    }
+
+    p {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+}
+
+.no-data-wrap {
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    p {
+        font-size: 16px;
+        font-weight: 600;
+        padding-top: 30px;
+    }
+
+    span {
+        font-size: 14px;
+    }
+}
+
+// doctor screen
+.top-total-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    box-shadow: 0px 4px 30px 0px #0000000D;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+
+    span.icon-wrap {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #4596F3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+    }
+
+    .left {
+        display: flex;
+        align-items: center;
+    }
+
+    .text-wrap {
+        h6 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        span {
+            font-size: 12px;
+            color: #4079ED;
+        }
+    }
+}
+
+// end doctor screen
+
+// no-doctor wrap
+.no-doc-list {
+    text-align: center;
+    padding: 5rem 0;
+
+    h5 {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 40px 0 10px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+// no-doctor
+
+.twoInputWrap {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-right: 30px;
+
+    .customField.select-field {
+        margin-left: 10px;
+        width: 30%;
+    }
+
+    span.to-text {
+        position: absolute;
+        right: -10px;
+    }
+}
+
+.custom-datepicker {
+    input {
+        padding: 13px;
+        font-size: 16px;
+    }
+
+    .MuiStack-root {
+        padding: 0;
+
+        .MuiFormControl-root {
+            width: 100%;
+        }
+    }
+
+    fieldset {
+        border-radius: 0;
+    }
+}
+
+
+// doctor view
+.doc-detail-wrap {
+    .doc-profile {
+        text-align: center;
+        margin-bottom: 30px;
+
+        >span {
+            display: inline-block;
+            border: 4px solid;
+            border-image-source: linear-gradient(180deg, rgba(255, 255, 255, 0.556408) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 0px 15px 30px 0px #E6D9D9B2;
+            border-radius: 50%;
+            width: 110px;
+            height: 110px;
+            margin-bottom: 20px;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #222B45;
+        }
+
+        p {
+            font-size: 14px;
+            color: #707683;
+        }
+    }
+
+    .view-detail {
+        padding-left: 20px;
+
+        .item-wrap {
+            border-bottom: 1px solid #E6E6E6;
+            padding: 20px 10px;
+        }
+    }
+
+    .item-wrap {
+        h6 {
+            font-size: 12px;
+            color: #5B5B5B;
+            font-weight: 400;
+            margin-bottom: 8px;
+            text-transform: capitalize;
+        }
+
+        p {
+            font-size: 14px;
+            color: #5B5B5B;
+            font-weight: 600;
+        }
+    }
+
+    .customBoxWrap {
+        background: #fff;
+        border-radius: 0px;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05) !important;
+        padding: 25px 30px;
+        margin-bottom: 40px;
+    }
+}
+
+.tab-outer {
+    background: #fff;
+
+    >.MuiBox-root {
+        border-bottom: 2px solid #DADADA;
+    }
+
+    .MuiBox-root {
+        padding: 0;
+    }
+
+    button {
+        font-size: 16px;
+        text-transform: capitalize;
+        min-width: 150px;
+    }
+}
+
+// end doctor view
+
+// doctor detail dialog start
+
+ul.updated-details {
+
+    margin-left: 20px;
+    list-style: none;
+
+    >li {
+        display: flex;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    li span.icon {
+        width: 34px;
+        min-width: 34px;
+        height: 34px;
+        background: #4596F3;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        margin-top: -5px;
+
+        img {
+            filter: brightness(0) invert(1);
+        }
+    }
+
+    h6 {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .right-wrap {
+        width: 100%;
+
+        p {
+            font-size: 14px;
+            margin-bottom: 14px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 14px;
+
+            >span {
+                width: 20%;
+                display: inline-block;
+                font-weight: 400;
+            }
+        }
+    }
+
+    span.border-wrap {
+        border-top: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;
+        display: inline-block;
+        padding: 15px 0;
+        font-size: 14px;
+        line-height: 1.4;
+
+        a {
+            color: #0073E7 !important;
+            display: block;
+        }
+    }
+}
+
+// detail dialog ends
+
+// custom legend strat
+.custom-legend {
+    padding: 20px 0 60px;
+    ul {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            margin-right: 25px;
+            padding-right: 25px;
+            position: relative;
+
+            span {
+                display: block;
+                font-size: 14px;
+                color: #222B45;
+                font-weight: 700;
+            }
+
+            img {
+                padding-top: 8px;
+                margin-right: 10px;
+            }
+
+            p {
+                font-size: 16px;
+                color: #96A5B8;
+                line-height: 1.6;
+            }
+
+            &::after {
+                content: '';
+                position: absolute;
+                background: #BDC9D3;
+                width: 1px;
+                height: 20px;
+                right: 0;
+            }
+
+            &:last-child {
+                &::after {
+                    display: none;
+                }
+            }
+        }
+    }
+}
+
+// custom legend ends
+
+.MuiAlert-root.MuiAlert-standardError {
+    background-color: red;
+    color: #fff;
+    font-weight: 600;
+
+    .MuiAlert-icon {
+        color: #fff;
+    }
+}

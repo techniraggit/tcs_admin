@@ -1,0 +1,245 @@
+.dashboard-outer {
+
+    .blue-bg-box {
+        background: linear-gradient(102.37deg, #4596F3 -3.17%, #015490 78.82%);
+        color: #fff;
+        margin-right: 12%;
+        display: flex;
+        padding: 40px 30px;
+        position: relative;
+        min-height: 225px;
+
+        .img-wrap {
+            width: 200px;
+            margin-left: 50px;
+
+            img {
+                position: absolute;
+                top: 0;
+                right: -12%;
+            }
+        }
+    }
+
+    .push-noty {
+        background: #FFFFFF;
+        box-shadow: 0px 4.846715450286865px 9.69343090057373px 0px #0000000A;
+        padding: 15px 20px;
+
+        .push-text {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .cicle-img {
+            position: relative;
+        }
+
+        img.noti-icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+
+
+
+    .cards-row {
+        list-style: none;
+        display: flex;
+        margin: 30px -10px;
+
+        li {
+            width: 33.333%;
+
+            .card-box {
+                margin: 0 10px;
+                background: #e9e9e9;
+                border-radius: 15px;
+                padding: 20px;
+
+                img {
+                    width: 40px;
+                    height: 40px;
+                    background: #ccc;
+                    border-radius: 50%;
+                    object-fit: none;
+                }
+
+                span {
+                    color: #7B7B7B;
+                    font-size: 12px;
+                }
+
+                &.blue {
+                    background: #C8E2FF;
+
+                    img {
+                        background: #4596F3;
+                    }
+
+                    span {
+                        color: #4596F3;
+                    }
+                }
+
+                &.red {
+                    background: #FFDDD4;
+
+                    img {
+                        background: #FF6D4A;
+                    }
+
+                    span {
+                        color: #FF6D4A;
+                    }
+                }
+
+                &.green {
+                    background: #E6FFDC;
+
+                    img {
+                        background: #5F9548;
+                    }
+
+                    span {
+                        color: #5F9548;
+                    }
+                }
+            }
+        }
+    }
+
+
+    .retailer-box {
+        .MuiPaper-elevation {
+            height: calc(100% - 40px);
+        }
+
+        ul.doctor-list {
+            list-style: none;
+            height: 210px;
+            overflow-y: auto;
+
+            li {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+
+                .img-wrap {
+                    width: 51px;
+                    height: 51px;
+                    border-radius: 50%;
+                    background: #ccc;
+                    margin-right: 15px;
+                    overflow: hidden;
+
+                    img {
+                        width: 100%;
+                    }
+                }
+
+                .text-wrap {
+                    color: #474749;
+
+                    h6 {
+                        font-size: 14px;
+                    }
+
+                    p {
+                        font-size: 12px;
+                    }
+                }
+            }
+        }
+    }
+
+    .customBoxWrap {
+        background: #fff;
+        border-radius: 0px;
+        width: 100%;
+        overflow: hidden;
+        box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.05) !important;
+        padding: 25px 30px;
+        margin-bottom: 40px;
+
+        @media (max-width: 1400px) {
+            margin-bottom: 30px;
+        }
+    }
+
+    .sale-chart {
+        box-shadow: 0px 4px 20px 0px #EEEEEE80;
+        background: #fff;
+    }
+
+    .head-wrap h1.MuiTypography-root {
+        color: #05004E;
+    }
+
+    button.export-btn {
+        border: 1px solid #C3D3E2;
+        padding: 7px 16px !important;
+        border-radius: 8px !important;
+        font-size: 14px;
+        color: #0F3659;
+        font-weight: 500;
+    }
+
+
+
+    .date-drodown {
+
+        input {
+           width: 80px;
+           color: #525252;
+           font-size: 14px;
+           padding: 0 0 0 22px;
+           background-image: url(../images/dash-calendar.svg);
+           background-repeat: no-repeat;
+           background-size: auto;
+           background-position: left center;
+           text-transform: lowercase;
+        }
+
+        button {
+            background: url(../images/select-arrow.svg);
+            background-repeat: no-repeat;
+            background-position: 0 9px;
+            padding: 0;
+
+            svg {
+                opacity: 0;
+            }
+        }
+
+        .MuiInputBase-formControl {
+            padding: 0;
+            // width: 40px;
+            height: 40px;
+        }
+
+        fieldset {
+            border: 0;
+        }
+
+        .cstm-data {
+            display: flex;
+            align-items: center;
+            color: #525252;
+            font-size: 14px;
+
+            img {
+                padding-right: 5px;
+            }
+        }
+
+        .MuiFormControl-root.MuiTextField-root {
+            min-width: 135px;
+        }
+    }
+
+}
