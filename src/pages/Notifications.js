@@ -21,6 +21,7 @@ import Filter from '../components/Filter';
 import Loader from '../components/Loader';
 import dayjs from "dayjs";
 import moment from "moment";
+import NoDoctorImg from '../assets/images/no-data.webp';
 import { useQuery } from "@tanstack/react-query";
 import { getNotificationListing } from '../apis/adminApis';
 
@@ -159,10 +160,9 @@ const Notifications = () => {
     return false;
   });
 
-
-  if (isLoading) {
-    return <Loader />;
-  }
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div>
@@ -211,6 +211,7 @@ const Notifications = () => {
         </div>
 
         <TableContainer component={Paper} className="customTable">
+        { filteredNotifications?.length > 0 ?
           <Table>
             <TableHead>
               <TableRow>
@@ -222,17 +223,19 @@ const Notifications = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-
-              {/* {notifications?.map((notification, index) => (
-                <Row key={index} row={notification} />
-              ))} */}
-
+       
               {filteredNotifications?.map((notification, index) => (
                 <Row key={index} row={notification} />
               ))}
-
             </TableBody>
           </Table>
+            :
+            <div className="no-data-wrap">
+              <img src={NoDoctorImg} alt="No Doctor" />
+              <h5>No appointment scheduled yet!</h5>
+              <p>Lorem ipsum dolor sit amet consectetur.</p>
+            </div>
+          }
         </TableContainer>
       </Paper>
       {/* <TablePagination

@@ -21,7 +21,7 @@ const FileUpload = ({ value, setFormData, formData, name, label }) => {
   };
   return (
     <div className="file-upload">
-      <span className="file-name">{value ? value?.name : ""} </span>
+      <span className="file-name">{value ? (typeof value === "string" ? value : value?.name) : ""} </span>
       <div className="upload-btn">
         <input type="file" value={""} onChange={handleUpload} />
         <span onClick={handleUpload}>{label}</span>

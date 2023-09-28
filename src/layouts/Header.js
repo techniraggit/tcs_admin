@@ -22,7 +22,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { useNavigate } from "react-router-dom";
-// import { adminLogout } from "../api/adminApis";
+import { logOut } from "../apis/adminApis";
 function FadeMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -33,14 +33,14 @@ function FadeMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  // const handleLogOut = () => {
-  //   adminLogout().then((res) => {
-  //     if (res?.data?.status) {
-  //       localStorage.removeItem("token");
-  //       navigate("/");
-  //     }
-  //   });
-  // };
+  const handleLogOut = () => {
+    logOut().then((res) => {
+      if (res?.data?.status) {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    });
+  };
 
   return (
     <div className="userInfoWrap">
@@ -68,7 +68,7 @@ function FadeMenu() {
       >
         <MenuItem onClick={() => navigate('/')}>My profile</MenuItem>
         <MenuItem onClick={() => navigate('/')}>Change Password</MenuItem>
-        <MenuItem onClick={() => navigate('/')}>Logout</MenuItem>
+        <MenuItem onClick={handleLogOut}>Logout</MenuItem>
       </Menu>
       <Typography variant="font12" component="p" sx={{ color: "#737791" }}>
         Doctor

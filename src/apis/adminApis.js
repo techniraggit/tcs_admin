@@ -5,6 +5,10 @@ export const logIn = ({ email, password }) => {
     return axios.post('/accounts/login', { email, password });
 }
 
+export const logOut = () => {
+    return axios.get('/accounts/logout');
+}
+
 export const addDoctorDetail = (data) => {
     return axios.post('/admin/doctor', data);
 }
@@ -50,9 +54,9 @@ export const getUpcomingAppointment = (id) => {
 }
 
 export const getCompletedAppointment = (id) => {
-    return axios.get(`admin/appointment?search_query=completed?id=${id}`)
+    return axios.get(`admin/appointment?search_query=completed&id=${id}`)
 }
 
-export const getRescheduleAppointment = (id) => {
-    return axios.get(`admin/appointment?search_query=reschedule?id=${id}`)
+export const getRescheduledAppointment = (id) => {
+    return axios.get(`admin/appointment?search_query=rescheduled&id=${id}`)
 }

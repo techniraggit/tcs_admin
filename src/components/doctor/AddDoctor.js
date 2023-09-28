@@ -124,6 +124,8 @@ const AddDoctor = () => {
     }
     if (!formData.phone_number) {
       validationErrors.phone_number = "Contact number is required";
+    } else if (!/^[0-9]{10}$/.test(formData.phone_number)) {
+      validationErrors.phone_number = "Invalid phone number. Please enter a 10-digit phone number.";
     }
     if (!formData.specialization) {
       validationErrors.specialization = "specialization is required";
@@ -522,7 +524,7 @@ const AddDoctor = () => {
                   onChange={handleChange}
                 />
 
-                <Select
+                {/* <Select
                   className="customField select-field"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -531,7 +533,7 @@ const AddDoctor = () => {
                 >
                   <MenuItem value={1}>PM</MenuItem>
                   <MenuItem value={2}>AM</MenuItem>
-                </Select>
+                </Select> */}
                 <span className="to-text">to</span>
               </div>
               {errors.start_working_hr && <span className="error">{errors.start_working_hr}</span>}
@@ -555,7 +557,7 @@ const AddDoctor = () => {
                   value={formData.end_working_hr.slice(0, 5)}
                   onChange={handleChange}
                 />
-                <Select
+                {/* <Select
                   className="customField select-field"
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
@@ -564,7 +566,7 @@ const AddDoctor = () => {
                 >
                   <MenuItem value={1}>PM</MenuItem>
                   <MenuItem value={2}>AM</MenuItem>
-                </Select>
+                </Select> */}
               </div>
               {errors.end_working_hr && <span className="error">{errors.end_working_hr}</span>}
             </Grid>

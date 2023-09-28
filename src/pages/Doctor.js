@@ -175,7 +175,7 @@ const Doctor = () => {
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell> <Checkbox {...label} /></TableCell>
-                    <TableCell> {doctor.user.id} </TableCell>
+                    <TableCell> {index + 1} </TableCell>
                     <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
                     <TableCell>{doctor.user.email}</TableCell>
                     <TableCell>{doctor.user.phone_number}</TableCell>
@@ -222,7 +222,7 @@ const Doctor = () => {
               </TableBody>
             </Table>
             :
-            <div className="no-doc-list" style={{ display: 'none' }}>
+            <div className="no-doc-list">
               <img src={NoDoctorImg} alt="No Doctor" />
               <h5>No doctor added yet</h5>
               <p>Lorem ipsum dolor sit amet consectetur.</p>

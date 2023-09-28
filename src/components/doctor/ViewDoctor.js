@@ -24,8 +24,10 @@ import Box from '@mui/material/Box';
 import AppointmentDetailDialog from "./AppointmentDetailDialog";
 import BlueIcon from '../../assets/images/blue-icon.svg';
 import GreenIcon from '../../assets/images/green-icon.svg';
-import NoDoctorImg from '../../assets/images/no-doctor.svg';
-import { editDoctorDetail, getUpcomingAppointment } from '../../apis/adminApis';
+import NoDoctorImg from '../../assets/images/no-data.webp';
+import dayjs from "dayjs";
+import axios from '../../apis/axiosConfig';
+import { editDoctorDetail, getUpcomingAppointment, getCompletedAppointment, getRescheduledAppointment } from '../../apis/adminApis';
 
 const columns = [
   { id: "sno", label: "S.no.", minWidth: 40 },
@@ -37,15 +39,6 @@ const columns = [
   { id: "appointmentTime", label: "Appointment Time ", minWidth: 110 },
   { id: "appointementDate", label: "Appointment Date", minWidth: 110 },
 ];
-function createData(sno, id, name, age, mobile, email, appointmentTime, appointementDate) {
-  return { sno, id, name, age, mobile, email, appointmentTime, appointementDate };
-}
-const rows = [
-  createData('1', '#896759476', "Wade Warren", "25", "(225) 555-0118", "bill.sanders@example.com", "11:00 AM", "27 July 2023"),
-  createData('1', '#896759476', "Wade Warren", "25", "(225) 555-0118", "bill.sanders@example.com", "11:00 AM", "27 July 2023"),
-  createData('1', '#896759476', "Wade Warren", "25", "(225) 555-0118", "bill.sanders@example.com", "11:00 AM", "27 July 2023"),
-  createData('1', '#896759476', "Wade Warren", "25", "(225) 555-0118", "bill.sanders@example.com", "11:00 AM", "27 July 2023"),
-]
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -85,6 +78,8 @@ const ViewDoctor = () => {
   const [value, setValue] = useState(0);
   const [openDialog, setDetailDialog] = useState(false);
   const [upcomingAppointment, setUpcomingAppointment] = useState([]);
+  const [completedAppointment, setCompletedAppointment] = useState([]);
+  const [rescheduleAppointment, setRescheduleAppointment] = useState([]);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const editDoctorId = queryParams.get("id");
@@ -101,7 +96,6 @@ const ViewDoctor = () => {
     setValue(newValue);
   };
 
-
   useEffect(() => {
     // Check if it's in edit mode and editDoctorId is available
     editDoctorDetail(editDoctorId)
@@ -116,14 +110,22 @@ const ViewDoctor = () => {
       .catch((error) => {
         console.error("Error fetching doctor details:", error);
       });
-  
+
     // Fetch upcoming appointments
     getUpcomingAppointment(editDoctorId)
       .then((response) => {
         if (response.data) {
           const upcomingAppointmentsData = response?.data?.data || [];
-          console.log('Upcoming appoinmenet', upcomingAppointmentsData)
-          setUpcomingAppointment(upcomingAppointmentsData);
+          // console.log('Upcoming appoinmenet ******', upcomingAppointmentsData)
+          setUpcomingAppointment(upcomingAppointmentsData.map(appointment => {
+            const scheduleDate = dayjs(appointment.schedule_date);
+            return {
+              ...appointment,
+              date: scheduleDate.format("YYYY-MM-DD"),
+              time: scheduleDate.format("HH:mm"),
+            };
+          }));
+
         } else {
           console.error("API response for upcoming appointments is not valid:", response);
         }
@@ -131,9 +133,55 @@ const ViewDoctor = () => {
       .catch((error) => {
         console.error("Error fetching upcoming appointments:", error);
       });
+
+    // Fetch completed appointments
+    getCompletedAppointment(editDoctorId)
+      .then((response) => {
+        if (response.data) {
+          const completedAppointmentsData = response?.data?.data || [];
+          // console.log('Upcoming appoinmenet', completedAppointmentsData)
+          setCompletedAppointment(completedAppointmentsData.map(appointment => {
+            const scheduleDate = dayjs(appointment.schedule_date);
+            return {
+              ...appointment,
+              date: scheduleDate.format("YYYY-MM-DD"),
+              time: scheduleDate.format("HH:mm"),
+            };
+          }));
+        } else {
+          console.error("API response for upcoming appointments is not valid:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching upcoming appointments:", error);
+      });
+
+    // Fetch reschedule appointments
+    getRescheduledAppointment(editDoctorId)
+      .then((response) => {
+        if (response.data) {
+          const rescheduledAppointmentsData = response?.data?.data || [];
+          // console.log('Upcoming appoinmenet', rescheduledAppointmentsData)
+          setRescheduleAppointment(rescheduledAppointmentsData.map(appointment => {
+            const scheduleDate = dayjs(appointment.schedule_date);
+            return {
+              ...appointment,
+              date: scheduleDate.format("YYYY-MM-DD"),
+              time: scheduleDate.format("HH:mm"),
+            };
+          }));
+        } else {
+          console.error("API response for upcoming appointments is not valid:", response);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching upcoming appointments:", error);
+      });
+
+      
   }, [editDoctorId]);
-  
-  
+
+
 
   // total revenue
   const [chartDate] = useState({
@@ -271,8 +319,6 @@ const ViewDoctor = () => {
     },
   });
 
-
-
   return (
     <div className="doc-detail-wrap">
       <Typography
@@ -289,8 +335,7 @@ const ViewDoctor = () => {
             <Grid item xs={12} md={4}>
               <div className="doc-profile">
                 <span>
-                  {/* <img src={DoctorImg} alt="Doctor" /> */}
-                  <img src={doctorDetails.user.profile_image} alt="Doctor" />
+                  <img src={`${axios.defaults.baseURL}${doctorDetails.user.profile_image}`} alt="Doctor" />
                 </span>
                 <h4>Dr. Courtney Henry</h4>
                 <p>Optometrist</p>
@@ -464,121 +509,141 @@ const ViewDoctor = () => {
         </Box>
         <CustomTabPanel value={value} index={0}>
           <TableContainer className="customTable">
-            {/* {upcomingAppointment.length > 0 ?  */}
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                
-                {upcomingAppointment?.map((data, index) => (
-                   console.log('Upcoming appoinmenet not showing', upcomingAppointment),
-                  <TableRow
-                    key={data.patient.patient_id}
-                    index={index}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell> {index + 1} </TableCell>
-                    <TableCell> {data.patient.patient_id} </TableCell>
-                    <TableCell>{data.patient.name}</TableCell>
-                    <TableCell>{data.patient.age}</TableCell>
-                    <TableCell>{data.patient.phone}</TableCell>
-                    <TableCell>{data.patient.email}</TableCell>
-                    <TableCell>{data.patient.appointmentTime}</TableCell>
-                    <TableCell>{data.patient.appointementDate}</TableCell>
+            {upcomingAppointment.length > 0 ?
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-              {/* :
-              <div className="no-doc-list" style={{ display: 'none' }}>
+                </TableHead>
+                <TableBody>
+
+                  {upcomingAppointment?.map((data, index) => (
+                    // console.log('Upcoming appoinmenet not showing', upcomingAppointment),
+                    <TableRow
+                      key={data.patient.patient_id}
+                      index={index}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell> {index + 1} </TableCell>
+                      <TableCell> {data.patient.patient_id} </TableCell>
+                      <TableCell>{data.patient.name}</TableCell>
+                      <TableCell>{data.patient.age}</TableCell>
+                      <TableCell>{data.patient.phone}</TableCell>
+                      <TableCell>{data.patient.email}</TableCell>
+                      <TableCell>{data.time}</TableCell>
+                      <TableCell>{data.date}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              :
+              <div className="no-data-wrap">
                 <img src={NoDoctorImg} alt="No Doctor" />
-                <h5>No doctor added yet</h5>
+                <h5 className="mt-0">No appointment scheduled yet!</h5>
                 <p>Lorem ipsum dolor sit amet consectetur.</p>
               </div>
-            } */}
+            }
           </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TableContainer className="customTable">
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell> {row.sno} </TableCell>
-                    <TableCell> {row.id} </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.age}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.appointmentTime}</TableCell>
-                    <TableCell>{row.appointementDate}</TableCell>
+            {completedAppointment.length > 0 ?
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {completedAppointment?.map((data, index) => (
+                    // console.log('completed appoinmenet not showing', completedAppointment),
+                    <TableRow
+                      key={data.patient.patient_id}
+                      index={index}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell> {index + 1} </TableCell>
+                      <TableCell> {data.patient.patient_id} </TableCell>
+                      <TableCell>{data.patient.name}</TableCell>
+                      <TableCell>{data.patient.age}</TableCell>
+                      <TableCell>{data.patient.phone}</TableCell>
+                      <TableCell>{data.patient.email}</TableCell>
+                      <TableCell>{data.time}</TableCell>
+                      <TableCell>{data.date}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              :
+              <div className="no-data-wrap">
+                <img src={NoDoctorImg} alt="No Doctor" />
+                <h5>No appointment scheduled yet!</h5>
+                <p>Lorem ipsum dolor sit amet consectetur.</p>
+              </div>
+            }
           </TableContainer>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <TableContainer className="customTable">
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow
-                    key={row.name}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell> {row.sno} </TableCell>
-                    <TableCell> {row.id} </TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.age}</TableCell>
-                    <TableCell>{row.mobile}</TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.appointmentTime}</TableCell>
-                    <TableCell>{row.appointementDate}</TableCell>
+            {rescheduleAppointment.length > 0 ?
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {rescheduleAppointment?.map((data, index) => (
+                    //  console.log('reschedule appoinmenet not showing', rescheduleAppointment),
+                    <TableRow
+                      key={data.patient.patient_id}
+                      index={index}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell> {index + 1} </TableCell>
+                      <TableCell> {data.patient.patient_id} </TableCell>
+                      <TableCell>{data.patient.name}</TableCell>
+                      <TableCell>{data.patient.age}</TableCell>
+                      <TableCell>{data.patient.phone}</TableCell>
+                      <TableCell>{data.patient.email}</TableCell>
+                      <TableCell>{data.time}</TableCell>
+                      <TableCell>{data.date}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              :
+              <div className="no-data-wrap">
+                <img src={NoDoctorImg} alt="No Doctor" />
+                <h5>No appointment scheduled yet!</h5>
+                <p>Lorem ipsum dolor sit amet consectetur.</p>
+              </div>
+            }
           </TableContainer>
         </CustomTabPanel>
       </Box>
