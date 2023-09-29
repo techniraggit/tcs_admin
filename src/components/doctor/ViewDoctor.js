@@ -24,10 +24,11 @@ import Box from '@mui/material/Box';
 import AppointmentDetailDialog from "./AppointmentDetailDialog";
 import BlueIcon from '../../assets/images/blue-icon.svg';
 import GreenIcon from '../../assets/images/green-icon.svg';
-import NoDoctorImg from '../../assets/images/no-data.webp';
+import NoDataImg from '../../assets/images/no-data.png';
 import dayjs from "dayjs";
 import axios from '../../apis/axiosConfig';
-import { editDoctorDetail, getUpcomingAppointment, getCompletedAppointment, getRescheduledAppointment } from '../../apis/adminApis';
+import { saveAs } from 'file-saver';
+import { editDoctorDetail, getUpcomingAppointment, getCompletedAppointment, getRescheduledAppointment, DownloadAppointmentReport } from '../../apis/adminApis';
 
 const columns = [
   { id: "sno", label: "S.no.", minWidth: 40 },
@@ -181,6 +182,20 @@ const ViewDoctor = () => {
       
   }, [editDoctorId]);
 
+
+  const handleDownloadReport = () => {
+    const fileName = 'Appointment-Report.xlsx'; 
+    DownloadAppointmentReport(editDoctorId)
+      .then((response) => {
+        saveAs(response.data, fileName);
+      })
+      .catch((error) => {
+        console.error("Error downloading XLSX report:", error);
+      });
+  };
+  
+  
+  
 
 
   // total revenue
@@ -492,7 +507,7 @@ const ViewDoctor = () => {
               </div>
             </div>
             <Stack style={{ marginTop: '40px', width: '100%' }}>
-              <Button onClick={handleOpenDialog} className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Appointment Reports</Button>
+              <Button onClick={handleDownloadReport} className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Appointment Reports</Button>
             </Stack>
           </Grid>
         </Grid>
@@ -547,7 +562,7 @@ const ViewDoctor = () => {
               </Table>
               :
               <div className="no-data-wrap">
-                <img src={NoDoctorImg} alt="No Doctor" />
+                <img src={NoDataImg} alt="No Doctor" />
                 <h5 className="mt-0">No appointment scheduled yet!</h5>
                 <p>Lorem ipsum dolor sit amet consectetur.</p>
               </div>
@@ -581,7 +596,7 @@ const ViewDoctor = () => {
                     >
                       <TableCell> {index + 1} </TableCell>
                       <TableCell> {data.patient.patient_id} </TableCell>
-                      <TableCell>{data.patient.name}</TableCell>
+                      <TableCell onClick={handleOpenDialog}>{data.patient.name}</TableCell>
                       <TableCell>{data.patient.age}</TableCell>
                       <TableCell>{data.patient.phone}</TableCell>
                       <TableCell>{data.patient.email}</TableCell>
@@ -593,7 +608,7 @@ const ViewDoctor = () => {
               </Table>
               :
               <div className="no-data-wrap">
-                <img src={NoDoctorImg} alt="No Doctor" />
+                <img src={NoDataImg} alt="No Doctor" />
                 <h5>No appointment scheduled yet!</h5>
                 <p>Lorem ipsum dolor sit amet consectetur.</p>
               </div>
@@ -639,7 +654,7 @@ const ViewDoctor = () => {
               </Table>
               :
               <div className="no-data-wrap">
-                <img src={NoDoctorImg} alt="No Doctor" />
+                <img src={NoDataImg} alt="No Doctor" />
                 <h5>No appointment scheduled yet!</h5>
                 <p>Lorem ipsum dolor sit amet consectetur.</p>
               </div>

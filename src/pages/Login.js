@@ -59,7 +59,6 @@ const Login = () => {
 
     logIn(data)
       .then((response) => {
-        // console.log(response, 'ApI res***********')
         if (response?.data?.status) {
           const token = response.data.access_token;
           const name = response.data.first_name;
@@ -72,7 +71,6 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        // console.error(error);
         setSnackbarMessage("You're not a valid user to access this!");
         
       });

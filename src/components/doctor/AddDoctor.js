@@ -182,7 +182,6 @@ const AddDoctor = () => {
       }
 
       if (response?.data?.status) {
-        console.log('Edit Dtatt999', response)
         setOpenSnackbar(true);
         setSnackbarMessage(isEditMode ? "Doctor details updated successfully!" : "Doctor details saved successfully!");
         setSnackbarSeverity("success");

@@ -60,3 +60,7 @@ export const getCompletedAppointment = (id) => {
 export const getRescheduledAppointment = (id) => {
     return axios.get(`admin/appointment?search_query=rescheduled&id=${id}`)
 }
+
+export const DownloadAppointmentReport = (id) => {
+    return axios.get(`admin/download-report?action=appointment_report&doctor_id=${id}`, { responseType: 'blob' })
+}

@@ -21,7 +21,7 @@ import Filter from '../components/Filter';
 import Loader from '../components/Loader';
 import dayjs from "dayjs";
 import moment from "moment";
-import NoDoctorImg from '../assets/images/no-data.webp';
+import NoDataImg from '../assets/images/no-data.png';
 import { useQuery } from "@tanstack/react-query";
 import { getNotificationListing } from '../apis/adminApis';
 
@@ -146,23 +146,14 @@ const Notifications = () => {
 
   // filter logic
   const filteredNotifications = notifications?.filter((notification) => {
-    console.log("Raw notificationDate:", notification.notificationDate);
-    const notificationDate = moment(notification.notificationDate); // Assuming notificationDate is a date string
-    console.log("parsed notificationDate:", notification.notificationDate);
-    if (
-      (!fromDate || notificationDate.isSameOrAfter(fromDate)) &&
-      (!toDate || notificationDate.isSameOrBefore(toDate))
-    ) {
-      console.log('data found')
-      return true;
-    }
-    console.log('data not found')
-    return false;
+    return (search === '' || notification?.title?.toLowerCase().includes(search.toLowerCase()) || notification?.notification?.title?.toLowerCase().includes(search.toLowerCase())) &&
+      (!fromDate || dayjs(notification.created).isSame(dayjs(fromDate), 'day') || dayjs(notification.created).isAfter(dayjs(fromDate), 'day')) &&
+      (!toDate || dayjs(notification.created).isSame(dayjs(toDate), 'day') || dayjs(notification.created).isBefore(dayjs(toDate), 'day'))
+
   });
 
-  // if (isLoading) {
-  //   return <Loader />;
-  // }
+
+
 
   return (
     <div>
@@ -211,28 +202,28 @@ const Notifications = () => {
         </div>
 
         <TableContainer component={Paper} className="customTable">
-        { filteredNotifications?.length > 0 ?
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Sno.</TableCell>
-                <TableCell>Subject</TableCell>
-                <TableCell>Description</TableCell>
-                <TableCell>Notifications date</TableCell>
-                <TableCell></TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-       
-              {filteredNotifications?.map((notification, index) => (
-                <Row key={index} row={notification} />
-              ))}
-            </TableBody>
-          </Table>
+          {filteredNotifications?.length > 0 ?
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Sno.</TableCell>
+                  <TableCell style={{ width: '200px' }}>Subject</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell style={{ width: '200px' }}>Notifications date</TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+
+                {filteredNotifications?.map((notification, index) => (
+                  <Row key={index} row={notification} />
+                ))}
+              </TableBody>
+            </Table>
             :
             <div className="no-data-wrap">
-              <img src={NoDoctorImg} alt="No Doctor" />
-              <h5>No appointment scheduled yet!</h5>
+              <img src={NoDataImg} alt="No Doctor" />
+              <h5>No Notification Created yet!</h5>
               <p>Lorem ipsum dolor sit amet consectetur.</p>
             </div>
           }

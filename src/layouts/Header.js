@@ -66,8 +66,8 @@ function FadeMenu() {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={() => navigate('/')}>My profile</MenuItem>
-        <MenuItem onClick={() => navigate('/')}>Change Password</MenuItem>
+        <MenuItem onClick={() => navigate('/profile')}>My profile</MenuItem>
+        <MenuItem onClick={() => navigate('/change-password')}>Change Password</MenuItem>
         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
       </Menu>
       <Typography variant="font12" component="p" sx={{ color: "#737791" }}>
