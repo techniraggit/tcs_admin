@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
 import Header from './Header';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
@@ -16,6 +16,19 @@ const Alert = React.forwardRef(function Alert(
 });
 
 function Layout() {
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    useEffect(() => {
+        const sessionExpiredListener = () => {
+            setSnackbarOpen(true);
+        };
+        window.addEventListener('sessionExpired', sessionExpiredListener);
+        return () => {
+            window.removeEventListener('sessionExpired', sessionExpiredListener);
+        };
+    }, []);
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
 
     return (
         <div className="body-wrapper">
@@ -31,12 +44,18 @@ function Layout() {
 
             {/* <Footer /> */}
             <GoToTop />
-            {/* <Snackbar open={message.message !== ''} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity={`${message.error ? 'error' : 'success'}`} sx={{ width: '100%' }}>
-                    {message.message}
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000} 
+                onClose={handleCloseSnackbar}
+            >
+                <Alert onClose={handleCloseSnackbar} severity="error">
+                    Your session has expired. Please log in again.
                 </Alert>
-            </Snackbar> */}
+            </Snackbar>
         </div>
+
 
     )
 }

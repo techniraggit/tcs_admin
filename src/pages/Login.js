@@ -71,8 +71,15 @@ const Login = () => {
         }
       })
       .catch((error) => {
+        console.log('error daya response', error.response.data, error.response.data.code)
+        // if(error?.response?.data?.code === 'token_not_valid') {
+        //   setSnackbarMessage("Your session has expired. Please log in again.");
+        //   localStorage.removeItem('token');
+        //   setTimeout(() => {
+        //     window.location = '/';
+        //   }, 2000);
+        // }
         setSnackbarMessage("You're not a valid user to access this!");
-        
       });
   };
 
@@ -181,7 +188,7 @@ const Login = () => {
                   )}
                 </Formik> */}
 
-              <form onSubmit={handleSubmit}  className="customForm">
+              <form onSubmit={handleSubmit} className="customForm">
                 <div className="customField">
                   <InputLabel className="customLabel" htmlFor="email">
                     Email

@@ -14,5 +14,24 @@ axios.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  function (error) {
+    if (error.response) {
+      if(error?.response?.data?.code === 'token_not_valid') {
+        const sessionExpiredEvent = new Event('sessionExpired');
+        window.dispatchEvent(sessionExpiredEvent);
+        localStorage.removeItem('token');
+        setTimeout(() => {
+          window.location = '/';
+        }, 2000);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default axios;

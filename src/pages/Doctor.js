@@ -170,11 +170,10 @@ const Doctor = () => {
                   .map((doctor, index) => (
                   <TableRow
                     key={doctor.id}
-                    index={index}
                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                   >
                     <TableCell> <Checkbox {...label} /></TableCell>
-                    <TableCell> {index + 1} </TableCell>
+                    <TableCell> {page * rowsPerPage + index + 1} </TableCell>
                     <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
                     <TableCell>{doctor.user.email}</TableCell>
                     <TableCell>{doctor.user.phone_number}</TableCell>

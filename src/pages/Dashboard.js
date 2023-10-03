@@ -191,7 +191,7 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <Button className='export-btn' title='Export'> <img src={Exporticon} alt="Export" style={{ paddingRight: '8px' }} /> Export</Button>
+              {/* <Button className='export-btn' title='Export'> <img src={Exporticon} alt="Export" style={{ paddingRight: '8px' }} /> Export</Button> */}
             </div>
             <ul className='cards-row'>
               <li>

@@ -437,6 +437,7 @@
             svg {
                 margin-right: 10px;
             }
+            
         }
 
         .fillterButton {
@@ -446,6 +447,14 @@
             background: #AACBEB;
             margin-left: 10px;
 
+        }
+
+        .select-field {
+            width: 200px;
+
+            .MuiSelect-select {
+                padding: 8px;
+            }
         }
     }
 }
@@ -1437,3 +1446,4 @@ ul.updated-details {
         color: #fff;
     }
 }
+

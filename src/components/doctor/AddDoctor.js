@@ -247,7 +247,10 @@ const AddDoctor = () => {
   // Pre-fill the form fields with doctorData
   useEffect(() => {
     if (doctorData) {
-      console.log('re-fill image', doctorData.user.profile_image, doctorData.medical_license)
+      const profilePath = doctorData.user.profile_image && doctorData.user.profile_image.split("/");
+      const profile_image = profilePath ? profilePath[profilePath.length - 1] : null;
+      const licensePath = doctorData.medical_license && doctorData.medical_license.split("/");
+      const medical_license = licensePath ? licensePath[licensePath.length - 1] : null;
       setFormData({
         id: editDoctorId,
         first_name: doctorData.user.first_name || "",
@@ -255,7 +258,7 @@ const AddDoctor = () => {
         email: doctorData.user.email || "",
         phone_number: doctorData.user.phone_number || "",
         specialization: doctorData.specialization || "",
-        medical_license: doctorData.medical_license || null,
+        medical_license: medical_license,
         education: doctorData.education || "",
         clinic_name: doctorData.clinic_name || "",
         clinic_address: doctorData.clinic_address || "",
@@ -264,7 +267,7 @@ const AddDoctor = () => {
         end_working_hr: doctorData.end_working_hr || "",
         working_days: doctorData.working_days || [],
         priority: doctorData.priority || "",
-        profile_image: doctorData.user?.profile_image || null,
+        profile_image: profile_image,
         summary: doctorData.summary || "",
         appointment_charges: doctorData.appointment_charges || "",
         salary: doctorData.salary || "",

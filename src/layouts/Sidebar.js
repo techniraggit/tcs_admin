@@ -5,6 +5,8 @@ import Appointmenticon from '../assets/images/appointment.svg';
 import PatientIcon from '../assets/images/patient.svg';
 import NotificationIcon from '../assets/images/notification.svg';
 import LogoutIcon from '../assets/images/Logout.svg';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
 
 function Sidebar() {
   const location = useLocation();
@@ -30,6 +32,12 @@ function Sidebar() {
             <Link to="/notifications">
               <img src={NotificationIcon} alt="Notifications" />
                 Notifications
+            </Link>
+          </li>
+          <li className={`${location.pathname === '/appointments' ? 'active' : ''} `}>
+            <Link to="/appointments">
+                <FontAwesomeIcon icon={faCalendarCheck} />
+                Appointments
             </Link>
           </li>
         </ul>

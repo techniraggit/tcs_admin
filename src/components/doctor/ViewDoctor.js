@@ -401,7 +401,7 @@ const ViewDoctor = () => {
                     <h6>Medical License</h6>
                     <p>{doctorDetails.medical_license}</p>
                   </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
+                  {/* <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Education</h6>
                     <p>{doctorDetails.education}</p>
                   </Grid>
@@ -416,7 +416,7 @@ const ViewDoctor = () => {
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Clinic Detail</h6>
                     <p>{doctorDetails.clinic_contact_no}</p>
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Working hours start</h6>

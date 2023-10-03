@@ -64,3 +64,7 @@ export const getRescheduledAppointment = (id) => {
 export const DownloadAppointmentReport = (id) => {
     return axios.get(`admin/download-report?action=appointment_report&doctor_id=${id}`, { responseType: 'blob' })
 }
+
+export const AppointmentListing = () => {
+    return axios.get('/admin/appointment-list')
+}
