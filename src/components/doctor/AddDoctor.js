@@ -187,9 +187,9 @@ const AddDoctor = () => {
         setSnackbarSeverity("success");
       } else {
         setOpenSnackbar(true);
-        setSnackbarMessage("Please enter the required fields");
+        setSnackbarMessage(response?.data?.message || "An error occurred while saving doctor details.");
         setSnackbarSeverity("error");
-      }
+      } 
 
       // Clear the form
       if (!isEditMode) {
@@ -216,6 +216,9 @@ const AddDoctor = () => {
       }
     } catch (error) {
       console.error("Error saving doctor details:", error);
+      setOpenSnackbar(true);
+      setSnackbarMessage(error.response?.data?.message || "An error occurred while saving doctor details.");
+      setSnackbarSeverity("error");
     }
 
   };

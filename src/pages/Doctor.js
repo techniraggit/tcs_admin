@@ -50,6 +50,7 @@ const Doctor = () => {
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(14);
+  // const [totalDoctorsCount, setTotalDoctorsCount] = useState(0);
   const [doctorList, setDoctorList] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -67,8 +68,8 @@ const Doctor = () => {
     doctorlisting()
       .then((response) => {
         if ((response.data)) {
-          // console.log('doctor listing', response.data)
           setDoctorList(response.data?.data);
+          setRowsPerPage(Math.min(10, response.data?.data.length));
         } else {
           console.error("API response is not an array:", response.data);
         }
@@ -82,17 +83,15 @@ const Doctor = () => {
     if (reason === "clickaway") {
       return;
     }
-
     setSnackbarOpen(false);
   };
+
 
   const handleSwitchChange = async (doctor) => {
     try {
       // Toggle the active status (invert the current status)
       const updatedStatus = !doctor.active;
-
       await doctorStatus(doctor.user.id);
-
       setDoctorList((prevDoctorList) =>
         prevDoctorList.map((item) =>
           item.user.id === doctor.user.id ? { ...item, active: updatedStatus } : item
@@ -103,7 +102,6 @@ const Doctor = () => {
       setSnackbarOpen(true);
     } catch (error) {
       console.error('Error updating doctor status:', error);
-
       setSnackbarMessage("Failed to update status");
       setSnackbarOpen(true);
     }
@@ -168,6 +166,7 @@ const Doctor = () => {
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase())
                   )
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((doctor, index) => (
                   <TableRow
                     key={doctor.id}
@@ -232,9 +231,9 @@ const Doctor = () => {
       </Paper>
       <TablePagination
         className="customTablePagination"
-        rowsPerPageOptions={[14, 28, 50]}
+        rowsPerPageOptions={[10, 20, 30]}
         component="div"
-        count={doctorList.length} // Use the length of the doctorList array
+        count={doctorList.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
