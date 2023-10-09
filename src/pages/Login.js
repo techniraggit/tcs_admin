@@ -71,14 +71,10 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        console.log('error daya response', error.response.data, error.response.data.code)
-        // if(error?.response?.data?.code === 'token_not_valid') {
-        //   setSnackbarMessage("Your session has expired. Please log in again.");
-        //   localStorage.removeItem('token');
-        //   setTimeout(() => {
-        //     window.location = '/';
-        //   }, 2000);
-        // }
+        if(error?.response?.data?.code === 'token_not_valid') {
+          setSnackbarMessage("Your session has expired. Please log in again.");
+          localStorage.removeItem('token');
+        }
         setSnackbarMessage("You're not a valid user to access this!");
       });
   };

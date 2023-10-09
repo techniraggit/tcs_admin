@@ -23,7 +23,7 @@ import DownloadIcon from '../assets/images/download.svg';
 import NoDoctorImg from '../assets/images/no-doctor.svg';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { doctorlisting, doctorStatus } from '../apis/adminApis';
+import { AppointmentListing } from '../apis/adminApis';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Select from '@mui/material/Select';
@@ -31,15 +31,11 @@ import MenuItem from '@mui/material/MenuItem';
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
-    { id: "drName", label: "Dr. Name", minWidth: 140 },
+    { id: "patientName", label: "Patient Name", minWidth: 140 },
+    { id: "patientAge", label: "Age", minWidth: 110 },
     { id: "email", label: "Email", minWidth: 110 },
     { id: "mobileNo", label: "Mobile", minWidth: 140 },
-    { id: "specification", label: "Specialization", minWidth: 110 },
-    { id: "priority", label: "Priority", minWidth: 110 },
-    { id: "education", label: "Educational", minWidth: 110 },
-    { id: "clinicName", label: "Clinic Name", minWidth: 110 },
-    { id: "clinicAddress", label: "Clinic Addres", minWidth: 200 },
-    { id: "action", label: "Action", minWidth: 140, align: "center" },
+    { id: "status", label: "Status", minWidth: 140 },
 ];
 
 
@@ -47,7 +43,7 @@ const Appointments = () => {
     const navigate = useNavigate();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(14);
-    const [doctorList, setDoctorList] = useState([]);
+    const [appointmentListing, setAppointmentListing] = useState([]);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
@@ -65,11 +61,12 @@ const Appointments = () => {
     };
 
     useEffect(() => {
-        doctorlisting()
+        AppointmentListing()
             .then((response) => {
                 if ((response.data)) {
-                    setDoctorList(response.data?.data);
-                    setRowsPerPage(Math.min(10, response.data?.data.length));
+                    console.log("pppp data", response.data.data)
+                    setAppointmentListing(response?.data?.data);
+                    setRowsPerPage(Math.min(10, response?.data?.data.length));
                 } else {
                     console.error("API response is not an array:", response.data);
                 }
@@ -108,26 +105,10 @@ const Appointments = () => {
                         />
                     </Paper>
 
-                    {/* <Select
-                        className="select-field"
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={selectedType}
-                        onChange={handleTypeChange}
-                        name="notificationType"
-                        fullWidth
-                    >
-                        <MenuItem value="">Select Notification Type </MenuItem>
-                        <MenuItem value="">Option 1 </MenuItem>
-                        <MenuItem value="">Option 2 </MenuItem>
-                        <MenuItem value="">Option 3 </MenuItem>
-                        <MenuItem value="">Option 4 </MenuItem>
-                    </Select> */}
-
                 </div>
 
                 <TableContainer className="customTable">
-                    {doctorList.length > 0 ?
+                    {appointmentListing.length > 0 ?
                         <Table stickyHeader aria-label="sticky table">
                             <TableHead>
                                 <TableRow>
@@ -143,47 +124,37 @@ const Appointments = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {doctorList
-                                    .filter((doctor) =>
-                                        `${doctor.user.first_name} ${doctor.user.last_name}`
-                                            .toLowerCase()
-                                            .includes(searchQuery.toLowerCase())
-                                    )
+                                {appointmentListing
+                                    // .filter((doctor) =>
+                                    //     `${doctor.user.first_name} ${doctor.user.last_name}`
+                                    //         .toLowerCase()
+                                    //         .includes(searchQuery.toLowerCase())
+                                    // )
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    .map((doctor, index) => (
+                                    .map((data, index) => (
                                         <TableRow
-                                            key={doctor.id}
+                                            key={data.id}
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell> {page * rowsPerPage + index + 1} </TableCell>
-                                            <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
-                                            <TableCell>{doctor.user.email}</TableCell>
-                                            <TableCell>{doctor.user.phone_number}</TableCell>
-                                            <TableCell>{doctor.specialization}</TableCell>
-                                            <TableCell>{doctor.priority}</TableCell>
-                                            <TableCell>{doctor.education}</TableCell>
-                                            <TableCell>{doctor.clinic_name}</TableCell>
-                                            <TableCell>{doctor.clinic_address}</TableCell>
-                                            <TableCell>
-                                                <div className="action-wrap">
-                                                    <IconButton
-                                                        aria-label="View"
-                                                        size="small"
-                                                        onClick={() => { navigate(`/view-doctor?id=${doctor.user.id}`) }}
-                                                    >
-                                                        <img src={viewIcon} alt="View" />
-                                                    </IconButton>
-                                                    <IconButton
-                                                        aria-label="Edit"
-                                                        size="small"
-                                                        onClick={() => {
-                                                            navigate(`/add-doctor?id=${doctor.user.id}`);
-                                                        }}
-                                                    >
-                                                        <img src={editIcon} alt="Edit" />
-                                                    </IconButton>
-                                                </div>
-
+                                            <TableCell>{data.patient.name}</TableCell>
+                                            <TableCell>{data.patient.age}</TableCell>
+                                            <TableCell>{data.patient.email}</TableCell>
+                                            <TableCell>{data.patient.phone}</TableCell>
+                                            <TableCell>{data.status}
+                                                <Select
+                                                    className="select-field"
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={selectedType}
+                                                    onChange={handleTypeChange}
+                                                    name="notificationType"
+                                                    fullWidth
+                                                >
+                                                    <MenuItem value="">Pending  </MenuItem>
+                                                    <MenuItem value="">Reschedule </MenuItem>
+                                                    <MenuItem value="">Completed</MenuItem>
+                                                </Select>
                                             </TableCell>
                                         </TableRow>
                                     ))}
