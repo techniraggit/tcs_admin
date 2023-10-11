@@ -6,28 +6,19 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Button,
     InputBase,
     Typography,
     Paper,
     IconButton,
 } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
-import editIcon from "../assets/images/editIcon.svg";
-import viewIcon from "../assets/images/eye.svg";
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-import DoctorIcon from '../assets/images/doctor.svg';
-import DownloadIcon from '../assets/images/download.svg';
-import NoDoctorImg from '../assets/images/no-doctor.svg';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import { AppointmentListing } from '../apis/adminApis';
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import NoDataImg from '../assets/images/no-data.png';
+import { AppointmentListing, saveCancelAppointment } from '../apis/adminApis';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import RescheduleDialog from "../components/RescheduleDialog";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -38,34 +29,42 @@ const columns = [
     { id: "status", label: "Status", minWidth: 140 },
 ];
 
-
 const Appointments = () => {
-    const navigate = useNavigate();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(14);
     const [appointmentListing, setAppointmentListing] = useState([]);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
-    const [selectedType, setSelectedType] = useState('');
+    const [selectedType, setSelectedType] = useState({});
+    const [openRecheduleDialog, setRescheduleDialog] = useState({open:false});
+
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
-    };
-    const handleChangePage = (event, newPage) => {
+      };
+      const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
+      };
 
-    const handleTypeChange = (event) => {
-        setSelectedType(event.target.value);
+    const handleTypeChange = (event, appointmentId) => {
+        const { value } = event.target;
+        setSelectedType((prevSelectedType) => ({
+            ...prevSelectedType,
+            [appointmentId]: value,
+        }));
     };
 
     useEffect(() => {
         AppointmentListing()
             .then((response) => {
-                if ((response.data)) {
-                    console.log("pppp data", response.data.data)
+                if (response.data) {
+                    //   console.log("pppp data", response.data.data);
                     setAppointmentListing(response?.data?.data);
+                    const initialSelectedType = {};
+                    response?.data?.data.forEach((data) => {
+                        initialSelectedType[data.id] = data.status;
+                    });
+
+                    setSelectedType(initialSelectedType);
                     setRowsPerPage(Math.min(10, response?.data?.data.length));
                 } else {
                     console.error("API response is not an array:", response.data);
@@ -76,13 +75,56 @@ const Appointments = () => {
             });
     }, []);
 
-    const handleSnackbarClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setSnackbarOpen(false);
+    const handleCancelAppointment = (appointmentId) => {
+        const cancelData = {
+            appointment_id: appointmentId,
+        };
+    
+        saveCancelAppointment(cancelData)
+            .then((response) => {
+                if (response.data) {
+                   console.log('Appointment cancel successfully.')
+                } else {
+                    console.error("API response is not as expected:", response.data);
+                }
+            })
+            .catch((error) => {
+                console.error("Error canceling appointment:", error);
+            });
     };
 
+    const handleOpenRescheduleDialog = (appointmentId) => {
+        const previouslySelectedValue = selectedType[appointmentId];
+        setRescheduleDialog({ open: true, appointmentId, previouslySelectedValue });
+
+        logSelectedType();
+    };
+
+    // Callback function to log the current selectedType
+    const logSelectedType = () => {
+        console.log("SelectedType updated:", selectedType);
+    };
+
+    const handleCloseRescheduleDialog = () => {
+        if (openRecheduleDialog.previouslySelectedValue) {
+            setSelectedType((prevSelectedType) => ({
+                ...prevSelectedType,
+                [openRecheduleDialog.appointmentId]: openRecheduleDialog.previouslySelectedValue,
+            }));
+            console.log('previous value', openRecheduleDialog.previouslySelectedValue)
+        }
+       
+        setRescheduleDialog({open: false});
+    };
+      
+
+    const handleSelectedTypeChange = (appointmentId, newValue) => {
+        setSelectedType((prevSelectedType) => ({
+            ...prevSelectedType,
+            [appointmentId]: newValue,
+        }));
+        console.log("SelectedType updated:", selectedType);
+    };
 
     return (
         <div>
@@ -141,61 +183,71 @@ const Appointments = () => {
                                             <TableCell>{data.patient.age}</TableCell>
                                             <TableCell>{data.patient.email}</TableCell>
                                             <TableCell>{data.patient.phone}</TableCell>
-                                            <TableCell>{data.status}
+                                            <TableCell>
                                                 <Select
-                                                    className="select-field"
+                                                    className="select-field status"
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={selectedType}
-                                                    onChange={handleTypeChange}
-                                                    name="notificationType"
+                                                    value={selectedType[data.id]}
+                                                    onChange={(event) => {
+                                                        handleTypeChange(event, data.id);
+                                                        handleSelectedTypeChange(data.id, event.target.value); // Call the callback to update selectedType
+                                                    }}
+                                                    name="status"
                                                     fullWidth
                                                 >
-                                                    <MenuItem value="">Pending  </MenuItem>
-                                                    <MenuItem value="">Reschedule </MenuItem>
-                                                    <MenuItem value="">Completed</MenuItem>
+                                                    {selectedType[data.id] && (
+                                                        <MenuItem value={selectedType[data.id]}>
+                                                            {selectedType[data.id]}
+                                                        </MenuItem>
+                                                    )}
+                                                    <MenuItem value="Reschedule" onClick={() => { 
+                                                        handleOpenRescheduleDialog(data.id);
+                                                        logSelectedType();
+                                                        }}>
+                                                        Reschedule
+                                                    </MenuItem>
+                                                    <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.id)}>Cancel</MenuItem>
                                                 </Select>
+
                                             </TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>
                         </Table>
                         :
-                        <div className="no-doc-list">
-                            <img src={NoDoctorImg} alt="No Doctor" />
-                            <h5>No doctor added yet</h5>
+                        <div className="no-data-wrap">
+                            <img src={NoDataImg} alt="No Data" />
+                            <h5>No data found!</h5>
                             <p>Lorem ipsum dolor sit amet consectetur.</p>
                         </div>
                     }
                 </TableContainer>
             </Paper>
-            {/* <TablePagination
-        className="customTablePagination"
-        rowsPerPageOptions={[10, 20, 30]}
-        component="div"
-        count={doctorList.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+            <TablePagination
+                className="customTablePagination"
+                rowsPerPageOptions={[10, 20, 30]}
+                component="div"
+                count={appointmentListing.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
 
-
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-      >
-        <MuiAlert
-          elevation={6}
-          variant="filled"
-          onClose={handleSnackbarClose}
-          severity={snackbarMessage.includes("successfully") ? "success" : "error"}
-        >
-          {snackbarMessage}
-        </MuiAlert>
-      </Snackbar> */}
+            {openRecheduleDialog.open && (
+                <RescheduleDialog
+                    open={openRecheduleDialog.open}
+                    onClose={handleCloseRescheduleDialog}
+                    appointmentId={openRecheduleDialog.appointmentId}
+                    onSelectedTypeChange={handleSelectedTypeChange}
+                    selectedType={selectedType}
+                    logSelectedType={logSelectedType}
+                />
+            )}
         </div>
+
+
     )
 }
 

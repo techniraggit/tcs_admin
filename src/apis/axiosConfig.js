@@ -6,7 +6,10 @@ const axios = Axios.create({
 
 axios.interceptors.request.use(function (config) {
     const token = localStorage.getItem('token');
-    if(token) {
+    if (config.url.includes('doctor/time_slots') || config.url.includes('doctor/reschedule_meeting')) {
+      const STATIC_TOKEN = "QzECldEQkWZDHTzGa4V7uhCqshJRRHmcQlgWWvXkBkqMG";
+      config.headers['Authorization'] = `Token ${STATIC_TOKEN}`;
+    } else if(token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
     return config;
