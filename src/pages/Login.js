@@ -71,7 +71,7 @@ const Login = () => {
         }
       })
       .catch((error) => {
-        if(error?.response?.data?.code === 'token_not_valid') {
+        if (error?.response?.data?.code === 'token_not_valid') {
           setSnackbarMessage("Your session has expired. Please log in again.");
           localStorage.removeItem('token');
         }
@@ -121,68 +121,6 @@ const Login = () => {
               >
                 Sign In to Get started
               </Typography>
-              {/* <Formik initialValues={{
-                  email: '',
-                  password: ''
-                }}
-                  onSubmit={(values) => handleLogIn(values)}
-                  validationSchema={validateLogIn}
-                >
-                  {() => (
-                    <Form className="customForm">
-                      <div className="customField">
-                        <InputLabel className="customLabel" htmlFor="email">
-                          Email
-                        </InputLabel>
-                        <TextField
-                          placeholder="Enter Your Email"
-                          fullWidth
-                          id="email"
-                          type="email"
-                          name="email"
-                        />
-                       <ErrorMessage name="email" component="div" className="error" />
-                      </div>
-
-                      
-                      <div className="customField">
-                        <InputLabel className="customLabel" htmlFor="password">
-                          Password
-                        </InputLabel>
-
-                        <TextField
-                          id="password"
-                          placeholder="Password"
-                          type={showPassword ? "text" : "password"}
-                          name="password"
-                          fullWidth
-                          autoComplete="off"
-                          className="passwordField"
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton onClick={handleTogglePassword} edge="end">
-                                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <ErrorMessage name="password" component="div" className="error" />
-                      </div>
-                    
-                      <Button
-                        type="submit"
-                        className="buttonPrimary big"
-                        variant="contained"
-                        color="primary"
-                        fullWidth
-                      >
-                        Login <FontAwesomeIcon icon={faArrowRight} />
-                      </Button>
-                    </Form>
-                  )}
-                </Formik> */}
 
               <form onSubmit={handleSubmit} className="customForm">
                 <div className="customField">

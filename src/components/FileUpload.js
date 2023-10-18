@@ -9,7 +9,6 @@ const FileUpload = ({ value, setFormData, formData, name, label }) => {
         const updatedFormDetails = { ...formData };
         updatedFormDetails[name] = files[0];
         setFormData(updatedFormDetails);
-        console.log('profile image----2222' , updatedFormDetails)
       } else if ((name === "product_stock" || name === "lens_stock") && excelExtensions.includes(fileExtension)) {
         const updatedFormDetails = { ...formData };
         updatedFormDetails[name] = files[0];

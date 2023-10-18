@@ -437,7 +437,7 @@
             svg {
                 margin-right: 10px;
             }
-            
+
         }
 
         .fillterButton {
@@ -460,10 +460,11 @@
 
         &.status {
             width: auto;
+
             fieldset {
                 display: none;
             }
-    
+
             .MuiSelect-select {
                 padding: 0;
                 width: auto;
@@ -471,12 +472,15 @@
                 font-size: 13px;
                 text-transform: capitalize;
             }
-    
-            svg {right: unset;left: 100%;}
+
+            svg {
+                right: unset;
+                left: 100%;
+            }
         }
     }
 
- 
+
 
 }
 
@@ -1474,6 +1478,7 @@ ul.updated-details {
 .reschedule-wrap {
     .date-drodown {
         margin-bottom: 20px;
+
         input {
             width: 100%;
             color: #525252;
@@ -1521,7 +1526,7 @@ ul.updated-details {
         flex-wrap: wrap;
         margin: 10px -5px 20px;
         list-style: none;
-    
+
         li {
             border: 1px solid #6B779A1A;
             font-size: 13px;
@@ -1532,12 +1537,14 @@ ul.updated-details {
             transition: .2s ease;
             cursor: pointer;
 
-            &.active, &:hover {
+            &.active,
+            &:hover {
                 background: #4596F3;
                 color: #fff;
             }
         }
     }
+
     h4 {
         font-size: 14px;
         color: #222B45;
@@ -1556,6 +1563,32 @@ ul.updated-details {
     }
 }
 
-
-
 // reschedule style ends
+
+.addRowOuter {
+    .end-btns {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        padding-top: 18px;
+        justify-content: flex-end;
+
+        span {
+            margin: 0 3px;
+            background: #4596F3;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .2s ease;
+
+            &:hover {
+                background: #000;
+            }
+
+            &.remove {
+                background: rgb(173, 1, 1);
+            }
+        }
+    }
+}

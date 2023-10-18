@@ -69,7 +69,7 @@ const Doctor = () => {
         if ((response.data)) {
           setDoctorList(response.data?.data);
           setRowsPerPage(Math.min(10, response.data?.data.length));
-          console.log("doctorrrrrr *******", response.data)
+          // console.log("doctorrrrrr *******", response.data)
         } else {
           console.error("API response is not an array:", response.data);
         }
