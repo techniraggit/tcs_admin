@@ -68,3 +68,19 @@ export const DownloadAppointmentReport = (id) => {
 export const AppointmentListing = () => {
     return axios.get('/admin/appointment-list')
 }
+
+export const DownloadSalaryReport =(id) => {
+    return axios.get(`admin/download-report?action=salary_and_payment_report&doctor_ids=${id}`, { responseType: 'blob' })
+}
+
+export const AppointmentTimeSlot =(date) => {
+    return axios.get(`doctor/time_slots?date=${date}`)
+} 
+
+export const saveRescheduleAppointment = (data) => {
+    return axios.patch('/doctor/reschedule_meeting', data);
+}
+
+export const saveCancelAppointment = (data) => {
+    return axios.patch('/doctor/cancel_meeting', data);
+}

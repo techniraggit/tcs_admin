@@ -6,6 +6,7 @@ import PrivateRoute from './routes/PrivateRoute';
 import React, { Suspense } from 'react';
 import Loader from './components/Loader';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 const queryClient = new QueryClient();
 
 const theme = createTheme({

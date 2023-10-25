@@ -11,8 +11,10 @@ import {
 } from "@mui/material";
 import FileUpload from "../FileUpload";
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faMinus } from '@fortawesome/free-solid-svg-icons';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useTheme } from '@mui/material/styles';
@@ -64,6 +66,14 @@ const AddDoctor = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [availabilityRows, setAvailabilityRows] = useState([
+    {
+      id: 0,
+      start_working_hr: "",
+      end_working_hr: "",
+      working_days: [],
+    },
+  ]);
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -75,6 +85,14 @@ const AddDoctor = () => {
 
   const handleUnitChange = (event) => {
     setTimeUnit(event.target.value);
+  };
+
+  const [errors, setErrors] = useState({});
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const parsedValue = name === "salary" || name === "appointment_charges" ? parseInt(value, 10) : value;
+    setFormData({ ...formData, [name]: parsedValue });
   };
 
   const [formData, setFormData] = useState({
@@ -97,14 +115,6 @@ const AddDoctor = () => {
     appointment_charges: "",
     salary: "",
   });
-
-  const [errors, setErrors] = useState({});
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const parsedValue = name === "salary" || name === "appointment_charges" ? parseInt(value, 10) : value;
-    setFormData({ ...formData, [name]: parsedValue });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -139,15 +149,7 @@ const AddDoctor = () => {
     if (!formData.clinic_address) {
       validationErrors.clinic_address = "Clinic address is required";
     }
-    if (!formData.start_working_hr) {
-      validationErrors.start_working_hr = "Workig Start Hours is required";
-    }
-    if (!formData.end_working_hr) {
-      validationErrors.end_working_hr = "Working End Hours is required";
-    }
-    if (formData.working_days.length === 0) {
-      validationErrors.working_days = "Please select at least one working day";
-    }
+ 
     if (!formData.priority) {
       validationErrors.priority = "Priority is required";
     }
@@ -161,16 +163,23 @@ const AddDoctor = () => {
     Object.keys(formData).forEach((value) => {
       if ((value === 'profile_image' || value === 'medical_license') && typeof formData[value] === 'string') {
         return;
-      }
-      if (value === 'working_days') {
-        newFormData.append(value, formData[value].join(','))
       } else {
         newFormData.append(value, formData[value]);
       }
     });
 
+    const availability = availabilityRows.map((row) => ({
+      start_working_hr: row.start_working_hr,
+      end_working_hr: row.end_working_hr,
+      working_days: row.working_days.join(", "), 
+    }));
+
+     newFormData.append("availability", JSON.stringify(availability)); // adding the availability array
+
+
     try {
       let response;
+      console.log('ppppppnnn', response)
       if (isEditMode) {
         response = await saveEditDoctorDetail(newFormData);
         console.log('Edit Dtatt', response)
@@ -179,6 +188,7 @@ const AddDoctor = () => {
           console.log(`${key}: ${value}`);
         }
         response = await addDoctorDetail(newFormData);
+       
       }
 
       if (response?.data?.status) {
@@ -223,10 +233,7 @@ const AddDoctor = () => {
 
   };
 
-
-
   useEffect(() => {
-    // Check if it's in edit mode and editDoctorId is available
     if (isEditMode && editDoctorId) {
       editDoctorDetail(editDoctorId)
         .then((response) => {
@@ -278,6 +285,33 @@ const AddDoctor = () => {
       setTimeUnit(doctorData.time_unit || '1');
     }
   }, [doctorData]);
+
+
+  const addAvabilityRow = () => {
+    const newAvailabilityRows = [...availabilityRows];
+    const newRow = {
+      id: newAvailabilityRows.length,
+      start_working_hr: "",
+      end_working_hr: "",
+      working_days: [],
+    };
+    newAvailabilityRows.push(newRow);
+    setAvailabilityRows(newAvailabilityRows);
+  };
+
+  const handleAvabilityChange = (index, name, value) => {
+    const newAvailabilityRows = [...availabilityRows];
+    const updatedRow = { ...newAvailabilityRows[index], [name]: value };
+    newAvailabilityRows[index] = updatedRow;
+    setAvailabilityRows(newAvailabilityRows);
+
+  };
+
+  const removeAvailabilityRow = (index) => {
+    const newAvailabilityRows = [...availabilityRows];
+    newAvailabilityRows.splice(index, 1);
+    setAvailabilityRows(newAvailabilityRows);
+  };
 
   return (
     <div>
@@ -509,7 +543,7 @@ const AddDoctor = () => {
           >
             Availability and Schedule
           </Typography>
-          <Grid container spacing={4} pb={2}>
+          {/* <Grid className="addRowOuter" container spacing={4} pb={2}>
             <Grid item xs={12} md={4}>
               <InputLabel
                 className="customLabel"
@@ -528,29 +562,18 @@ const AddDoctor = () => {
                   value={formData.start_working_hr.slice(0, 5)}
                   onChange={handleChange}
                 />
-
-                {/* <Select
-                  className="customField select-field"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={timeUnit}
-                  onChange={handleUnitChange}
-                >
-                  <MenuItem value={1}>PM</MenuItem>
-                  <MenuItem value={2}>AM</MenuItem>
-                </Select> */}
                 <span className="to-text">to</span>
               </div>
               {errors.start_working_hr && <span className="error">{errors.start_working_hr}</span>}
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <InputLabel
                 className="customLabel"
                 htmlFor="hourEnd"
               >
                 Working hours end
               </InputLabel>
-              <div className="twoInputWrap">
+              <div className="twoInputWrap" style={{padding:"0"}}>
                 <TextField
                   className="customField"
                   placeholder="Enter Clinic Name"
@@ -562,21 +585,10 @@ const AddDoctor = () => {
                   value={formData.end_working_hr.slice(0, 5)}
                   onChange={handleChange}
                 />
-                {/* <Select
-                  className="customField select-field"
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={timeUnit}
-                  onChange={handleUnitChange}
-                >
-                  <MenuItem value={1}>PM</MenuItem>
-                  <MenuItem value={2}>AM</MenuItem>
-                </Select> */}
               </div>
               {errors.end_working_hr && <span className="error">{errors.end_working_hr}</span>}
             </Grid>
-
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} style={{paddingRight:'20px'}}>
               <InputLabel className="customLabel">
                 Working Days
               </InputLabel>
@@ -603,7 +615,112 @@ const AddDoctor = () => {
               </Select>
               {errors.working_days && <span className="error">{errors.working_days}</span>}
             </Grid>
+            <Grid item xs={12} md={1}>
+            <div className="end-btns">
+              <span onClick={addAvabilityRow} className="action-btn add"><FontAwesomeIcon icon={faPlus} /></span>
+              <span className="action-btn remove"><FontAwesomeIcon icon={faMinus} /></span>
+            </div>
+            </Grid>
+          </Grid> */}
 
+
+         {availabilityRows.map((row, index) => (
+            <Grid key={row.id} className="addRowOuter" container spacing={4} pb={2}>
+              <Grid item xs={12} md={4}>
+                <InputLabel className="customLabel" htmlFor={`hourStart-${index}`}>
+                  Working hours start
+                </InputLabel>
+                <div className="twoInputWrap">
+                  <TextField
+                    className="customField"
+                    fullWidth
+                    id={`hourStart-${index}`}
+                    type="time"
+                    autoComplete="off"
+                    name="start_working_hr"
+                    value={row.start_working_hr}
+                    onChange={(e) => handleAvabilityChange(index, 'start_working_hr', e.target.value)}
+                  />
+                  <span className="to-text">to</span>
+                </div>
+                {errors.start_working_hr && <span className="error">{errors.start_working_hr}</span>}
+                {/* {errors[`start_working_hr_${index}`] && (
+                  <span className="error">{errors[`start_working_hr_${index}`]}</span>
+                )} */}
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <InputLabel className="customLabel" htmlFor={`hourEnd-${index}`}>
+                  Working hours end
+                </InputLabel>
+                <div className="twoInputWrap" style={{ padding: '0' }}>
+                  <TextField
+                    className="customField"
+                    placeholder="Enter Clinic Name"
+                    fullWidth
+                    id={`hourEnd-${index}`}
+                    type="time"
+                    autoComplete="off"
+                    name="end_working_hr"
+                    value={row.end_working_hr}
+                    onChange={(e) => handleAvabilityChange(index, 'end_working_hr', e.target.value)}
+                  />
+                </div>
+                {errors.end_working_hr && <span className="error">{errors.end_working_hr}</span>}
+                {/* {errors[`end_working_hr_${index}`] && (
+                  <span className="error">{errors[`end_working_hr_${index}`]}</span>
+                )} */}
+              </Grid>
+              <Grid item xs={12} md={4} style={{ paddingRight: '20px' }}>
+                <InputLabel className="customLabel">Working Days</InputLabel>
+                <Select
+                  className="customField"
+                  labelId={`demo-multiple-name-label-${index}`}
+                  id={`demo-multiple-name-${index}`}
+                  multiple
+                  name="working_days"
+                  value={row.working_days}
+                  onChange={(e) => handleAvabilityChange(index, 'working_days', e.target.value)}
+                  input={<OutlinedInput label="Name" />}
+                  MenuProps={MenuProps}
+                >
+                  {weekDays.map((name) => (
+                    <MenuItem
+                      key={name}
+                      value={name}
+                      style={getStyles(name, row.working_days, theme)}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {errors.working_days && <span className="error">{errors.working_days}</span>}
+                {/* {errors[`working_days_${index}`] && (
+                  <span className="error">{errors[`working_days_${index}`]}</span>
+                )} */}
+              </Grid>
+              <Grid item xs={12} md={1}>
+                <div className="end-btns">
+                  {index === 0 ? (
+                    <span onClick={addAvabilityRow} className="action-btn add">
+                      <FontAwesomeIcon icon={faPlus} />
+                    </span>
+                  ) : (
+                    <>
+                      <span onClick={() => addAvabilityRow(index)} className="action-btn add">
+                        <FontAwesomeIcon icon={faPlus} />
+                      </span>
+                      <span onClick={() => removeAvailabilityRow(index)} className="action-btn remove">
+                        <FontAwesomeIcon icon={faMinus} />
+                      </span>
+                    </>
+                  )}
+                </div>
+              </Grid>
+            </Grid>
+          ))}
+
+
+          <Grid container spacing={4} pb={2}>
             <Grid item xs={12} md={4}>
               <InputLabel className="customLabel">
                 Priority

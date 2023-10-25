@@ -437,7 +437,7 @@
             svg {
                 margin-right: 10px;
             }
-            
+
         }
 
         .fillterButton {
@@ -449,14 +449,39 @@
 
         }
 
-        .select-field {
-            width: 200px;
+    }
+
+    .select-field {
+        width: 160px;
+
+        .MuiSelect-select {
+            padding: 8px;
+        }
+
+        &.status {
+            width: auto;
+
+            fieldset {
+                display: none;
+            }
 
             .MuiSelect-select {
-                padding: 8px;
+                padding: 0;
+                width: auto;
+                color: #015490;
+                font-size: 13px;
+                text-transform: capitalize;
+            }
+
+            svg {
+                right: unset;
+                left: 100%;
             }
         }
     }
+
+
+
 }
 
 .customTablePagination {
@@ -1447,3 +1472,123 @@ ul.updated-details {
     }
 }
 
+
+// reschedule dialog style start
+
+.reschedule-wrap {
+    .date-drodown {
+        margin-bottom: 20px;
+
+        input {
+            width: 100%;
+            color: #525252;
+            font-size: 14px;
+            padding: 0 15px;
+            text-transform: lowercase;
+        }
+
+        button {
+            margin-right: 0;
+            padding: 0;
+            background-image: url(../images/dash-calendar.svg);
+            background-repeat: no-repeat;
+            background-size: 20px;
+            background-position: right center;
+
+            svg {
+                opacity: 0;
+            }
+        }
+
+        .MuiInputBase-formControl {
+            height: 40px;
+        }
+
+        .cstm-data {
+            display: flex;
+            align-items: center;
+            color: #525252;
+            font-size: 14px;
+
+            img {
+                padding-right: 5px;
+            }
+        }
+
+        .MuiFormControl-root.MuiTextField-root {
+            min-width: 100%;
+        }
+    }
+
+    ul {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 10px -5px 20px;
+        list-style: none;
+
+        li {
+            border: 1px solid #6B779A1A;
+            font-size: 13px;
+            padding: 8px 12px;
+            margin: 0 5px 10px;
+            color: #6B779A;
+            border-radius: 10px;
+            transition: .2s ease;
+            cursor: pointer;
+
+            &.active,
+            &:hover {
+                background: #4596F3;
+                color: #fff;
+            }
+        }
+    }
+
+    h4 {
+        font-size: 14px;
+        color: #222B45;
+        font-weight: 500;
+    }
+
+    p.no-time-text {
+        font-size: 13px;
+        font-weight: 700;
+        color: #000;
+    }
+
+    .btn-wrap {
+        margin: 40px 0 20px;
+        text-align: center;
+    }
+}
+
+// reschedule style ends
+
+.addRowOuter {
+    .end-btns {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        padding-top: 18px;
+        justify-content: flex-end;
+
+        span {
+            margin: 0 3px;
+            background: #4596F3;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: .2s ease;
+
+            &:hover {
+                background: #000;
+            }
+
+            &.remove {
+                background: rgb(173, 1, 1);
+            }
+        }
+    }
+}

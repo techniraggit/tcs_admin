@@ -24,12 +24,12 @@ import DownloadIcon from '../assets/images/download.svg';
 import NoDoctorImg from '../assets/images/no-doctor.svg';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import { doctorlisting, doctorStatus } from '../apis/adminApis';
+import { doctorlisting, doctorStatus, DownloadSalaryReport } from '../apis/adminApis';
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import { saveAs } from 'file-saver';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
-
 const columns = [
   { id: "checkbox", label: "", minWidth: 40, },
   { id: "id", label: "S.no.", minWidth: 40, },
@@ -45,16 +45,16 @@ const columns = [
   { id: "action", label: "Action", minWidth: 140, align: "center" },
 ];
 
-
 const Doctor = () => {
   const navigate = useNavigate();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(14);
-  // const [totalDoctorsCount, setTotalDoctorsCount] = useState(0);
   const [doctorList, setDoctorList] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDoctorIds, setSelectedDoctorIds] = useState([]);
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
@@ -63,13 +63,13 @@ const Doctor = () => {
     setPage(newPage);
   };
 
-
   useEffect(() => {
     doctorlisting()
       .then((response) => {
         if ((response.data)) {
           setDoctorList(response.data?.data);
           setRowsPerPage(Math.min(10, response.data?.data.length));
+          // console.log("doctorrrrrr *******", response.data)
         } else {
           console.error("API response is not an array:", response.data);
         }
@@ -89,7 +89,6 @@ const Doctor = () => {
 
   const handleSwitchChange = async (doctor) => {
     try {
-      // Toggle the active status (invert the current status)
       const updatedStatus = !doctor.active;
       await doctorStatus(doctor.user.id);
       setDoctorList((prevDoctorList) =>
@@ -108,6 +107,32 @@ const Doctor = () => {
   };
 
 
+  const handleCheckboxChange = (event, doctorId) => {
+    if (event.target.checked) {
+      // Add the doctor ID to the selectedDoctorIds array
+      setSelectedDoctorIds((prevSelectedDoctorIds) => [
+        ...prevSelectedDoctorIds,
+        doctorId,
+      ]);
+    } else {
+      // Remove the doctor ID from the selectedDoctorIds array
+      setSelectedDoctorIds((prevSelectedDoctorIds) =>
+        prevSelectedDoctorIds.filter((id) => id !== doctorId)
+      );
+    }
+  };
+
+  const handleSalaryReport = (selectedDoctorIds) => {
+    const fileName = 'Salary_Payment_Report.xlsx';
+    DownloadSalaryReport(selectedDoctorIds)
+      .then((response) => {
+        saveAs(response.data, fileName);
+      })
+      .catch((error) => {
+        console.error("Error downloading XLSX report:", error);
+      });
+  }
+
   return (
     <div>
       <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Doctor </Typography>
@@ -119,7 +144,7 @@ const Doctor = () => {
             <span>2 doctors added</span>
           </div>
         </div>
-        <Button className="buttonPrimary small" variant="contained"><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Salary and Payment Reports</Button>
+        <Button onClick={() => handleSalaryReport(selectedDoctorIds)} className="buttonPrimary small" variant="contained"><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Salary and Payment Reports</Button>
       </div>
       <Paper className="tableMainWrap">
         <div className="head-wrap">
@@ -162,61 +187,62 @@ const Doctor = () => {
               <TableBody>
                 {doctorList
                   .filter((doctor) =>
-                  `${doctor.user.first_name} ${doctor.user.last_name}`
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase())
+                    `${doctor.user.first_name} ${doctor.user.last_name}`
+                      .toLowerCase()
+                      .includes(searchQuery.toLowerCase())
                   )
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((doctor, index) => (
-                  <TableRow
-                    key={doctor.id}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                  >
-                    <TableCell> <Checkbox {...label} /></TableCell>
-                    <TableCell> {page * rowsPerPage + index + 1} </TableCell>
-                    <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
-                    <TableCell>{doctor.user.email}</TableCell>
-                    <TableCell>{doctor.user.phone_number}</TableCell>
-                    <TableCell>{doctor.specialization}</TableCell>
-                    <TableCell>{doctor.priority}</TableCell>
-                    <TableCell>{doctor.education}</TableCell>
-                    <TableCell>{doctor.clinic_name}</TableCell>
-                    <TableCell>{doctor.clinic_address}</TableCell>
-                    <TableCell>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={doctor.active}
-                            onChange={() => handleSwitchChange(doctor)}
-                            color="primary"
-                          />
-                        }
-                        label={doctor.active ? 'Active' : 'Inactive'}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <div className="action-wrap">
-                        <IconButton
-                          aria-label="View"
-                          size="small"
-                          onClick={() => { navigate(`/view-doctor?id=${doctor.user.id}`) }}
-                        >
-                          <img src={viewIcon} alt="View" />
-                        </IconButton>
-                        <IconButton
-                          aria-label="Edit"
-                          size="small"
-                          onClick={() => {
-                            navigate(`/add-doctor?id=${doctor.user.id}`);
-                          }}
-                        >
-                          <img src={editIcon} alt="Edit" />
-                        </IconButton>
-                      </div>
+                    <TableRow
+                      key={doctor.id}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    >
+                      <TableCell> <Checkbox {...label} checked={selectedDoctorIds.includes(doctor.user.id)}
+                        onChange={(event) => handleCheckboxChange(event, doctor.user.id)} /></TableCell>
+                      <TableCell> {page * rowsPerPage + index + 1} </TableCell>
+                      <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
+                      <TableCell>{doctor.user.email}</TableCell>
+                      <TableCell>{doctor.user.phone_number}</TableCell>
+                      <TableCell>{doctor.specialization}</TableCell>
+                      <TableCell>{doctor.priority}</TableCell>
+                      <TableCell>{doctor.education}</TableCell>
+                      <TableCell>{doctor.clinic_name}</TableCell>
+                      <TableCell>{doctor.clinic_address}</TableCell>
+                      <TableCell>
+                        <FormControlLabel
+                          control={
+                            <Switch
+                              checked={doctor.active}
+                              onChange={() => handleSwitchChange(doctor)}
+                              color="primary"
+                            />
+                          }
+                          label={doctor.active ? 'Active' : 'Inactive'}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <div className="action-wrap">
+                          <IconButton
+                            aria-label="View"
+                            size="small"
+                            onClick={() => { navigate(`/view-doctor?id=${doctor.user.id}`) }}
+                          >
+                            <img src={viewIcon} alt="View" />
+                          </IconButton>
+                          <IconButton
+                            aria-label="Edit"
+                            size="small"
+                            onClick={() => {
+                              navigate(`/add-doctor?id=${doctor.user.id}`);
+                            }}
+                          >
+                            <img src={editIcon} alt="Edit" />
+                          </IconButton>
+                        </div>
 
-                    </TableCell>
-                  </TableRow>
-                ))}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
             :
@@ -238,7 +264,6 @@ const Doctor = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
 
       <Snackbar
         open={snackbarOpen}
