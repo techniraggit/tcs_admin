@@ -64,6 +64,8 @@ const AddDoctor = React.lazy(() => import('./components/doctor/AddDoctor'));
 const ViewDoctor = React.lazy(() => import('./components/doctor/ViewDoctor'));
 const CreateNotification = React.lazy(() => import('./components/CreateNotification'));
 const Appointements = React.lazy(() => import('./pages/Appointments'));
+const Calendar = React.lazy(() => import('./pages/Calendar'));
+const Meeting = React.lazy(() => import('./pages/Meeting'));
 
 function App() {
   return (
@@ -82,6 +84,8 @@ function App() {
                   <Route path="/add-doctor" element={<AddDoctor />} />
                   <Route path='/view-doctor' element={<ViewDoctor />} />
                   <Route path='/appointments' element={<Appointements />} />
+                  <Route path='/calendar' element={<Calendar />} />
+                  <Route path='/meeting/:room_name' element={<Meeting />} />
                 </Route>
               </Route>
             </Routes>
