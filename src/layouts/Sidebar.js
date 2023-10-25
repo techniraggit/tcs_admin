@@ -6,7 +6,8 @@ import PatientIcon from '../assets/images/patient.svg';
 import NotificationIcon from '../assets/images/notification.svg';
 import LogoutIcon from '../assets/images/Logout.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendarCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarCheck, faHandsHolding } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar } from '@fortawesome/free-regular-svg-icons';
 
 function Sidebar() {
   const location = useLocation();
@@ -38,6 +39,18 @@ function Sidebar() {
             <Link to="/appointments">
                 <FontAwesomeIcon icon={faCalendarCheck} />
                 Appointments
+            </Link>
+          </li>
+          <li className={`${location.pathname === '/calender' ? 'active' : ''} `}>
+            <Link to="/calendar">
+                <FontAwesomeIcon icon={faCalendar} />
+                Calender
+            </Link>
+          </li>
+          <li className={`${location.pathname.includes('meeting') ? 'active' : ''} `}>
+            <Link to="/meeting/test">
+                <FontAwesomeIcon icon={faHandsHolding} />
+                Meeting
             </Link>
           </li>
         </ul>
