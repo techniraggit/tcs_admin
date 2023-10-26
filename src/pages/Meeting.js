@@ -6,6 +6,14 @@ import axios from "../apis/axiosConfig";
 import { useParams } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { Button } from "@mui/material";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMicrophone } from "@fortawesome/free-solid-svg-icons";
+import { faMicrophoneSlash } from "@fortawesome/free-solid-svg-icons";
+import { faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faVideoSlash } from "@fortawesome/free-solid-svg-icons";
+import { faPhoneSlash } from "@fortawesome/free-solid-svg-icons";
+import { faCommentDots } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Meeting = () => {
   const styles = {
@@ -28,7 +36,7 @@ const Meeting = () => {
 
     var raw = JSON.stringify({
       room_name: params.room_name,
-      notepad: notepad?notepad:'',
+      notepad: notepad ? notepad : '',
     });
 
     var requestOptions = {
@@ -38,23 +46,23 @@ const Meeting = () => {
       redirect: "follow",
     };
     await fetch("https://teleconsultation.niraginfotech.info/doctor/consult", requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
-    .catch(error => console.log('error', error));
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
     globalRoom.disconnect();
   };
   const startRoom = async (event) => {
     // prevent a page reload when a user submits the form
     event.preventDefault();
     // hide the join form
-    document.getElementById("room-name-form").style.display = "block";
+    document.getElementById("room-name-form").style.display = "flex";
     if (user_type === "doctor") {
       document.getElementById("noteSection").style.display = "block";
     }
     const response = await axios.get(
       axios.defaults.baseURL +
-        "/doctor/create_video_room?room_name=" +
-        params.room_name
+      "/doctor/create_video_room?room_name=" +
+      params.room_name
     );
 
     const { token, room_name } = response.data;
@@ -124,43 +132,61 @@ const Meeting = () => {
 
   return (
     <div>
+      <form id="room-name-form">
+        <Button
+          type="submit"
+          onClick={(e) => {
+            startRoom(e);
+          }}
+          color="primary"
+          variant="contained"
+        >
+          Join Room
+        </Button>
+      </form>
       <div className="videoSection">
-        <form id="room-name-form">
-          <Button
-            type="submit"
-            onClick={(e) => {
-              startRoom(e);
-            }}
-            color="primary"
-            variant="contained"
-          >
-            Join Room
-          </Button>
-        </form>
-        <div id="video-container" style={styles.video}></div>
+        <div id="video-container" className="video-outer" style={styles.video}></div>
+
+        {user_type === "doctor" ? (
+          <div id="noteSection" style={{ display: "none" }}>
+            <ReactQuill
+              style={{ width: "100%" }}
+              theme="snow"
+              value={notepad}
+              onChange={setNotepad}
+            />
+          </div>
+        ) : (
+          ""
+        )}
+
       </div>
-      {user_type === "doctor" ? (
-        <div id="noteSection" style={{ display: "none" }}>
-          <ReactQuill
-            style={{ width: "100%" }}
-            theme="snow"
-            value={notepad}
-            onChange={setNotepad}
-          />
+
+      <div className="btn-group-wrap">
+          <Button type="button"><FontAwesomeIcon icon={faCommentDots} /></Button>
+          <Button type="button"><FontAwesomeIcon icon={faUserPlus} /></Button>
+          <Button type="button">
+            <FontAwesomeIcon icon={faMicrophone} />
+            {/* <FontAwesomeIcon icon={faMicrophoneSlash} /> */}
+          </Button>
+
+          <Button type="button">
+            <FontAwesomeIcon icon={faVideo} />
+            {/* <FontAwesomeIcon icon={faVideoSlash} /> */}
+          </Button>
+
           <Button
             type="submit"
+            className="red"
             onClick={() => {
               sendData();
             }}
             color="error"
             variant="contained"
           >
-            End Call
+            <FontAwesomeIcon icon={faPhoneSlash} />
           </Button>
-        </div>
-      ) : (
-        ""
-      )}
+      </div>
     </div>
   );
 };

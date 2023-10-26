@@ -121,3 +121,14 @@ a:hover {
   }
 
 }
+
+@media only screen and (max-width: 1024px) {
+  .body-wrapper .sidebar {
+    width: 100%;
+  }
+
+  .body-wrapper .bodyWrap {
+    width: 100%;
+  }
+
+}
