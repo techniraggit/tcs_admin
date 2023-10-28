@@ -33,7 +33,7 @@ const Meeting = () => {
     // }));
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
+    myHeaders.append("Authorization", "Bearer "+localStorage.getItem("token"));
     var raw = JSON.stringify({
       room_name: params.room_name,
       notepad: notepad ? notepad : '',
@@ -45,7 +45,7 @@ const Meeting = () => {
       body: raw,
       redirect: "follow",
     };
-    await fetch("https://teleconsultation.niraginfotech.info/doctor/consult", requestOptions)
+    await fetch(axios.defaults.baseURL + "/doctor/consult", requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
@@ -163,8 +163,7 @@ const Meeting = () => {
       </div>
 
       <div className="btn-group-wrap">
-          <Button type="button"><FontAwesomeIcon icon={faCommentDots} /></Button>
-          <Button type="button"><FontAwesomeIcon icon={faUserPlus} /></Button>
+      {user_type === "doctor" ? (<Button type="button"><FontAwesomeIcon icon={faCommentDots} /></Button>):''}
           <Button type="button">
             <FontAwesomeIcon icon={faMicrophone} />
             {/* <FontAwesomeIcon icon={faMicrophoneSlash} /> */}

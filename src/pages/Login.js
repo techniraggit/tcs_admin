@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import {
   TextField,
@@ -50,13 +50,18 @@ const Login = () => {
       setEmailError("");
     }
   };
+
+  useEffect(()=>{
+    if(localStorage.getItem('token')){
+      navigate("/dashboard")
+    }
+  },[]);
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       email,
       password,
     };
-
     logIn(data)
       .then((response) => {
         if (response?.data?.status) {

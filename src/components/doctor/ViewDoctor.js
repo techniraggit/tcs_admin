@@ -12,7 +12,7 @@ import {
   Button,
   Stack,
 } from "@mui/material";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons';
 import DownloadIcon from '../../assets/images/download.svg';
@@ -76,18 +76,147 @@ function a11yProps(index) {
 
 const ViewDoctor = () => {
   const [doctorDetails, setDoctorDetails] = useState(null);
+  const [graphDetails, setGraphDetails] = useState(null);
   const [value, setValue] = useState(0);
   const [openDialog, setDetailDialog] = useState(false);
   const [upcomingAppointment, setUpcomingAppointment] = useState([]);
   const [completedAppointment, setCompletedAppointment] = useState([]);
   const [rescheduleAppointment, setRescheduleAppointment] = useState([]);
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const editDoctorId = queryParams.get("id");
+  const [chartDate,setChartDate] = useState({
+    series: [{
+      name: 'Online Sales',
+      data: [44, 55, 57, 56, 61, 58, 63],
+      colors: ['#0095FF']
+    }],
+    options: {
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '35%',
+          endingShape: 'rounded'
+        },
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ['transparent']
+      },
+      xaxis: {
+        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+      },
+      yaxis: {
+        title: {
+          // text: '$ (thousands)'
+        },
+      },
 
-  const handleOpenDialog = () => {
-    setDetailDialog(true);
-  }
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "dark",
+          type: "vertical",
+          gradientToColors: ["#00E096", "#6078ea", "#0095FF"],
+          stops: [0, 100],
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "$ " + val + " thousands"
+          }
+        }
+      }
+    },
+
+  });
+  // patient appointment chart
+  const [patientchartData, setPatientchartData] = useState({
+    series: [
+      {
+        name: "Last Month",
+        data: [80, 70, 64, 75, 50, 109, 100],
+      },
+      {
+        name: "This Month",
+        data: [11, 20, 28, 32, 16, 52, 41],
+      },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "area",
+        toolbar: {
+          show: false,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      markers: {
+        size: [4],
+      },
+      xaxis: {
+        type: "datetime",
+        categories: [
+          "2018-09-19T00:00:00.000Z",
+          "2018-09-19T01:30:00.000Z",
+          "2018-09-19T02:30:00.000Z",
+          "2018-09-19T03:30:00.000Z",
+          "2018-09-19T04:30:00.000Z",
+          "2018-09-19T05:30:00.000Z",
+          "2018-09-19T06:30:00.000Z",
+        ],
+        labels: {
+          show: false,
+        },
+      },
+      yaxis: {
+        labels: {
+          show: false,
+        },
+      },
+      tooltip: {
+        x: {
+          format: "dd/MM/yy HH:mm",
+        },
+      },
+
+      legend: {
+        show: false,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        markers: {
+          // width: 16,
+          // height: 16,
+        },
+        itemMargin: {
+          horizontal: 10,
+          vertical: 10,
+        },
+        onItemClick: {
+          toggleDataSeries: true,
+        },
+        formatter: function (seriesName, opts) {
+          return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>$3,004</span> ";
+        },
+      },
+    },
+  });
+
+  const editDoctorId = useParams().doctor_id;
 
   const handleCloseDialog = () => {
     setDetailDialog(false);
@@ -102,16 +231,152 @@ const ViewDoctor = () => {
     editDoctorDetail(editDoctorId)
       .then((response) => {
         if (response.data) {
-          // console.log('Edit Doctor Response', response.data?.data)
+          console.log('Edit Doctor Response', response.data);
           setDoctorDetails(response.data?.data);
+          setGraphDetails(response.data?.graphs)
+          setChartDate({
+            series: [{
+              name: 'Online Sales',
+              data: response.data.graphs.revenue.reduce((acc,curr)=>{
+                acc.push(curr.total_paid);
+                return acc;
+              },[]),
+              colors: ['#0095FF']
+            }],
+            options: {
+              chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: {
+                  show: false
+                }
+              },
+              plotOptions: {
+                bar: {
+                  horizontal: false,
+                  columnWidth: '35%',
+                  endingShape: 'rounded'
+                },
+              },
+              dataLabels: {
+                enabled: false
+              },
+              stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent']
+              },
+              xaxis: {
+                categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+              },
+              yaxis: {
+                title: {
+                  // text: '$ (thousands)'
+                },
+              },
+        
+              fill: {
+                type: "gradient",
+                gradient: {
+                  shade: "dark",
+                  type: "vertical",
+                  gradientToColors: ["#00E096", "#6078ea", "#0095FF"],
+                  stops: [0, 100],
+                }
+              },
+              tooltip: {
+                y: {
+                  formatter: function (val) {
+                    return "$ " + val + " thousands"
+                  }
+                }
+              }
+            },
+        
+          })
         } else {
           console.error("API response is not valid:", response);
         }
+        setPatientchartData({
+          series: [
+            {
+              name: "Last Month",
+              data: response.data.graphs.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+                acc.push(curr.count);
+                return acc;
+              },[]),
+            },
+            {
+              name: "This Month",
+              data: response.data.graphs.patient_appointment_graph.current_month.reduce((acc,curr)=>{
+                acc.push(curr.count);
+                return acc;
+              },[]),
+            },
+          ],
+          options: {
+            chart: {
+              height: 350,
+              type: "area",
+              toolbar: {
+                show: false,
+              },
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            stroke: {
+              curve: "smooth",
+            },
+            markers: {
+              size: [4],
+            },
+            xaxis: {
+              type: "datetime",
+              categories: response.data.graphs.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+                acc.push(curr.day);
+                return acc;
+              },[]),
+              labels: {
+                show: false,
+              },
+            },
+            yaxis: {
+              labels: {
+                show: false,
+              },
+            },
+            tooltip: {
+              x: {
+                format: "dd/MM/yy HH:mm",
+              },
+            },
+      
+            legend: {
+              show: false,
+              position: 'bottom',
+              horizontalAlign: 'center',
+              markers: {
+                // width: 16,
+                // height: 16,
+              },
+              itemMargin: {
+                horizontal: 10,
+                vertical: 10,
+              },
+              onItemClick: {
+                toggleDataSeries: true,
+              },
+              formatter: function (seriesName, opts) {
+                return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>$3,004</span> ";
+              },
+            },
+          },
+        });
       })
       .catch((error) => {
         console.error("Error fetching doctor details:", error);
       });
-
     // Fetch upcoming appointments
     getUpcomingAppointment(editDoctorId)
       .then((response) => {
@@ -192,148 +457,9 @@ const ViewDoctor = () => {
       .catch((error) => {
         console.error("Error downloading XLSX report:", error);
       });
-  };
+  }; 
+
   
-  
-  
-
-
-  // total revenue
-  const [chartDate] = useState({
-    series: [{
-      name: 'Online Sales',
-      data: [44, 55, 57, 56, 61, 58, 63],
-      colors: ['#0095FF']
-    }],
-    options: {
-      chart: {
-        type: 'bar',
-        height: 350,
-        toolbar: {
-          show: false
-        }
-      },
-      plotOptions: {
-        bar: {
-          horizontal: false,
-          columnWidth: '35%',
-          endingShape: 'rounded'
-        },
-      },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        show: true,
-        width: 2,
-        colors: ['transparent']
-      },
-      xaxis: {
-        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
-      },
-      yaxis: {
-        title: {
-          // text: '$ (thousands)'
-        },
-      },
-
-      fill: {
-        type: "gradient",
-        gradient: {
-          shade: "dark",
-          type: "vertical",
-          gradientToColors: ["#00E096", "#6078ea", "#0095FF"],
-          stops: [0, 100],
-        }
-      },
-      tooltip: {
-        y: {
-          formatter: function (val) {
-            return "$ " + val + " thousands"
-          }
-        }
-      }
-    },
-
-  });
-
-  // patient appointment chart
-  const [patientchartData] = useState({
-    series: [
-      {
-        name: "Last Month",
-        data: [80, 70, 64, 75, 50, 109, 100],
-      },
-      {
-        name: "This Month",
-        data: [11, 20, 28, 32, 16, 52, 41],
-      },
-    ],
-    options: {
-      chart: {
-        height: 350,
-        type: "area",
-        toolbar: {
-          show: false,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: "smooth",
-      },
-      markers: {
-        size: [4],
-      },
-      xaxis: {
-        type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z",
-        ],
-        labels: {
-          show: false,
-        },
-      },
-      yaxis: {
-        labels: {
-          show: false,
-        },
-      },
-      tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm",
-        },
-      },
-
-      legend: {
-        show: false,
-        position: 'bottom',
-        horizontalAlign: 'center',
-        markers: {
-          // width: 16,
-          // height: 16,
-        },
-        itemMargin: {
-          horizontal: 10,
-          vertical: 10,
-        },
-        onItemClick: {
-          toggleDataSeries: true,
-        },
-        formatter: function (seriesName, opts) {
-          return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>$3,004</span> ";
-        },
-      },
-    },
-  });
-
   return (
     <div className="doc-detail-wrap">
       <Typography
@@ -342,7 +468,8 @@ const ViewDoctor = () => {
         sx={{ fontWeight: "700" }}
         component="h1"
       >
-        <Link className="back-btn" to='/doctor'><FontAwesomeIcon icon={faArrowLeftLong} /></Link>Dr. Courtney Henry
+        {doctorDetails ?
+        <span><Link className="back-btn" to='/doctor'><FontAwesomeIcon icon={faArrowLeftLong} /></Link>Dr. {doctorDetails.user.first_name} {doctorDetails.user.last_name}</span>:''}
       </Typography>
       <Paper className="customBoxWrap">
         {doctorDetails ? (
@@ -352,8 +479,8 @@ const ViewDoctor = () => {
                 <span>
                   <img src={`${axios.defaults.baseURL}${doctorDetails.user.profile_image}`} alt="Doctor" />
                 </span>
-                <h4>Dr. Courtney Henry</h4>
-                <p>Optometrist</p>
+                <h4>Dr. {doctorDetails.user.first_name} {doctorDetails.user.last_name}</h4>
+                <p>{doctorDetails.specialization}</p>
               </div>
 
               <Grid container pb={2}>
@@ -399,7 +526,7 @@ const ViewDoctor = () => {
                   </Grid>
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Medical License</h6>
-                    <p>{doctorDetails.medical_license}</p>
+                    <a href={`${axios.defaults.baseURL}${doctorDetails.medical_license}`} target="_blank">Click to view</a>
                   </Grid>
                   {/* <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Education</h6>
@@ -418,7 +545,7 @@ const ViewDoctor = () => {
                     <p>{doctorDetails.clinic_contact_no}</p>
                   </Grid> */}
 
-                  <Grid item xs={12} md={4} className="item-wrap">
+                  {/* <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Working hours start</h6>
                     <p>{doctorDetails.start_working_hr}</p>
                   </Grid>
@@ -429,7 +556,7 @@ const ViewDoctor = () => {
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>day off</h6>
                     <p>{doctorDetails.working_days}</p>
-                  </Grid>
+                  </Grid> */}
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Appointment charges</h6>
                     <p>{doctorDetails.appointment_charges}</p>
@@ -491,7 +618,9 @@ const ViewDoctor = () => {
                   <li>
                     <img src={BlueIcon} alt='Last Month' />
                     <p>Last Month
-                      <span>$3,004</span>
+                      <span>${graphDetails?graphDetails.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+                        return acc += curr.count;
+                      },0):0}</span>
                     </p>
                   </li>
 
@@ -499,7 +628,9 @@ const ViewDoctor = () => {
                     <img src={GreenIcon} alt='This Month' />
                     <p>
                       This Month
-                      <span>$4,504</span>
+                      <span>${graphDetails?graphDetails.patient_appointment_graph.current_month.reduce((acc,curr)=>{
+                        return acc += curr.count;
+                      },0):0}</span>
                     </p>
 
                   </li>
@@ -596,7 +727,7 @@ const ViewDoctor = () => {
                     >
                       <TableCell> {index + 1} </TableCell>
                       <TableCell> {data.patient.patient_id} </TableCell>
-                      <TableCell onClick={handleOpenDialog}>{data.patient.name}</TableCell>
+                      <TableCell >{data.patient.name}</TableCell>
                       <TableCell>{data.patient.age}</TableCell>
                       <TableCell>{data.patient.phone}</TableCell>
                       <TableCell>{data.patient.email}</TableCell>

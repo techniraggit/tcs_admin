@@ -225,7 +225,7 @@ const Doctor = () => {
                           <IconButton
                             aria-label="View"
                             size="small"
-                            onClick={() => { navigate(`/view-doctor?id=${doctor.user.id}`) }}
+                            onClick={() => { navigate(`/view-doctor/${doctor.user.id}`) }}
                           >
                             <img src={viewIcon} alt="View" />
                           </IconButton>

@@ -83,7 +83,7 @@ function App() {
                   <Route path="/notifications" element={<Notifications />} />
                   <Route path="/create-notification" element={<CreateNotification />} />
                   <Route path="/add-doctor" element={<AddDoctor />} />
-                  <Route path='/view-doctor' element={<ViewDoctor />} />
+                  <Route path='/view-doctor/:doctor_id' element={<ViewDoctor />} />
                   <Route path='/appointments' element={<Appointements />} />
                   <Route path='/calendar' element={<Calendar />} />
                   <Route path='/meeting/:room_name' element={<Meeting />} />

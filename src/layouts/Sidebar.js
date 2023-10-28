@@ -41,7 +41,7 @@ function Sidebar() {
                 Appointments
             </Link>
           </li>
-          <li className={`${location.pathname === '/calender' ? 'active' : ''} `}>
+          {/* <li className={`${location.pathname === '/calender' ? 'active' : ''} `}>
             <Link to="/calendar">
                 <FontAwesomeIcon icon={faCalendar} />
                 Calender
@@ -52,7 +52,7 @@ function Sidebar() {
                 <FontAwesomeIcon icon={faHandsHolding} />
                 Meeting
             </Link>
-          </li>
+          </li> */}
         </ul>
         <Link to="/" className='logout-wrap'>
           <img src={LogoutIcon} alt="Log out" />
