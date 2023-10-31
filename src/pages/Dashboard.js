@@ -427,10 +427,10 @@ const Dashboard = () => {
                   <li>
                     <img src={BlueIcon} alt='Last Month' />
                     <p>Last Month
-                      <span>${dashboardData.appointment_graph.last_month_gp.reduce((acc,curr)=>{
+                      <span>${dashboardData?dashboardData.appointment_graph?.last_month_gp.reduce((acc,curr)=>{
               acc += curr.count;
               return acc;
-            },0)}</span>
+            },0):0}</span>
                     </p>
                   </li>
 
@@ -438,10 +438,10 @@ const Dashboard = () => {
                     <img src={GreenIcon} alt='This Month' />
                     <p>
                       This Month
-                      <span>${dashboardData.appointment_graph.current_month_gp.reduce((acc,curr)=>{
+                      <span>${dashboardData?dashboardData.appointment_graph.current_month_gp.reduce((acc,curr)=>{
               acc += curr.count;
               return acc;
-            },0)}</span>
+            },0):0}</span>
                     </p>
 
                   </li>
