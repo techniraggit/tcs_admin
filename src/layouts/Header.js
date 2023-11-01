@@ -23,6 +23,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import { useNavigate } from "react-router-dom";
 import { logOut } from "../apis/adminApis";
+import axios from "../apis/axiosConfig";
 function FadeMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ function FadeMenu() {
         className="userInfoToggle"
         sx={{ p: "0" }}
       >
-        Ravi <FontAwesomeIcon icon={faAngleDown} />
+        {localStorage.getItem('name')} <FontAwesomeIcon icon={faAngleDown} />
       </Button>
       <Menu
         id="fade-menu"
@@ -71,7 +72,7 @@ function FadeMenu() {
         <MenuItem onClick={handleLogOut}>Logout</MenuItem>
       </Menu>
       <Typography variant="font12" component="p" sx={{ color: "#737791" }}>
-        Doctor
+        {localStorage.getItem('type')}
       </Typography>
     </div>
   );
@@ -110,7 +111,7 @@ export default function Header() {
             </IconButton>
             <Avatar
               alt="Remy Sharp"
-              src={Avtaar}
+              src={`${axios.defaults.baseURL}${localStorage.getItem('image')}`}
               sx={{ width: 46, height: 46, borderRadius: "12px" }}
             />
             <FadeMenu />

@@ -141,7 +141,7 @@ const Doctor = () => {
           <span className="icon-wrap"><img src={DoctorIcon} alt="Doctor" /></span>
           <div className="text-wrap">
             <h6>Total doctors</h6>
-            <span>2 doctors added</span>
+            <span>{doctorList.length}</span>
           </div>
         </div>
         <Button onClick={() => handleSalaryReport(selectedDoctorIds)} className="buttonPrimary small" variant="contained"><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Salary and Payment Reports</Button>
@@ -200,7 +200,7 @@ const Doctor = () => {
                       <TableCell> <Checkbox {...label} checked={selectedDoctorIds.includes(doctor.user.id)}
                         onChange={(event) => handleCheckboxChange(event, doctor.user.id)} /></TableCell>
                       <TableCell> {page * rowsPerPage + index + 1} </TableCell>
-                      <TableCell> <span onClick={() => { navigate('/view-doctor') }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
+                      <TableCell> <span onClick={() => { navigate('/view-doctor/'+doctor.user.id) }} style={{ cursor: 'pointer' }}>{doctor.user.first_name} {doctor.user.last_name} </span> </TableCell>
                       <TableCell>{doctor.user.email}</TableCell>
                       <TableCell>{doctor.user.phone_number}</TableCell>
                       <TableCell>{doctor.specialization}</TableCell>
@@ -212,12 +212,12 @@ const Doctor = () => {
                         <FormControlLabel
                           control={
                             <Switch
-                              checked={doctor.active}
+                              checked={doctor.is_active}
                               onChange={() => handleSwitchChange(doctor)}
                               color="primary"
                             />
                           }
-                          label={doctor.active ? 'Active' : 'Inactive'}
+                          label={doctor.is_active ? 'Active' : 'Inactive'}
                         />
                       </TableCell>
                       <TableCell>

@@ -19,11 +19,13 @@ import { AppointmentListing, saveCancelAppointment } from '../apis/adminApis';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RescheduleDialog from "../components/RescheduleDialog";
+import axios from "../apis/axiosConfig";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
     { id: "patientName", label: "Patient Name", minWidth: 140 },
-    { id: "patientAge", label: "Age", minWidth: 110 },
+    { id: "patientAge", label: "Date & Time", minWidth: 110 },
+    { id: "patientAge", label: "Doctor Name", minWidth: 110 },
     { id: "email", label: "Email", minWidth: 110 },
     { id: "mobileNo", label: "Mobile", minWidth: 140 },
     { id: "status", label: "Status", minWidth: 140 },
@@ -180,7 +182,8 @@ const Appointments = () => {
                                         >
                                             <TableCell> {page * rowsPerPage + index + 1} </TableCell>
                                             <TableCell>{data.patient.name}</TableCell>
-                                            <TableCell>{data.patient.age}</TableCell>
+                                            <TableCell>{new Date(data.schedule_date).toLocaleTimeString()} {new Date(data.schedule_date).toDateString()}</TableCell>
+                                            <TableCell>{data.doctor.user.first_name} {data.doctor.user.last_name}</TableCell>
                                             <TableCell>{data.patient.email}</TableCell>
                                             <TableCell>{data.patient.phone}</TableCell>
                                             <TableCell>
@@ -190,8 +193,30 @@ const Appointments = () => {
                                                     id="demo-simple-select"
                                                     value={selectedType[data.id]}
                                                     onChange={(event) => {
-                                                        handleTypeChange(event, data.id);
-                                                        handleSelectedTypeChange(data.id, event.target.value); // Call the callback to update selectedType
+                                                        handleTypeChange(event, data.appointment_id);
+                                                        handleSelectedTypeChange(data.appointment_id, event.target.value); // Call the callback to update selectedType
+                                                        // axios.put(axios.defaults.baseURL+"/admin/appointment-list",{"id":data.appointment_id,"status":event.target.value})
+                                                        var myHeaders = new Headers();
+                                                        myHeaders.append("Authorization", "Bearer "+ localStorage.getItem('token'));
+                                                        debugger;
+                                                        myHeaders.append("Content-Type", "application/json");
+
+                                                        var raw = JSON.stringify({
+                                                        "id": data.appointment_id,
+                                                        "status": event.target.value
+                                                        });
+
+                                                        var requestOptions = {
+                                                        method: 'PUT',
+                                                        headers: myHeaders,
+                                                        body: raw,
+                                                        redirect: 'follow'
+                                                        };
+
+                                                        fetch(axios.defaults.baseURL+"admin/appointment-list", requestOptions)
+                                                        .then(response => response.text())
+                                                        .then(result => console.log(result))
+                                                        .catch(error => console.log('error', error));
                                                     }}
                                                     name="status"
                                                     fullWidth

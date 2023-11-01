@@ -67,6 +67,8 @@ const Login = () => {
         if (response?.data?.status) {
           const token = response.data.access_token;
           const name = response.data.first_name;
+          localStorage.setItem('image', response.data.profile_image);
+          localStorage.setItem('type', response.data.user_type);
           localStorage.setItem('name', name);
           localStorage.setItem("token", token);
           setSuccessSnackbar("You have logged in successfully.");
