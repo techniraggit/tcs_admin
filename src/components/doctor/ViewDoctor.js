@@ -473,6 +473,7 @@ const ViewDoctor = () => {
       </Typography>
       <Paper className="customBoxWrap">
         {doctorDetails ? (
+         <>
           <Grid container spacing={0} pb={2}>
             <Grid item xs={12} md={4}>
               <div className="doc-profile">
@@ -494,21 +495,6 @@ const ViewDoctor = () => {
                 </Grid>
               </Grid>
 
-              <Typography
-                mb={1}
-                sx={{ fontWeight: "600", fontSize: "16px", color: '#222B45' }}
-                component="h1"
-              >
-                Other Details
-              </Typography>
-              <Typography
-                mb={3}
-                sx={{ fontWeight: "400", fontSize: "14px", color: '#6B779A' }}
-                component="p"
-              >
-                {doctorDetails.summary}
-              </Typography>
-
             </Grid>
             <Grid item xs={12} md={8}>
               <Typography
@@ -528,7 +514,7 @@ const ViewDoctor = () => {
                     <h6>Medical License</h6>
                     <a href={`${axios.defaults.baseURL}${doctorDetails.medical_license}`} target="_blank">Click to view</a>
                   </Grid>
-                  {/* <Grid item xs={12} md={4} className="item-wrap">
+                  <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Education</h6>
                     <p>{doctorDetails.education}</p>
                   </Grid>
@@ -543,9 +529,9 @@ const ViewDoctor = () => {
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Clinic Detail</h6>
                     <p>{doctorDetails.clinic_contact_no}</p>
-                  </Grid> */}
+                  </Grid>
 
-                  {/* <Grid item xs={12} md={4} className="item-wrap">
+                  <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Working hours start</h6>
                     <p>{doctorDetails.start_working_hr}</p>
                   </Grid>
@@ -556,7 +542,7 @@ const ViewDoctor = () => {
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>day off</h6>
                     <p>{doctorDetails.working_days}</p>
-                  </Grid> */}
+                  </Grid>
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Appointment charges</h6>
                     <p>{doctorDetails.appointment_charges}</p>
@@ -575,6 +561,25 @@ const ViewDoctor = () => {
 
             </Grid>
           </Grid>
+
+          <div className="">
+          <Typography
+                  mb={1}
+                  sx={{ fontWeight: "600", fontSize: "16px", color: '#222B45' }}
+                  component="h1"
+                >
+                  About Doctor
+                </Typography>
+                <Typography
+                  mb={3}
+                  sx={{ fontWeight: "400", fontSize: "14px", color: '#6B779A' }}
+                  component="p"
+                >
+                  {doctorDetails.summary}
+                </Typography>
+          </div>
+         </>
+
         ) : (
           <p>Loading doctor details...</p>
         )}
