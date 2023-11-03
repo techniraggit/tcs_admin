@@ -99,6 +99,7 @@ const Doctor = () => {
 
       setSnackbarMessage("Status updated successfully");
       setSnackbarOpen(true);
+      window.location.reload();
     } catch (error) {
       console.error('Error updating doctor status:', error);
       setSnackbarMessage("Failed to update status");
