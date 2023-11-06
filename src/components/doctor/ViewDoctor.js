@@ -533,15 +533,15 @@ const ViewDoctor = () => {
 
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Working hours start</h6>
-                    <p>{doctorDetails.start_working_hr}</p>
+                    <p>{doctorDetails.doctor_availability[0].start_working_hr}</p>
                   </Grid>
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Working hours end</h6>
-                    <p>{doctorDetails.end_working_hr}</p>
+                    <p>{doctorDetails.doctor_availability[0].end_working_hr}</p>
                   </Grid>
                   <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>day off</h6>
-                    <p>{doctorDetails.working_days}</p>
+                    <h6>Available days</h6>
+                    <p>{doctorDetails.doctor_availability[0].working_days.join()}</p>
                   </Grid>
                   <Grid item xs={12} md={4} className="item-wrap">
                     <h6>Appointment charges</h6>
@@ -562,22 +562,6 @@ const ViewDoctor = () => {
             </Grid>
           </Grid>
 
-          <div className="">
-          <Typography
-                  mb={1}
-                  sx={{ fontWeight: "600", fontSize: "16px", color: '#222B45' }}
-                  component="h1"
-                >
-                  About Doctor
-                </Typography>
-                <Typography
-                  mb={3}
-                  sx={{ fontWeight: "400", fontSize: "14px", color: '#6B779A' }}
-                  component="p"
-                >
-                  {doctorDetails.summary}
-                </Typography>
-          </div>
          </>
 
         ) : (
@@ -596,6 +580,18 @@ const ViewDoctor = () => {
                 type="bar"
                 width="100%"
               />
+              <div className='custom-legend'>
+                <ul>
+                  <li>
+                    <p>Total revenue
+                      <span>${graphDetails?graphDetails.revenue.reduce((acc,curr)=>{
+              acc += curr.total_paid;
+              return acc;
+            },0):0}</span>
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
             {/* <Stack style={{ marginTop: '40px', width: '100%' }}>
               <Button className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Financial Reports</Button>
