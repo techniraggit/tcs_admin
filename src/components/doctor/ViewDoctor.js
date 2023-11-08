@@ -132,7 +132,7 @@ const ViewDoctor = () => {
       tooltip: {
         y: {
           formatter: function (val) {
-            return "$ " + val + " thousands"
+            return "Rs " + val + " thousands"
           }
         }
       }
@@ -287,7 +287,7 @@ const ViewDoctor = () => {
               tooltip: {
                 y: {
                   formatter: function (val) {
-                    return "$ " + val + " thousands"
+                    return "₹ " + val + " thousands"
                   }
                 }
               }
@@ -368,7 +368,7 @@ const ViewDoctor = () => {
                 toggleDataSeries: true,
               },
               formatter: function (seriesName, opts) {
-                return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>$3,004</span> ";
+                return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>₹3,004</span> ";
               },
             },
           },
@@ -584,7 +584,7 @@ const ViewDoctor = () => {
                 <ul>
                   <li>
                     <p>Total revenue
-                      <span>${graphDetails?graphDetails.revenue.reduce((acc,curr)=>{
+                      <span>₹{graphDetails?graphDetails.revenue.reduce((acc,curr)=>{
               acc += curr.total_paid;
               return acc;
             },0):0}</span>
@@ -619,7 +619,7 @@ const ViewDoctor = () => {
                   <li>
                     <img src={BlueIcon} alt='Last Month' />
                     <p>Last Month
-                      <span>${graphDetails?graphDetails.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+                      <span>₹{graphDetails?graphDetails.patient_appointment_graph.last_month.reduce((acc,curr)=>{
                         return acc += curr.count;
                       },0):0}</span>
                     </p>
@@ -629,7 +629,7 @@ const ViewDoctor = () => {
                     <img src={GreenIcon} alt='This Month' />
                     <p>
                       This Month
-                      <span>${graphDetails?graphDetails.patient_appointment_graph.current_month.reduce((acc,curr)=>{
+                      <span>₹{graphDetails?graphDetails.patient_appointment_graph.current_month.reduce((acc,curr)=>{
                         return acc += curr.count;
                       },0):0}</span>
                     </p>

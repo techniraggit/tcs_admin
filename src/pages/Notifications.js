@@ -41,13 +41,13 @@ function createData(sno, subject, description, notificationDate,) {
 }
 
 function Row(props) {
-  const { row } = props;
+  const { index, row } = props;
   const [open, setOpen] = React.useState(false);
 
   return (
     <React.Fragment>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <TableCell >{row.id}</TableCell>
+        <TableCell >{index+1}</TableCell>
         <TableCell>{row.title}</TableCell>
         <TableCell>{row.message}</TableCell>
         <TableCell>{dayjs(row.created).format("DD MMMM YYYY hh:mm A")}</TableCell>
@@ -216,7 +216,7 @@ const Notifications = () => {
               <TableBody>
 
                 {filteredNotifications?.map((notification, index) => (
-                  <Row key={index} row={notification} />
+                  <Row key={index} row={notification} index={index} />
                 ))}
               </TableBody>
             </Table>

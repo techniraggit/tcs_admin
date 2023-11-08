@@ -10,6 +10,7 @@ import {
     Typography,
     Paper,
     IconButton,
+    Button,
 } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,6 +21,9 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import RescheduleDialog from "../components/RescheduleDialog";
 import axios from "../apis/axiosConfig";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -35,10 +39,23 @@ const Appointments = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(14);
     const [appointmentListing, setAppointmentListing] = useState([]);
+    const [filteredListing, setFilteredListing] = useState([]);
+    const [fromDate, setFromDate] = useState(null);
+    const [toDate, setToDate] = useState(null);
+    const [statusListing, setStatusListing] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState({});
     const [openRecheduleDialog, setRescheduleDialog] = useState({open:false});
-
+    const filterData = (data) =>{
+        setFilteredListing(appointmentListing.filter(value => value.patient.name.toLowerCase().includes(data.toLowerCase())));
+    }
+    const resetFilters = () => {
+        setSearchQuery("");
+        setFromDate(null);
+        setToDate(null);
+        setStatusListing(null);
+        setFilteredListing(appointmentListing);
+    }
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
@@ -61,6 +78,7 @@ const Appointments = () => {
                 if (response.data) {
                     //   console.log("pppp data", response.data.data);
                     setAppointmentListing(response?.data?.data);
+                    setFilteredListing(response?.data?.data);
                     const initialSelectedType = {};
                     response?.data?.data.forEach((data) => {
                         initialSelectedType[data.id] = data.status;
@@ -76,6 +94,20 @@ const Appointments = () => {
                 console.error("Error fetching data:", error);
             });
     }, []);
+    useEffect(()=>{
+        if(statusListing) {
+            setFilteredListing(filteredListing.filter(value => value.status == statusListing));
+        }
+    },[statusListing]);
+
+    useEffect(()=>{
+        if(fromDate) {
+            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
+        }
+        if(toDate) {
+            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
+        }
+    },[fromDate,toDate]);
 
     const handleCancelAppointment = (appointmentId) => {
         const cancelData = {
@@ -142,13 +174,29 @@ const Appointments = () => {
                             <FontAwesomeIcon icon={faMagnifyingGlass} />
                         </IconButton>
                         <InputBase
-                            placeholder="Search..."
+                            placeholder="Search Patient..."
                             inputProps={{ "aria-label": "Search..." }}
                             value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onChange={(e) => {
+                                setSearchQuery(e.target.value);
+                                filterData(e.target.value);
+                            }}
                         />
                     </Paper>
-
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)}/>
+                        <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)}/>
+                    </LocalizationProvider>
+                    <select onChange={(e)=>{setStatusListing(e.target.value)}}>
+                        <option selected={statusListing === null?true:false} value = {null}>Select Status</option>
+                        <option selected={statusListing === "pending"?true:false} value = "pending">Pending</option>
+                        <option selected={statusListing === "scheduled"?true:false} value = "scheduled">Scheduled</option>
+                        <option selected={statusListing === "rescheduled"?true:false} value = "rescheduled">Rescheduled</option>
+                        <option selected={statusListing === "completed"?true:false} value = "completed">Completed</option>
+                        <option selected={statusListing === "cancelled"?true:false} value = "cancelled">Cancelled</option>
+                        <option selected={statusListing === "expired"?true:false} value = "expired">Expired</option>
+                    </select>
+                    <Button type="submit" onClick={resetFilters} >Reset Filters</Button>
                 </div>
 
                 <TableContainer className="customTable">
@@ -168,7 +216,7 @@ const Appointments = () => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {appointmentListing
+                                {filteredListing
                                     // .filter((doctor) =>
                                     //     `${doctor.user.first_name} ${doctor.user.last_name}`
                                     //         .toLowerCase()
@@ -253,7 +301,7 @@ const Appointments = () => {
                 className="customTablePagination"
                 rowsPerPageOptions={[10, 20, 30]}
                 component="div"
-                count={appointmentListing.length}
+                count={filteredListing.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
