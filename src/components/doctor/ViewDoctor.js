@@ -210,7 +210,7 @@ const ViewDoctor = () => {
           toggleDataSeries: true,
         },
         formatter: function (seriesName, opts) {
-          return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>$3,004</span> ";
+          return seriesName + " <br/> <span style='color: #222B45; font-weight: 600;'>₹3,004</span> ";
         },
       },
     },

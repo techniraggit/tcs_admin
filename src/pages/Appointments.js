@@ -81,9 +81,8 @@ const Appointments = () => {
                     setFilteredListing(response?.data?.data);
                     const initialSelectedType = {};
                     response?.data?.data.forEach((data) => {
-                        initialSelectedType[data.id] = data.status;
+                        initialSelectedType[data.appointment_id] = data.status;
                     });
-
                     setSelectedType(initialSelectedType);
                     setRowsPerPage(Math.min(10, response?.data?.data.length));
                 } else {
@@ -113,7 +112,6 @@ const Appointments = () => {
         const cancelData = {
             appointment_id: appointmentId,
         };
-    
         saveCancelAppointment(cancelData)
             .then((response) => {
                 if (response.data) {
@@ -239,14 +237,13 @@ const Appointments = () => {
                                                     className="select-field status"
                                                     labelId="demo-simple-select-label"
                                                     id="demo-simple-select"
-                                                    value={selectedType[data.id]}
+                                                    value={selectedType[data.appointment_id]}
                                                     onChange={(event) => {
                                                         handleTypeChange(event, data.appointment_id);
                                                         handleSelectedTypeChange(data.appointment_id, event.target.value); // Call the callback to update selectedType
                                                         // axios.put(axios.defaults.baseURL+"/admin/appointment-list",{"id":data.appointment_id,"status":event.target.value})
                                                         var myHeaders = new Headers();
                                                         myHeaders.append("Authorization", "Bearer "+ localStorage.getItem('token'));
-                                                        debugger;
                                                         myHeaders.append("Content-Type", "application/json");
 
                                                         var raw = JSON.stringify({
@@ -269,18 +266,18 @@ const Appointments = () => {
                                                     name="status"
                                                     fullWidth
                                                 >
-                                                    {selectedType[data.id] && (
-                                                        <MenuItem value={selectedType[data.id]}>
-                                                            {selectedType[data.id]}
+                                                    {selectedType[data.appointment_id] && (
+                                                        <MenuItem value={selectedType[data.appointment_id]}>
+                                                            {selectedType[data.appointment_id]}
                                                         </MenuItem>
                                                     )}
                                                     <MenuItem value="Reschedule" onClick={() => { 
-                                                        handleOpenRescheduleDialog(data.id);
+                                                        handleOpenRescheduleDialog(data.appointment_id);
                                                         logSelectedType();
                                                         }}>
                                                         Reschedule
                                                     </MenuItem>
-                                                    <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.id)}>Cancel</MenuItem>
+                                                    <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.appointment_id)}>Cancel</MenuItem>
                                                 </Select>
 
                                             </TableCell>
