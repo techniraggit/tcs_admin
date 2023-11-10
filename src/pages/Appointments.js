@@ -119,6 +119,7 @@ const Appointments = () => {
                 } else {
                     console.error("API response is not as expected:", response.data);
                 }
+                window.location.reload();
             })
             .catch((error) => {
                 console.error("Error canceling appointment:", error);
@@ -274,6 +275,7 @@ const Appointments = () => {
                                                     <MenuItem value="Reschedule" onClick={() => { 
                                                         handleOpenRescheduleDialog(data.appointment_id);
                                                         logSelectedType();
+                                                        window.location.reload();
                                                         }}>
                                                         Reschedule
                                                     </MenuItem>
