@@ -38,9 +38,7 @@ const columns = [
   { id: "mobileNo", label: "Mobile", minWidth: 140 },
   { id: "specification", label: "Specialization", minWidth: 110 },
   { id: "priority", label: "Priority", minWidth: 110 },
-  { id: "education", label: "Educational", minWidth: 110 },
   { id: "clinicName", label: "Clinic Name", minWidth: 110 },
-  { id: "clinicAddress", label: "Clinic Addres", minWidth: 200 },
   { id: "status", label: "Status", minWidth: 110 },
   { id: "action", label: "Action", minWidth: 140, align: "center" },
 ];
@@ -206,9 +204,7 @@ const Doctor = () => {
                       <TableCell>{doctor.user.phone_number}</TableCell>
                       <TableCell>{doctor.specialization}</TableCell>
                       <TableCell>{doctor.priority}</TableCell>
-                      <TableCell>{doctor.education}</TableCell>
                       <TableCell>{doctor.clinic_name}</TableCell>
-                      <TableCell>{doctor.clinic_address}</TableCell>
                       <TableCell>
                         <FormControlLabel
                           control={
