@@ -74,7 +74,7 @@ export const DownloadSalaryReport =(id) => {
 }
 
 export const AppointmentTimeSlot =(date) => {
-    return axios.get(`doctor/time_slots?date=${date}`)
+    return axios.get(`user/time_slots?date=${date}`)
 } 
 
 export const saveRescheduleAppointment = (data) => {
@@ -82,5 +82,5 @@ export const saveRescheduleAppointment = (data) => {
 }
 
 export const saveCancelAppointment = (data) => {
-    return axios.patch('/doctor/cancel_meeting', data);
+    return axios.patch('/admin/cancel-meeting', data);
 }

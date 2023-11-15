@@ -169,8 +169,8 @@ const AddDoctor = () => {
     });
 
     const availability = availabilityRows.map((row) => ({
-      start_working_hr: row.start_working_hr,
-      end_working_hr: row.end_working_hr,
+      start_working_hr: row.start_working_hr.split(':')[0]+':'+row.start_working_hr.split(':')[1],
+      end_working_hr: row.end_working_hr.split(':')[0]+':'+row.end_working_hr.split(':')[1],
       working_days: row.working_days.join(", "), 
     }));
 
@@ -270,8 +270,8 @@ const AddDoctor = () => {
         clinic_name: doctorData.clinic_name || "",
         clinic_address: doctorData.clinic_address || "",
         clinic_contact_no: doctorData.clinic_contact_no || "",
-        start_working_hr: doctorData.start_working_hr || "",
-        end_working_hr: doctorData.end_working_hr || "",
+        start_working_hr: doctorData.doctor_availability[0].end_working_hr.split(":")[0]+":"+ doctorData.doctor_availability[0].end_working_hr.split(":")[1]|| "",
+        end_working_hr: doctorData.doctor_availability[0].end_working_hr.split(":")[0]+":"+ doctorData.doctor_availability[0].end_working_hr.split(":")[1]|| "",
         working_days: doctorData.working_days || [],
         priority: doctorData.priority || "",
         profile_image: profile_image,
@@ -279,6 +279,7 @@ const AddDoctor = () => {
         appointment_charges: doctorData.appointment_charges || "",
         salary: doctorData.salary || "",
       });
+      setAvailabilityRows(doctorData.doctor_availability);
       // Set the selected working days
       setWeekDay(doctorData.working_days || []);
       // Set the selected time unit
