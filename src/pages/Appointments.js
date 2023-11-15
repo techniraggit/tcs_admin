@@ -24,6 +24,7 @@ import axios from "../apis/axiosConfig";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { saveAs } from 'file-saver';
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -55,6 +56,34 @@ const Appointments = () => {
         setToDate(null);
         setStatusListing(null);
         setFilteredListing(appointmentListing);
+    }
+    const downloadSheet = () => {
+        let myHeaders5 = new Headers();
+        myHeaders5.append("Content-Type", "application/json");
+        myHeaders5.append("Authorization", "Bearer "+localStorage.getItem("token"));
+
+        let raw5 = JSON.stringify({
+        "from_date": fromDate,
+        "to_date": toDate,
+        "status": statusListing
+        });
+
+        var requestOptions5 = {
+        method: 'POST',
+        headers: myHeaders5,
+        body: raw5,
+        redirect: 'follow'
+        };
+
+        fetch(axios.defaults.baseURL+"/admin/appointment-export", requestOptions5)
+        .then((response) => {
+            response.blob().then((blob)=>{
+            saveAs(blob, 'file.xslx');
+                
+            });
+
+        })
+        .catch(error => console.log('error', error));
     }
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
@@ -195,6 +224,7 @@ const Appointments = () => {
                         <option selected={statusListing === "cancelled"?true:false} value = "cancelled">Cancelled</option>
                         <option selected={statusListing === "expired"?true:false} value = "expired">Expired</option>
                     </select>
+                    <Button type="submit" onClick={downloadSheet} >Download Sheet</Button>
                     <Button type="submit" onClick={resetFilters} >Reset Filters</Button>
                 </div>
 
