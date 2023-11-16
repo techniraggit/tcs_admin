@@ -80,7 +80,7 @@ const Appointments = () => {
         fetch(axios.defaults.baseURL+"/admin/appointment-export", requestOptions5)
         .then((response) => {
             response.blob().then((blob)=>{
-            saveAs(blob, 'file.xslx');
+            saveAs(blob, 'file.xlsx');
                 
             });
 
