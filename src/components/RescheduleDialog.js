@@ -13,6 +13,7 @@ import {
   saveRescheduleAppointment,
 } from "../apis/adminApis";
 import dayjs from "dayjs";
+import axios from "../apis/axiosConfig";
 
 const RescheduleDialog = ({
   open,
@@ -44,7 +45,7 @@ const RescheduleDialog = ({
       };
 
       fetch(
-        "https://teleconsultation.niraginfotech.info/user/time_slots?date="+formattedDate,
+        axios.defaults.baseURL+"/user/time_slots?date="+formattedDate,
         requestOptions
       )
         .then((response) => response.text())
@@ -87,11 +88,13 @@ const RescheduleDialog = ({
       };
 
       fetch(
-        "https://teleconsultation.niraginfotech.info/user/reschedule_meeting",
+        axios.defaults.baseURL+"/user/reschedule_meeting",
         requestOptions
       )
         .then((response) => response.text())
-        .then((result) => console.log(JSON.parse(result)?.data))
+        .then((result) => {
+          console.log(JSON.parse(result)?.data);
+          window.location.reload();})
         .catch((error) => console.log("error", error));
         console.log("slot change", raw);
 
@@ -135,7 +138,7 @@ const RescheduleDialog = ({
             </div>
 
             <h4>Available Time</h4>
-            {timeSlots.length > 0 ? (
+            {timeSlots?.length > 0 ? (
               <ul className="time-outer">
                 {timeSlots?.map((slot, index) => (
                   <li

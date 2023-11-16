@@ -137,6 +137,9 @@ const AddDoctor = () => {
     } else if (!/^[0-9]{10}$/.test(formData.phone_number)) {
       validationErrors.phone_number = "Invalid phone number. Please enter a 10-digit phone number.";
     }
+    if(formData.phone_number>1 && formData.phone_number<10) {
+      validationErrors.phone_number = "contact number should be equal to 10 ";
+    }
     if (!formData.specialization) {
       validationErrors.specialization = "specialization is required";
     }
@@ -173,7 +176,7 @@ const AddDoctor = () => {
       end_working_hr: row.end_working_hr.split(':')[0]+':'+row.end_working_hr.split(':')[1],
       working_days: row.working_days.join(", "), 
     }));
-
+     newFormData.append("doctor_availability", JSON.stringify(availability)); // adding the availability array
      newFormData.append("availability", JSON.stringify(availability)); // adding the availability array
 
 

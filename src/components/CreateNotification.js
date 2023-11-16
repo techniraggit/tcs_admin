@@ -28,14 +28,16 @@ const CreateNotification = () => {
   const [open, setOpen] = useState(false);
 
   const validationSchema = Yup.object({
-    subject: Yup.string().required("Subject is required!"),
+    subject: Yup.string().required("Subject is required!").test('len', 'Must be less than 100', val => val.length < 100),
     description: Yup.string().required("Description is required!"),
   });
 
   const handleRetailerChange = (event, value) => {
     setDoctorEmail(value);
   };
-
+  const subjectCount = (event) => {
+    console.log(event.target.value.length);
+  }
   const handleSelectAllChange = (event) => {
     const checked = event.target.checked;
     setDoctorEmail(checked ? emails : []);

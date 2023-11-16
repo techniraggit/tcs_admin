@@ -305,7 +305,6 @@ const Appointments = () => {
                                                     <MenuItem value="Reschedule" onClick={() => { 
                                                         handleOpenRescheduleDialog(data.appointment_id);
                                                         logSelectedType();
-                                                        window.location.reload();
                                                         }}>
                                                         Reschedule
                                                     </MenuItem>
