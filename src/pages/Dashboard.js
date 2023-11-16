@@ -83,7 +83,7 @@ const Dashboard = () => {
       tooltip: {
         y: {
           formatter: function (val) {
-            return "₹ " + val + " thousands"
+            return "₹ " + val 
           }
         }
       }
@@ -227,7 +227,7 @@ const Dashboard = () => {
           tooltip: {
             y: {
               formatter: function (val) {
-                return "₹ " + val + " thousands"
+                return "₹ " + val
               }
             }
           }
