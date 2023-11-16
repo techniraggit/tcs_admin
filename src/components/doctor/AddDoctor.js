@@ -24,6 +24,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import { useLocation } from "react-router-dom";
 import { Hidden } from "@mui/material";
+import axios from "../../apis/axiosConfig";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -312,9 +313,12 @@ const AddDoctor = () => {
   };
 
   const removeAvailabilityRow = (index) => {
-    const newAvailabilityRows = [...availabilityRows];
-    newAvailabilityRows.splice(index, 1);
-    setAvailabilityRows(newAvailabilityRows);
+    axios.patch(axios.defaults.baseURL+"/admin/time-remove",{"id":index}).then((res)=>{
+      console.log(res);
+      const newAvailabilityRows = [...availabilityRows];
+      newAvailabilityRows.splice(index, 1);
+      setAvailabilityRows(newAvailabilityRows);
+    })   
   };
 
   return (
