@@ -48,7 +48,9 @@ const Appointments = () => {
     const [selectedType, setSelectedType] = useState({});
     const [openRecheduleDialog, setRescheduleDialog] = useState({open:false});
     const filterData = (data) =>{
-        setFilteredListing(appointmentListing.filter(value => value.patient.name.toLowerCase().includes(data.toLowerCase())));
+            setFilteredListing(appointmentListing.filter((value) => {
+                return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase())  || value.patient.phone.includes(data);}));
+    
     }
     const resetFilters = () => {
         setSearchQuery("");
