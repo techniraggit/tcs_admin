@@ -109,13 +109,10 @@ const AddDoctor = () => {
     clinic_name: "",
     clinic_address: "",
     clinic_contact_no: "",
-    start_working_hr: "",
-    end_working_hr: "",
-    working_days: [],
+   
     priority: "",
     profile_image: null,
     summary: "",
-    appointment_charges: "",
     salary: "",
   });
 
