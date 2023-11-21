@@ -21,6 +21,8 @@ import {
 } from "@mui/material";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { addPaymentPrice, getPaymentPrice } from "../apis/adminApis";
+import moment from 'moment'
 
 function createData(id, aptcharges, createdDate) {
     return { id, aptcharges, createdDate };
@@ -35,18 +37,30 @@ function createData(id, aptcharges, createdDate) {
 const Settings = () => {
     const [openDialog, setOpenDialog] = useState(false);
     const [rows, setRows] = useState([]);
-    const [appointmentCharges, setAppointmentCharges] = useState("");
-
+    const [appointmentCharges, setAppointmentCharges] = useState(0);
+    const [loading, setloading] = useState(false)
+console.log(rows);
     // Load rows from local storage on component mount
-    useEffect(() => {
-        const storedRows = JSON.parse(localStorage.getItem("appointmentRows")) || [];
-        setRows(storedRows);
-    }, []);
+    // useEffect(() => {
+    //     const storedRows = JSON.parse(localStorage.getItem("appointmentRows")) || [];
+    //     setRows(storedRows);
+    // }, [loading]);
 
     // Save rows to local storage whenever the rows state changes
     useEffect(() => {
-        localStorage.setItem("appointmentRows", JSON.stringify(rows));
-    }, [rows]);
+        async function fetchData() {
+
+
+            const response = await getPaymentPrice()
+            if (response?.data?.data) {
+                setRows(response?.data?.data);
+                setloading(false)
+            }
+        }
+        fetchData()
+
+
+    }, [loading]);
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
@@ -56,15 +70,29 @@ const Settings = () => {
         setOpenDialog(false);
     };
 
-    const handleAddAppointmentCharges = () => {
+    const handleAddAppointmentCharges = async (event) => {
+        event.preventDefault();
+
         if (appointmentCharges) {
-            const newRow = createData(
-                rows.length + 1,
-                appointmentCharges,
-                new Date().toLocaleDateString()
-            );
-            setRows([...rows, newRow]);
-            setAppointmentCharges("");
+
+            const data = {
+                'price': parseFloat(appointmentCharges)
+            }
+
+            const response = await addPaymentPrice(data)
+            console.log(response);
+            if (response?.data?.status == true) {
+                setloading(true)
+
+            }
+
+            // const newRow = createData(
+            //     rows.length + 1,
+            //     appointmentCharges,
+            //     new Date().toLocaleDateString()
+            // );
+            // setRows([...rows, newRow]);
+            // setAppointmentCharges("");
             handleCloseDialog();
         }
     };
@@ -95,12 +123,22 @@ const Settings = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {rows.map((row) => (
-                                <TableRow key={row.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                                    <TableCell>{row.aptcharges}</TableCell>
-                                    <TableCell>{row.createdDate}</TableCell>
-                                </TableRow>
-                            ))}
+                            {rows.length > 0 ? (<>
+
+
+                                {rows.map((row) => (
+                                    <TableRow key={row?.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                                        <TableCell>{row?.price}</TableCell>
+                                        <TableCell>{moment(row?.updated).format('DD-MM-YYYY LT') }</TableCell>
+                                        {/* <TableCell>{moment(row?.updated).startOf('minutes').fromNow()}</TableCell> */}
+
+                                        {/* moment().startOf('hour').fromNow();   */}
+                                           {/* // an hour ago */}
+
+                                    </TableRow>
+                                ))}
+                            </>) :
+                                null}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -127,13 +165,15 @@ const Settings = () => {
                                 value={appointmentCharges}
                                 onChange={(e) => setAppointmentCharges(e.target.value)}
                             />
+                            <DialogActions style={{ justifyContent: 'center', marginBottom: '20px' }}>
+                                <Button className='buttonPrimary small uppercase' type="submit" variant="contained" onClick={handleAddAppointmentCharges} style={{ color: '#fff' }}>
+                                    Add Charges
+                                </Button>
+                            </DialogActions>
                         </form>
+
                     </DialogContent>
-                    <DialogActions style={{ justifyContent: 'center', marginBottom: '20px' }}>
-                        <Button className='buttonPrimary small uppercase' variant="contained" onClick={handleAddAppointmentCharges} style={{ color: '#fff' }}>
-                            Add Charges
-                        </Button>
-                    </DialogActions>
+
                 </div>
             </Dialog>
 

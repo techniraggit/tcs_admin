@@ -25,6 +25,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { saveAs } from 'file-saver';
+import { Link } from "react-router-dom";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -46,11 +47,12 @@ const Appointments = () => {
     const [statusListing, setStatusListing] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState({});
-    const [openRecheduleDialog, setRescheduleDialog] = useState({open:false});
-    const filterData = (data) =>{
-            setFilteredListing(appointmentListing.filter((value) => {
-                return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase())  || value.patient.phone.includes(data);}));
-    
+    const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
+    const filterData = (data) => {
+        setFilteredListing(appointmentListing.filter((value) => {
+            return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
+        }));
+
     }
     const resetFilters = () => {
         setSearchQuery("");
@@ -62,38 +64,38 @@ const Appointments = () => {
     const downloadSheet = () => {
         let myHeaders5 = new Headers();
         myHeaders5.append("Content-Type", "application/json");
-        myHeaders5.append("Authorization", "Bearer "+localStorage.getItem("token"));
+        myHeaders5.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         let raw5 = JSON.stringify({
-        "from_date": fromDate,
-        "to_date": toDate,
-        "status": statusListing
+            "from_date": fromDate,
+            "to_date": toDate,
+            "status": statusListing
         });
 
         var requestOptions5 = {
-        method: 'POST',
-        headers: myHeaders5,
-        body: raw5,
-        redirect: 'follow'
+            method: 'POST',
+            headers: myHeaders5,
+            body: raw5,
+            redirect: 'follow'
         };
 
-        fetch(axios.defaults.baseURL+"/admin/appointment-export", requestOptions5)
-        .then((response) => {
-            response.blob().then((blob)=>{
-            saveAs(blob, 'file.xlsx');
-                
-            });
+        fetch(axios.defaults.baseURL + "/admin/appointment-export", requestOptions5)
+            .then((response) => {
+                response.blob().then((blob) => {
+                    saveAs(blob, 'file.xlsx');
 
-        })
-        .catch(error => console.log('error', error));
+                });
+
+            })
+            .catch(error => console.log('error', error));
     }
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(+event.target.value);
         setPage(0);
-      };
-      const handleChangePage = (event, newPage) => {
+    };
+    const handleChangePage = (event, newPage) => {
         setPage(newPage);
-      };
+    };
 
     const handleTypeChange = (event, appointmentId) => {
         const { value } = event.target;
@@ -107,6 +109,7 @@ const Appointments = () => {
         AppointmentListing()
             .then((response) => {
                 if (response.data) {
+                    console.log(response?.data);
                     //   console.log("pppp data", response.data.data);
                     setAppointmentListing(response?.data?.data);
                     setFilteredListing(response?.data?.data);
@@ -124,22 +127,22 @@ const Appointments = () => {
                 console.error("Error fetching data:", error);
             });
     }, []);
-    useEffect(()=>{
-        if(statusListing) {
+    useEffect(() => {
+        if (statusListing) {
             setFilteredListing(filteredListing.filter(value => value.status == statusListing));
         }
-    },[statusListing]);
+    }, [statusListing]);
 
-    useEffect(()=>{
-        if(fromDate) {
-            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
+    useEffect(() => {
+        if (fromDate) {
+            setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
         }
-    },[fromDate]);
-    useEffect(()=>{
-        if(toDate) {
-            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
+    }, [fromDate]);
+    useEffect(() => {
+        if (toDate) {
+            setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
         }
-    },[toDate]);
+    }, [toDate]);
 
     const handleCancelAppointment = (appointmentId) => {
         const cancelData = {
@@ -148,7 +151,7 @@ const Appointments = () => {
         saveCancelAppointment(cancelData)
             .then((response) => {
                 if (response.data) {
-                   console.log('Appointment cancel successfully.')
+                    console.log('Appointment cancel successfully.')
                 } else {
                     console.error("API response is not as expected:", response.data);
                 }
@@ -179,10 +182,10 @@ const Appointments = () => {
             }));
             console.log('previous value', openRecheduleDialog.previouslySelectedValue)
         }
-       
-        setRescheduleDialog({open: false});
+
+        setRescheduleDialog({ open: false });
     };
-      
+
 
     const handleSelectedTypeChange = (appointmentId, newValue) => {
         setSelectedType((prevSelectedType) => ({
@@ -218,23 +221,23 @@ const Appointments = () => {
                     <div className="right-wrap">
                         <div class="filter-outer">
                             <div class="filter-wrap custom-datepicker">
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)}/>
-                                <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)}/>
-                            </LocalizationProvider>
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
+                                    <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
+                                </LocalizationProvider>
                             </div>
                         </div>
-                        <select className="select-field" onChange={(e)=>{setStatusListing(e.target.value)}}>
-                            <option selected={statusListing === null?true:false} value = {null}>Select Status</option>
-                            <option selected={statusListing === "pending"?true:false} value = "pending">Pending</option>
-                            <option selected={statusListing === "scheduled"?true:false} value = "scheduled">Scheduled</option>
-                            <option selected={statusListing === "rescheduled"?true:false} value = "rescheduled">Rescheduled</option>
-                            <option selected={statusListing === "completed"?true:false} value = "completed">Completed</option>
-                            <option selected={statusListing === "cancelled"?true:false} value = "cancelled">Cancelled</option>
-                            <option selected={statusListing === "expired"?true:false} value = "expired">Expired</option>
+                        <select className="select-field" onChange={(e) => { setStatusListing(e.target.value) }}>
+                            <option selected={statusListing === null ? true : false} value={null}>Select Status</option>
+                            <option selected={statusListing === "pending" ? true : false} value="pending">Pending</option>
+                            <option selected={statusListing === "scheduled" ? true : false} value="scheduled">Scheduled</option>
+                            <option selected={statusListing === "rescheduled" ? true : false} value="rescheduled">Rescheduled</option>
+                            <option selected={statusListing === "completed" ? true : false} value="completed">Completed</option>
+                            <option selected={statusListing === "cancelled" ? true : false} value="cancelled">Cancelled</option>
+                            <option selected={statusListing === "expired" ? true : false} value="expired">Expired</option>
                         </select>
-                        <Button  className="buttonPrimary small" variant="contained" color="primary" type="submit" onClick={downloadSheet} >Download Sheet</Button>
-                        <Button type="submit" className="buttonPrimary small" variant="contained" color="primary"  onClick={resetFilters} >Reset Filters</Button>
+                        <Button className="buttonPrimary small" variant="contained" color="primary" type="submit" onClick={downloadSheet} >Download Sheet</Button>
+                        <Button type="submit" className="buttonPrimary small" variant="contained" color="primary" onClick={resetFilters} >Reset Filters</Button>
                     </div>
                 </div>
 
@@ -268,7 +271,16 @@ const Appointments = () => {
                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell> {page * rowsPerPage + index + 1} </TableCell>
-                                            <TableCell>{data.patient.name}</TableCell>
+
+
+                                            <TableCell>
+
+
+                                                <Link to={`${data?.appointment_id}`} state={data}>
+                                                    {data.patient.name}
+                                                </Link>
+
+                                            </TableCell>
                                             <TableCell>{new Date(data.schedule_date).toLocaleTimeString()} {new Date(data.schedule_date).toDateString()}</TableCell>
                                             <TableCell>{data.doctor.user.first_name} {data.doctor.user.last_name}</TableCell>
                                             <TableCell>{data.patient.email}</TableCell>
@@ -284,25 +296,25 @@ const Appointments = () => {
                                                         handleSelectedTypeChange(data.appointment_id, event.target.value); // Call the callback to update selectedType
                                                         // axios.put(axios.defaults.baseURL+"/admin/appointment-list",{"id":data.appointment_id,"status":event.target.value})
                                                         var myHeaders = new Headers();
-                                                        myHeaders.append("Authorization", "Bearer "+ localStorage.getItem('token'));
+                                                        myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
                                                         myHeaders.append("Content-Type", "application/json");
 
                                                         var raw = JSON.stringify({
-                                                        "id": data.appointment_id,
-                                                        "status": event.target.value
+                                                            "id": data.appointment_id,
+                                                            "status": event.target.value
                                                         });
 
                                                         var requestOptions = {
-                                                        method: 'PUT',
-                                                        headers: myHeaders,
-                                                        body: raw,
-                                                        redirect: 'follow'
+                                                            method: 'PUT',
+                                                            headers: myHeaders,
+                                                            body: raw,
+                                                            redirect: 'follow'
                                                         };
 
-                                                        fetch(axios.defaults.baseURL+"admin/appointment-list", requestOptions)
-                                                        .then(response => response.text())
-                                                        .then(result => console.log(result))
-                                                        .catch(error => console.log('error', error));
+                                                        fetch(axios.defaults.baseURL + "admin/appointment-list", requestOptions)
+                                                            .then(response => response.text())
+                                                            .then(result => console.log(result))
+                                                            .catch(error => console.log('error', error));
                                                     }}
                                                     name="status"
                                                     fullWidth
@@ -312,10 +324,10 @@ const Appointments = () => {
                                                             {selectedType[data.appointment_id]}
                                                         </MenuItem>
                                                     )}
-                                                    <MenuItem value="Reschedule" onClick={() => { 
+                                                    <MenuItem value="Reschedule" onClick={() => {
                                                         handleOpenRescheduleDialog(data.appointment_id);
                                                         logSelectedType();
-                                                        }}>
+                                                    }}>
                                                         Reschedule
                                                     </MenuItem>
                                                     <MenuItem value="Cancel" onClick={() => handleCancelAppointment(data.appointment_id)}>Cancel</MenuItem>
@@ -362,4 +374,4 @@ const Appointments = () => {
     )
 }
 
-export default Appointments
+export default Appointments;

@@ -9,6 +9,17 @@ export const logOut = () => {
     return axios.get('/accounts/logout');
 }
 
+export const addPaymentPrice = (data) => {
+    return axios.post('/admin/user_payment_price', data);
+}
+
+
+export const getPaymentPrice = () => {
+    return axios.get('/admin/user_payment_price');
+}
+
+
+
 export const addDoctorDetail = (data) => {
     return axios.post('/admin/doctor', data);
 }
@@ -47,6 +58,13 @@ export const  createNotification = (data) => {
 
 export const getNotificationListing = () => {
     return axios.get('admin/push-notification')
+}
+export const getAppointmentByID = (id) => {
+    return axios.get(`admin/appointment?appointment_id=${id}`)
+}
+
+export const getMyAppointmentByID = (id) => {
+    return axios.get(`admin/my_appointments=${id}`)
 }
 
 export const getUpcomingAppointment = (id) => {

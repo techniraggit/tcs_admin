@@ -29,6 +29,7 @@ import dayjs from "dayjs";
 import axios from '../../apis/axiosConfig';
 import { saveAs } from 'file-saver';
 import { editDoctorDetail, getUpcomingAppointment, getCompletedAppointment, getRescheduledAppointment, DownloadAppointmentReport } from '../../apis/adminApis';
+import DocterCard from "./DocterCard";
 
 const columns = [
   { id: "sno", label: "S.no.", minWidth: 40 },
@@ -82,7 +83,7 @@ const ViewDoctor = () => {
   const [upcomingAppointment, setUpcomingAppointment] = useState([]);
   const [completedAppointment, setCompletedAppointment] = useState([]);
   const [rescheduleAppointment, setRescheduleAppointment] = useState([]);
-  const [chartDate,setChartDate] = useState({
+  const [chartDate, setChartDate] = useState({
     series: [{
       name: 'Online Sales',
       data: [44, 55, 57, 56, 61, 58, 63],
@@ -112,7 +113,7 @@ const ViewDoctor = () => {
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       },
       yaxis: {
         title: {
@@ -237,10 +238,10 @@ const ViewDoctor = () => {
           setChartDate({
             series: [{
               name: 'Online Sales',
-              data: response.data.graphs.revenue.reduce((acc,curr)=>{
+              data: response.data.graphs.revenue.reduce((acc, curr) => {
                 acc.push(curr.total_paid);
                 return acc;
-              },[]),
+              }, []),
               colors: ['#0095FF']
             }],
             options: {
@@ -267,14 +268,14 @@ const ViewDoctor = () => {
                 colors: ['transparent']
               },
               xaxis: {
-                categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+                categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
               },
               yaxis: {
                 title: {
                   // text: '$ (thousands)'
                 },
               },
-        
+
               fill: {
                 type: "gradient",
                 gradient: {
@@ -287,12 +288,12 @@ const ViewDoctor = () => {
               tooltip: {
                 y: {
                   formatter: function (val) {
-                    return "₹ " + val 
+                    return "₹ " + val
                   }
                 }
               }
             },
-        
+
           })
         } else {
           console.error("API response is not valid:", response);
@@ -301,17 +302,17 @@ const ViewDoctor = () => {
           series: [
             {
               name: "Last Month",
-              data: response.data.graphs.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+              data: response.data.graphs.patient_appointment_graph.last_month.reduce((acc, curr) => {
                 acc.push(curr.count);
                 return acc;
-              },[]),
+              }, []),
             },
             {
               name: "This Month",
-              data: response.data.graphs.patient_appointment_graph.current_month.reduce((acc,curr)=>{
+              data: response.data.graphs.patient_appointment_graph.current_month.reduce((acc, curr) => {
                 acc.push(curr.count);
                 return acc;
-              },[]),
+              }, []),
             },
           ],
           options: {
@@ -333,10 +334,10 @@ const ViewDoctor = () => {
             },
             xaxis: {
               type: "datetime",
-              categories: response.data.graphs.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+              categories: response.data.graphs.patient_appointment_graph.last_month.reduce((acc, curr) => {
                 acc.push(curr.day);
                 return acc;
-              },[]),
+              }, []),
               labels: {
                 show: false,
               },
@@ -351,7 +352,7 @@ const ViewDoctor = () => {
                 format: "dd/MM/yy HH:mm",
               },
             },
-      
+
             legend: {
               show: false,
               position: 'bottom',
@@ -444,12 +445,12 @@ const ViewDoctor = () => {
         console.error("Error fetching upcoming appointments:", error);
       });
 
-      
+
   }, [editDoctorId]);
 
 
   const handleDownloadReport = () => {
-    const fileName = 'Appointment-Report.xlsx'; 
+    const fileName = 'Appointment-Report.xlsx';
     DownloadAppointmentReport(editDoctorId)
       .then((response) => {
         saveAs(response.data, fileName);
@@ -457,9 +458,9 @@ const ViewDoctor = () => {
       .catch((error) => {
         console.error("Error downloading XLSX report:", error);
       });
-  }; 
+  };
 
-  
+
   return (
     <div className="doc-detail-wrap">
       <Typography
@@ -469,100 +470,13 @@ const ViewDoctor = () => {
         component="h1"
       >
         {doctorDetails ?
-        <span><Link className="back-btn" to='/doctor'><FontAwesomeIcon icon={faArrowLeftLong} /></Link>Dr. {doctorDetails.user.first_name} {doctorDetails.user.last_name}</span>:''}
+          <span><Link className="back-btn" to='/doctor'><FontAwesomeIcon icon={faArrowLeftLong} /></Link>Dr. {doctorDetails.user.first_name} {doctorDetails.user.last_name}</span> : ''}
       </Typography>
       <Paper className="customBoxWrap">
         {doctorDetails ? (
-         <>
-          <Grid container spacing={0} pb={2}>
-            <Grid item xs={12} md={4}>
-              <div className="doc-profile">
-                <span>
-                  <img src={`${axios.defaults.baseURL}${doctorDetails.user.profile_image}`} alt="Doctor" />
-                </span>
-                <h4>Dr. {doctorDetails.user.first_name} {doctorDetails.user.last_name}</h4>
-                <p>{doctorDetails.specialization}</p>
-              </div>
-
-              <Grid container pb={2}>
-                <Grid item xs={12} md={6} className="item-wrap">
-                  <h6>Email</h6>
-                  <p>{doctorDetails.user.email}</p>
-                </Grid>
-                <Grid item xs={12} md={6} className="item-wrap">
-                  <h6>Phone</h6>
-                  <p>{doctorDetails.user.phone_number}</p>
-                </Grid>
-              </Grid>
-
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <Typography
-                mb={3}
-                sx={{ fontWeight: "500", fontSize: "18px", paddingLeft: '30px' }}
-                component="h1"
-              >
-                Other Details
-              </Typography>
-              <div className="view-detail">
-                <Grid container pb={2}>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Specialisation</h6>
-                    <p>{doctorDetails.specialization}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Medical License</h6>
-                    <a href={`${axios.defaults.baseURL}${doctorDetails.medical_license}`} target="_blank">Click to view</a>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Education</h6>
-                    <p>{doctorDetails.education}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Clinic Name</h6>
-                    <p>{doctorDetails.clinic_name}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Clinic  Address </h6>
-                    <p>{doctorDetails.clinic_address}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Clinic Detail</h6>
-                    <p>{doctorDetails.clinic_contact_no}</p>
-                  </Grid>
-
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Working hours start</h6>
-                    <p>{doctorDetails.doctor_availability[0].start_working_hr}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Working hours end</h6>
-                    <p>{doctorDetails.doctor_availability[0].end_working_hr}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Available days</h6>
-                    <p>{doctorDetails.doctor_availability[0].working_days.join()}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Appointment charges</h6>
-                    <p>{doctorDetails.appointment_charges}</p>
-                  </Grid>
-                  <Grid item xs={12} md={4} className="item-wrap">
-                    <h6>Salary</h6>
-                    <p>{doctorDetails.salary}</p>
-                  </Grid>
-
-                  {/* <Stack style={{ marginTop: '40px', width: '100%' }}>
-                    <Button className="buttonPrimary small" variant="contained" style={{ maxWidth: 'fit-content', margin: '0 auto' }}><img src={DownloadIcon} alt='Add Doctor' style={{ marginRight: '8px' }} /> Salary and Payment Reports</Button>
-                  </Stack> */}
-
-                </Grid>
-              </div>
-
-            </Grid>
-          </Grid>
-
-         </>
+          <>
+           <DocterCard  doctorDetails={doctorDetails}/>
+          </>
 
         ) : (
           <p>Loading doctor details...</p>
@@ -584,10 +498,10 @@ const ViewDoctor = () => {
                 <ul>
                   <li>
                     <p>Total revenue
-                      <span>₹{graphDetails?graphDetails.revenue.reduce((acc,curr)=>{
-              acc += curr.total_paid;
-              return acc;
-            },0):0}</span>
+                      <span>₹{graphDetails ? graphDetails.revenue.reduce((acc, curr) => {
+                        acc += curr.total_paid;
+                        return acc;
+                      }, 0) : 0}</span>
                     </p>
                   </li>
                 </ul>
@@ -619,9 +533,9 @@ const ViewDoctor = () => {
                   <li>
                     <img src={BlueIcon} alt='Last Month' />
                     <p>Last Month
-                      <span>₹{graphDetails?graphDetails.patient_appointment_graph.last_month.reduce((acc,curr)=>{
+                      <span>₹{graphDetails ? graphDetails.patient_appointment_graph.last_month.reduce((acc, curr) => {
                         return acc += curr.count;
-                      },0):0}</span>
+                      }, 0) : 0}</span>
                     </p>
                   </li>
 
@@ -629,9 +543,9 @@ const ViewDoctor = () => {
                     <img src={GreenIcon} alt='This Month' />
                     <p>
                       This Month
-                      <span>₹{graphDetails?graphDetails.patient_appointment_graph.current_month.reduce((acc,curr)=>{
+                      <span>₹{graphDetails ? graphDetails.patient_appointment_graph.current_month.reduce((acc, curr) => {
                         return acc += curr.count;
-                      },0):0}</span>
+                      }, 0) : 0}</span>
                     </p>
 
                   </li>

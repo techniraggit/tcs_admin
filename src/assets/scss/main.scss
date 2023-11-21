@@ -1744,7 +1744,43 @@ form#room-name-form {
     }
 }
 
+// view-avaibility changes start
 
+.view-detail {
+    .top-detail {
+        border: 1px solid #e3e3e3;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+
+    .avilability-wrap {
+        border: 1px solid #e3e3e3;
+        border-radius: 5px;
+        .customTable {
+            max-height: 226px;
+            tbody {
+                tr {
+                    td {
+                        height: 34px;
+                        border-bottom: 1px solid #e3e3e3;
+                    }
+    
+                    &:last-child {
+                        td {
+                            border-bottom: 0;
+                          }
+                    }
+                }
+            }
+
+        }
+      }
+}
+
+  
+  
+// view-avaibility changes ends
 // appointment listing new style start
 
 .appointment-listing {
@@ -1805,9 +1841,11 @@ form#room-name-form {
 
 // appointment listing new style ends
 
+// appointment listing new style ends
 // setting screen start
 .setting {
     .customTable {
+        max-height: 400px;
         table {
             border: 1px solid #e5e5e5;
             border-radius: 10px;
