@@ -63,7 +63,7 @@ const Dashboard = () => {
         colors: ['transparent']
       },
       xaxis: {
-        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+        categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       },
       yaxis: {
         title: {
@@ -207,7 +207,7 @@ const Dashboard = () => {
             colors: ['transparent']
           },
           xaxis: {
-            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saterday', 'Sunday'],
+            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
           },
           yaxis: {
             title: {
