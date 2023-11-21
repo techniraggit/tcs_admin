@@ -134,10 +134,12 @@ const Appointments = () => {
         if(fromDate) {
             setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
         }
+    },[fromDate]);
+    useEffect(()=>{
         if(toDate) {
             setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
         }
-    },[fromDate,toDate]);
+    },[toDate]);
 
     const handleCancelAppointment = (appointmentId) => {
         const cancelData = {
