@@ -2,7 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import React, { useEffect } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import DocterCard from '../components/doctor/DocterCard';
-import { getAppointmentByID } from '../apis/adminApis';
+import { getAppointmentByID, getMyAppointmentByID } from '../apis/adminApis';
 
 function AppointmentsDetail() {
 
@@ -17,7 +17,7 @@ function AppointmentsDetail() {
 
     // useEffect(async () => {
 
-    //   const appointment= await getAppointmentByID(appointmentData?.appointment_id)
+    //   const appointment= await getMyAppointmentByID(appointmentData?.appointment_id)
     //   console.log(appointment);
 
     // }, [appointmentData])
@@ -111,7 +111,7 @@ function AppointmentsDetail() {
             </div> */}
             {
 
-                appointmentData && <>
+appointmentData?.additional_note && <>
 
 
                     {

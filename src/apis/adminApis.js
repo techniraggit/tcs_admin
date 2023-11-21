@@ -52,6 +52,9 @@ export const getAppointmentByID = (id) => {
     return axios.get(`admin/appointment?appointment_id=${id}`)
 }
 
+export const getMyAppointmentByID = (id) => {
+    return axios.get(`admin/my_appointments=${id}`)
+}
 
 export const getUpcomingAppointment = (id) => {
     return axios.get(`admin/appointment?search_query=pending&id=${id}`)

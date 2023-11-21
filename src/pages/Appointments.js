@@ -276,7 +276,7 @@ const Appointments = () => {
                                             <TableCell>
 
 
-                                                <Link to={`${data.patient.name}`} state={data}>
+                                                <Link to={`${data?.appointment_id}`} state={data}>
                                                     {data.patient.name}
                                                 </Link>
 
