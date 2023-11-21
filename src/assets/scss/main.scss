@@ -1745,4 +1745,63 @@ form#room-name-form {
 }
 
 
+// appointment listing new style start
 
+.appointment-listing {
+    .filter-outer {
+        .filter-wrap.custom-datepicker {
+            label {
+                width: 100%;
+                height: 100%;
+                top: -5px;
+                font-weight: 600;
+                font-size: 14px;
+            }
+
+            >.MuiFormControl-root.MuiTextField-root {
+                margin-right: 10px;
+
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+
+            .MuiInputBase-root {
+                input {
+                    color: rgba(0, 0, 0, 0.87);
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+
+    select.select-field {
+        border: 1px solid #CCC;
+        border-radius: 0;
+        font-weight: 500;
+        padding: 0px 10px;
+        background: transparent;
+        height: 40px;
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.87);
+
+        @media (max-width: 1400px) {
+            font-size: 14px;
+        }
+
+        &:focus {
+            outline: none;
+        }
+    }
+    
+    .right-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-left: 10px;
+        justify-content: flex-end;
+    }
+}
+
+
+// appointment listing new style ends
