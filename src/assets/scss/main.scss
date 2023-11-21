@@ -1803,5 +1803,33 @@ form#room-name-form {
     }
 }
 
-
 // appointment listing new style ends
+
+// setting screen start
+.setting {
+    .customTable {
+        table {
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+            overflow: hidden;
+
+            tbody {
+                tr {
+                    td {
+                        height: 38px;
+                        border-bottom: 1px solid rgba(224, 224, 224, 1);
+                    }
+
+                    &:last-child {
+                        td {
+                            border-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+ 
+
+// setting screen ends

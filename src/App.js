@@ -88,7 +88,7 @@ function App() {
                   <Route path='/appointments' element={<Appointements />} />
                   <Route path='/calendar' element={<Calendar />} />
                   <Route path='/meeting/:room_name' element={<Meeting />} />
-                  <Route path='/setting' element={Settings} />
+                  <Route path='/setting' element={<Settings/>} />
                 </Route>
               </Route>
             </Routes>
