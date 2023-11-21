@@ -39,7 +39,7 @@ const Settings = () => {
     const [rows, setRows] = useState([]);
     const [appointmentCharges, setAppointmentCharges] = useState(0);
     const [loading, setloading] = useState(false)
-
+console.log(rows);
     // Load rows from local storage on component mount
     // useEffect(() => {
     //     const storedRows = JSON.parse(localStorage.getItem("appointmentRows")) || [];
@@ -129,7 +129,8 @@ const Settings = () => {
                                 {rows.map((row) => (
                                     <TableRow key={row?.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                                         <TableCell>{row?.price}</TableCell>
-                                        <TableCell>{moment(row?.created).format('YYYY/MM/DD')}</TableCell>
+                                        <TableCell>{moment(row?.updated).format('YYYY/MM/DD')}</TableCell>
+                                        
                                     </TableRow>
                                 ))}
                             </>) :
