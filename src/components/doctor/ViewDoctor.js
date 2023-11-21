@@ -505,7 +505,7 @@ const ViewDoctor = () => {
                   Other Details
                 </Typography>
                 <div className="view-detail">
-                  <Grid container pb={2}>
+                  <Grid container pb={2} className="top-detail">
                     <Grid item xs={12} md={4} className="item-wrap">
                       <h6>Specialisation</h6>
                       <p>{doctorDetails.specialization}</p>
@@ -530,83 +530,11 @@ const ViewDoctor = () => {
                       <h6>Clinic Detail</h6>
                       <p>{doctorDetails.clinic_contact_no}</p>
                     </Grid>
-
-
-                    <TableContainer className="customTable" container={Paper} >
-                      {doctorDetails?.doctor_availability.length > 0 ?
-                        <Table aria-label="table">
-                          <TableHead>
-                            <Grid
-                              item
-
-                              container
-                              direction="row"
-                              justifyContent="flex-start"
-                              alignItems="center"
-                            >
-                              <TableRow  >
-
-                                <TableCell
-
-
-                                >
-                                  <h5>Working hours start</h5>
-                                </TableCell>
-                                <TableCell
-
-                                >
-                                  <h5>Working hours start</h5>
-                                </TableCell>
-                                <TableCell
-
-                                >
-                                  <h5>Working hours start</h5>
-                                </TableCell>
-                              </TableRow>
-                            </Grid>
-                          </TableHead>
-                          <TableBody>
-
-                            {doctorDetails?.doctor_availability?.map((data, index) => (
-                              // console.log('Upcoming appoinmenet not showing', upcomingAppointment),
-                              <Grid item className="item-wrap">
-
-                                <TableRow
-                                  key={data.id}
-                                  index={index}
-                                >
-
-
-                                  <TableCell><p>
-                                    {data.start_working_hr} </p></TableCell>
-                                  <TableCell><p>
-                                    {data.end_working_hr}</p></TableCell>
-                                  <TableCell><p>
-                                    {data.working_days.join()}</p></TableCell>
-
-                                  {/* <TableCell>{data.patient.phone}</TableCell> */}
-
-                                </TableRow>
-
-                              </Grid>
-
-                            ))}
-
-                          </TableBody>
-                        </Table>
-                        :
-                        <div className="no-data-wrap">
-                          <img src={NoDataImg} alt="No Doctor" />
-                          <h5 className="mt-0">No appointment scheduled yet!</h5>
-                          <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        </div>
-                      }
-                    </TableContainer>
-                    <Grid item xs={12} md={4} className="item-wrap">
+                    <Grid item xs={12} md={4} className="item-wrap" style={{border : '0'}}>
                       <h6>Appointment charges</h6>
                       <p>{doctorDetails.appointment_charges}</p>
                     </Grid>
-                    <Grid item xs={12} md={4} className="item-wrap">
+                    <Grid item xs={12} md={4} className="item-wrap" style={{border : '0'}}>
                       <h6>Salary</h6>
                       <p>{doctorDetails.salary}</p>
                     </Grid>
@@ -618,6 +546,56 @@ const ViewDoctor = () => {
                   </Stack> */}
 
                   </Grid>
+
+                  <div className="avilability-wrap">
+                  <TableContainer className="customTable" container={Paper} >
+                          {doctorDetails?.doctor_availability.length > 0 ?
+                            <Table stickyHeader aria-label="sticky table">
+                              <TableHead>
+                                  <TableRow>
+                                    <TableCell>
+                                      Working hours start
+                                    </TableCell>
+                                    <TableCell>
+                                      Working hours start
+                                    </TableCell>
+                                    <TableCell
+                                    >
+                                      Working hours start
+                                    </TableCell>
+                                  </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {doctorDetails?.doctor_availability?.map((data, index) => (
+                                  // console.log('Upcoming appoinmenet not showing', upcomingAppointment),                          
+                                    <TableRow
+                                      key={data.id}
+                                      index={index}
+                                    >
+                                      <TableCell><p>
+                                        {data.start_working_hr} </p></TableCell>
+                                      <TableCell><p>
+                                        {data.end_working_hr}</p></TableCell>
+                                      <TableCell><p>
+                                        {data.working_days.join()}</p></TableCell>
+
+                                      {/* <TableCell>{data.patient.phone}</TableCell> */}
+
+                                    </TableRow>
+                                ))}
+
+                              </TableBody>
+                            </Table>
+                            :
+                            <div className="no-data-wrap">
+                              <img src={NoDataImg} alt="No Doctor" />
+                              <h5 className="mt-0">No appointment scheduled yet!</h5>
+                              <p>Lorem ipsum dolor sit amet consectetur.</p>
+                            </div>
+                          }
+                        </TableContainer>
+                  </div>
+                    
                 </div>
 
               </Grid>
