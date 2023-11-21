@@ -129,8 +129,12 @@ console.log(rows);
                                 {rows.map((row) => (
                                     <TableRow key={row?.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                                         <TableCell>{row?.price}</TableCell>
-                                        <TableCell>{moment(row?.updated).format('YYYY/MM/DD')}</TableCell>
-                                        
+                                        <TableCell>{moment(row?.updated).format('DD-MM-YYYY LT') }</TableCell>
+                                        {/* <TableCell>{moment(row?.updated).startOf('minutes').fromNow()}</TableCell> */}
+
+                                        {/* moment().startOf('hour').fromNow();   */}
+                                           {/* // an hour ago */}
+
                                     </TableRow>
                                 ))}
                             </>) :
