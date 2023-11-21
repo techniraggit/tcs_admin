@@ -69,15 +69,13 @@ const AddDoctor = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
-  const [availabilityRows, setAvailabilityRows] = useState([
-    {
-      id: 0,
-      start_working_hr: "",
-      end_working_hr: "",
-      working_days: [],
-    },
-  ]);
+  const [updateRows, setUpdateRows] = useState([])
 
+  const [availabilityRows, setAvailabilityRows] = useState([]);
+  console.log(availabilityRows, 'availabilityRows',updateRows);
+
+
+  
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const editDoctorId = queryParams.get("id");
@@ -109,10 +107,13 @@ const AddDoctor = () => {
     clinic_name: "",
     clinic_address: "",
     clinic_contact_no: "",
-   
+    start_working_hr: "",
+    end_working_hr: "",
+    working_days: [],
     priority: "",
     profile_image: null,
     summary: "",
+    appointment_charges: "",
     salary: "",
   });
 
@@ -172,14 +173,20 @@ const AddDoctor = () => {
     });
 
     const availability = availabilityRows.map((row) => ({
+      id:row.id || '',
       start_working_hr: row.start_working_hr.split(':')[0] + ':' + row.start_working_hr.split(':')[1],
       end_working_hr: row.end_working_hr.split(':')[0] + ':' + row.end_working_hr.split(':')[1],
       working_days: row.working_days.join(", "),
-    }));
+
+    }
+    
+    ));
+
+console.log(availability);
     newFormData.append("doctor_availability", JSON.stringify(availability)); // adding the availability array
     newFormData.append("availability", JSON.stringify(availability)); // adding the availability array
 
-
+console.log(newFormData);
     try {
       let response;
       console.log('ppppppnnn', response)
@@ -291,6 +298,7 @@ const AddDoctor = () => {
         salary: doctorData.salary || "",
       });
       setAvailabilityRows(doctorData.doctor_availability);
+      setUpdateRows(doctorData.doctor_availability)
       // Set the selected working days
       setWeekDay(doctorData.working_days || []);
       // Set the selected time unit
@@ -302,12 +310,14 @@ const AddDoctor = () => {
   const addAvabilityRow = () => {
     setOpenSnackbar(true)
     const newAvailabilityRows = [...availabilityRows];
+    console.log(newAvailabilityRows);
     const newRow = {
-      id: newAvailabilityRows.length,
+
       start_working_hr: "",
       end_working_hr: "",
       working_days: [],
     };
+    console.log(newRow,);
     newAvailabilityRows.push(newRow);
     setAvailabilityRows(newAvailabilityRows);
     setOpenSnackbar(false)
