@@ -134,10 +134,12 @@ const Appointments = () => {
         if(fromDate) {
             setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
         }
+    },[fromDate]);
+    useEffect(()=>{
         if(toDate) {
             setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
         }
-    },[fromDate,toDate]);
+    },[toDate]);
 
     const handleCancelAppointment = (appointmentId) => {
         const cancelData = {
@@ -191,7 +193,7 @@ const Appointments = () => {
     };
 
     return (
-        <div>
+        <div className="appointment-listing">
             <Typography variant="font22" mb={4} sx={{ fontWeight: "700" }} component="h1"> Appointments </Typography>
             <Paper className="tableMainWrap">
                 <div className="head-wrap">
@@ -213,21 +215,27 @@ const Appointments = () => {
                             }}
                         />
                     </Paper>
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)}/>
-                        <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)}/>
-                    </LocalizationProvider>
-                    <select onChange={(e)=>{setStatusListing(e.target.value)}}>
-                        <option selected={statusListing === null?true:false} value = {null}>Select Status</option>
-                        <option selected={statusListing === "pending"?true:false} value = "pending">Pending</option>
-                        <option selected={statusListing === "scheduled"?true:false} value = "scheduled">Scheduled</option>
-                        <option selected={statusListing === "rescheduled"?true:false} value = "rescheduled">Rescheduled</option>
-                        <option selected={statusListing === "completed"?true:false} value = "completed">Completed</option>
-                        <option selected={statusListing === "cancelled"?true:false} value = "cancelled">Cancelled</option>
-                        <option selected={statusListing === "expired"?true:false} value = "expired">Expired</option>
-                    </select>
-                    <Button type="submit" onClick={downloadSheet} >Download Sheet</Button>
-                    <Button type="submit" onClick={resetFilters} >Reset Filters</Button>
+                    <div className="right-wrap">
+                        <div class="filter-outer">
+                            <div class="filter-wrap custom-datepicker">
+                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)}/>
+                                <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)}/>
+                            </LocalizationProvider>
+                            </div>
+                        </div>
+                        <select className="select-field" onChange={(e)=>{setStatusListing(e.target.value)}}>
+                            <option selected={statusListing === null?true:false} value = {null}>Select Status</option>
+                            <option selected={statusListing === "pending"?true:false} value = "pending">Pending</option>
+                            <option selected={statusListing === "scheduled"?true:false} value = "scheduled">Scheduled</option>
+                            <option selected={statusListing === "rescheduled"?true:false} value = "rescheduled">Rescheduled</option>
+                            <option selected={statusListing === "completed"?true:false} value = "completed">Completed</option>
+                            <option selected={statusListing === "cancelled"?true:false} value = "cancelled">Cancelled</option>
+                            <option selected={statusListing === "expired"?true:false} value = "expired">Expired</option>
+                        </select>
+                        <Button  className="buttonPrimary small" variant="contained" color="primary" type="submit" onClick={downloadSheet} >Download Sheet</Button>
+                        <Button type="submit" className="buttonPrimary small" variant="contained" color="primary"  onClick={resetFilters} >Reset Filters</Button>
+                    </div>
                 </div>
 
                 <TableContainer className="customTable">
