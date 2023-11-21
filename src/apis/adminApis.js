@@ -48,6 +48,10 @@ export const  createNotification = (data) => {
 export const getNotificationListing = () => {
     return axios.get('admin/push-notification')
 }
+export const getAppointmentByID = (id) => {
+    return axios.get(`admin/appointment?appointment_id=${id}`)
+}
+
 
 export const getUpcomingAppointment = (id) => {
     return axios.get(`admin/appointment?search_query=pending&id=${id}`)
