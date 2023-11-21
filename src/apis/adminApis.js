@@ -9,6 +9,17 @@ export const logOut = () => {
     return axios.get('/accounts/logout');
 }
 
+export const addPaymentPrice = (data) => {
+    return axios.post('/admin/user_payment_price', data);
+}
+
+
+export const getPaymentPrice = () => {
+    return axios.get('/admin/user_payment_price');
+}
+
+
+
 export const addDoctorDetail = (data) => {
     return axios.post('/admin/doctor', data);
 }

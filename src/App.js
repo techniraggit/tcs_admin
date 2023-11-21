@@ -95,7 +95,10 @@ function App() {
 
                   <Route path='/calendar' element={<Calendar />} />
                   <Route path='/meeting/:room_name' element={<Meeting />} />
-                  <Route path='/setting' element={Settings} />
+                  <Route path='/setting' >
+                    <Route path='' element={<Settings />} />
+
+                  </Route>
                 </Route>
               </Route>
             </Routes>
