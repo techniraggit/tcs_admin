@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+ import React, { useState, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -27,6 +27,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { saveAs } from 'file-saver';
 import { Link } from "react-router-dom";
 import Loader from "../components/Loader";
+import moment from "moment";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -68,8 +69,8 @@ const Appointments = () => {
         myHeaders5.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         let raw5 = JSON.stringify({
-            "from_date": fromDate,
-            "to_date": toDate,
+            "from_date":  moment(fromDate).format('YYYY-MM-DD'),
+            "to_date": moment(toDate).format('YYYY-MM-DD'),
             "status": statusListing
         });
 
@@ -223,8 +224,10 @@ const Appointments = () => {
                         <div class="filter-outer">
                             <div class="filter-wrap custom-datepicker">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
-                                    <DatePicker label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
+                                    <DatePicker     inputFormat="YYYY-MM-DD" // 13-09-2022
+ label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
+                                    <DatePicker     inputFormat="YYYY-MM-DD" // 13-09-2022
+ label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
                                 </LocalizationProvider>
                             </div>
                         </div>
