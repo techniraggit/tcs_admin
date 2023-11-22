@@ -1,8 +1,10 @@
 import { Grid, Typography } from '@mui/material';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import DocterCard from '../components/doctor/DocterCard';
 import { getAppointmentByID, getMyAppointmentByID } from '../apis/adminApis';
+import ReactHtmlParser, { processNodes, convertNodeToElement, htmlparser2 } from 'react-html-parser';
+import NotFound from '../components/NotFound';
 
 function AppointmentsDetail() {
 
@@ -10,17 +12,31 @@ function AppointmentsDetail() {
 
     const location = useLocation();
     const data = location.state;
-    const patientData = data?.patient
-    const appointmentData = data
-    const doctorDetails = data?.doctor
-    console.log(data);
+    const patient = data?.patient
+    // const appointmentData = data
+    // const doctorDetails = data?.doctor
+    const [consultationData, setConsultationData] = useState([])
+    const [appointmentData, setAppointmentData] = useState([])
 
-    // useEffect(async () => {
 
-    //   const appointment= await getMyAppointmentByID(appointmentData?.appointment_id)
-    //   console.log(appointment);
+    // const [consultationData,setConsultationData]=useState([])
+    console.log(appointmentData?.additional_note,consultationData.length  );
+    useEffect(() => {
+        async function fetchData() {
+            // You can await here
+            // const response = await MyAPI.getData(someId);
+            // ...
+            const appointment = await getAppointmentByID(appid)
+            if (appointment.data.status == true) {
+                console.log(appointment?.data)
+                setAppointmentData(appointment?.data?.data)
+                setConsultationData(appointment?.data?.consultation_data)
 
-    // }, [appointmentData])
+            }
+        }
+        fetchData();
+
+    }, [appid])
 
 
     return (
@@ -31,25 +47,25 @@ function AppointmentsDetail() {
                     <div className='custom-card' style={{ height: '100%', marginBottom: '0' }}>
                         <div className='head-wrap'>
                             <h5>Patient Information</h5>
-                            <span>ID #{patientData?.patient_id}</span>
+                            <span>ID #{appointmentData?.patient?.patient_id}</span>
                         </div>
 
                         <ul>
                             <li>
                                 <span>Full Name</span>
-                                <p>: {patientData?.name}</p>
+                                <p>: {appointmentData?.patient?.name}</p>
                             </li>
                             <li>
                                 <span>Phone</span>
-                                <p>: {patientData?.phone}</p>
+                                <p>: {appointmentData?.patient?.phone}</p>
                             </li>
                             <li>
                                 <span>Email</span>
-                                <p>: {patientData?.email}</p>
+                                <p>:{appointmentData?.patient?.email}</p>
                             </li>
                             <li>
                                 <span>Age</span>
-                                <p>: {patientData?.age} </p>
+                                <p>: {appointmentData?.patient?.age} </p>
                             </li>
                         </ul>
 
@@ -111,7 +127,7 @@ function AppointmentsDetail() {
             </div> */}
             {
 
-appointmentData?.additional_note && <>
+                appointmentData?.additional_note && <>
 
 
                     {
@@ -152,6 +168,34 @@ appointmentData?.additional_note && <>
 
             }
 
+            {
+                consultationData?.length > 0 && (
+                    <>
+                        <Typography variant="font22" mb={2} sx={{ fontWeight: "700" }} component="h1"> Consultation Instructions </Typography>
+                        <div className="card-body">
+                            <h5 className="card-title">                Prescription Note</h5>
+                            {consultationData?.map((item, index) => {
+                                return (
+                                    <><div key={index}>
+                                        {ReactHtmlParser(item?.prescription)}
+
+                                    </div>
+                                    </>
+                                )
+                            })}
+
+
+                        </div>
+                    </>
+
+                )
+            }
+
+            {appointmentData.additional_note ==undefined || consultationData.length ==0 ? (
+                <> 
+                <NotFound  data=" Additional note and  Consultation Data  yet"/>
+                </>
+            ):null}
 
         </div>
     )
