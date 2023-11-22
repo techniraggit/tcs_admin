@@ -81,6 +81,8 @@ function Row(props) {
                   ) : (
                     <TableRow>
                       <TableCell colSpan={2}>No history available</TableCell>
+                      <Loader />
+
                     </TableRow>
                   )}
 
