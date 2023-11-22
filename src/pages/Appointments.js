@@ -26,6 +26,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { saveAs } from 'file-saver';
 import { Link } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const columns = [
     { id: "id", label: "S.no.", minWidth: 40, },
@@ -339,11 +340,7 @@ const Appointments = () => {
                             </TableBody>
                         </Table>
                         :
-                        <div className="no-data-wrap">
-                            <img src={NoDataImg} alt="No Data" />
-                            <h5>No data found!</h5>
-                            <p>Lorem ipsum dolor sit amet consectetur.</p>
-                        </div>
+                      <Loader />
                     }
                 </TableContainer>
             </Paper>
