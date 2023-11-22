@@ -91,11 +91,11 @@ function DocterCard(props) {
                                                 Working hours start
                                             </TableCell>
                                             <TableCell>
-                                                Working hours start
+                                                Working hours end
                                             </TableCell>
                                             <TableCell
                                             >
-                                                Working hours start
+                                                Working  days
                                             </TableCell>
                                         </TableRow>
                                     </TableHead>
