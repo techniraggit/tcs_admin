@@ -44,8 +44,9 @@ const Appointments = () => {
     const [rowsPerPage, setRowsPerPage] = React.useState(14);
     const [appointmentListing, setAppointmentListing] = useState([]);
     const [filteredListing, setFilteredListing] = useState([]);
-    const [fromDate, setFromDate] = useState(null);
-    const [toDate, setToDate] = useState(null);
+    const [fromDate, setFromDate] = useState();
+    const [toDate, setToDate] = useState();
+    console.log(fromDate, toDate);
     const [statusListing, setStatusListing] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState({});
@@ -58,8 +59,8 @@ const Appointments = () => {
     }
     const resetFilters = () => {
         setSearchQuery("");
-        setFromDate(null);
-        setToDate(null);
+        setFromDate();
+        setToDate();
         setStatusListing(null);
         setFilteredListing(appointmentListing);
     }
@@ -69,8 +70,8 @@ const Appointments = () => {
         myHeaders5.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         let raw5 = JSON.stringify({
-            "from_date":  moment(fromDate).format('YYYY-MM-DD'),
-            "to_date": moment(toDate).format('YYYY-MM-DD'),
+            "from_date":  fromDate  ,
+            "to_date": toDate ,
             "status": statusListing
         });
 
