@@ -137,7 +137,7 @@ const Appointments = () => {
     },[fromDate]);
     useEffect(()=>{
         if(toDate) {
-            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
+            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()+ 86400000));
         }
     },[toDate]);
 
