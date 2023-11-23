@@ -123,7 +123,11 @@ const Doctor = () => {
 
   const handleSalaryReport = (selectedDoctorIds) => {
     const fileName = 'Salary_Payment_Report.xlsx';
-    DownloadSalaryReport(selectedDoctorIds)
+
+    var myVar2 = selectedDoctorIds.join(', ');  // 'A, B, C'
+    console.log(myVar2);
+
+    DownloadSalaryReport(myVar2)
       .then((response) => {
         saveAs(response.data, fileName);
       })

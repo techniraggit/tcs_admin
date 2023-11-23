@@ -72,7 +72,6 @@ const AddDoctor = () => {
   const [updateRows, setUpdateRows] = useState([])
 
   const [availabilityRows, setAvailabilityRows] = useState([]);
-  console.log(availabilityRows, 'availabilityRows', updateRows);
 
 
 
@@ -243,12 +242,10 @@ const AddDoctor = () => {
 
   useEffect(() => {
     if (isEditMode && editDoctorId) {
-      setOpenSnackbar(true)
-
       editDoctorDetail(editDoctorId)
         .then((response) => {
           if (response.data) {
-            console.log('Edit Doctor Response', response.data?.data)
+            // console.log('Edit Doctor Response', response.data?.data)
             setDoctorData(response.data?.data);
             setOpenSnackbar(false)
 
@@ -308,14 +305,12 @@ const AddDoctor = () => {
   const addAvabilityRow = () => {
     setOpenSnackbar(true)
     const newAvailabilityRows = [...availabilityRows];
-    console.log(newAvailabilityRows);
     const newRow = {
 
       start_working_hr: "",
       end_working_hr: "",
       working_days: [],
     };
-    console.log(newRow,);
     newAvailabilityRows.push(newRow);
     setAvailabilityRows(newAvailabilityRows);
     setOpenSnackbar(false)
@@ -332,16 +327,28 @@ const AddDoctor = () => {
 
   const removeAvailabilityRow = (index) => {
     setOpenSnackbar(true)
+    if (index) {
 
-    axios.patch(axios.defaults.baseURL + "/admin/time-remove", { "id": index }).then((res) => {
-      console.log(res);
-      setOpenSnackbar(false)
+
+      axios.patch(axios.defaults.baseURL + "/admin/time-remove", { "id": index }).then((res) => {
+        console.log(res);
+        setOpenSnackbar(false)
+
+        const newAvailabilityRows = [...availabilityRows];
+        newAvailabilityRows.splice(index, 1);
+        setAvailabilityRows(newAvailabilityRows);
+
+      })
+    }
+    else {
+
 
       const newAvailabilityRows = [...availabilityRows];
-      newAvailabilityRows.splice(index, 1);
+      newAvailabilityRows.splice(-1);
       setAvailabilityRows(newAvailabilityRows);
+    }
 
-    })
+
   };
 
   return (
@@ -411,7 +418,7 @@ const AddDoctor = () => {
               {errors.last_name && <span className="error">{errors.last_name}</span>}
             </Grid>
 
-            <Grid iopenSnackbartem xs={12} md={4}>
+            <Grid item iopenSnackbartem xs={12} md={4}>
               <InputLabel className="customLabel" htmlFor="email">
                 Email address
               </InputLabel>
