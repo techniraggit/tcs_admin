@@ -139,17 +139,10 @@ const Appointments = () => {
         if (fromDate) {
             setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
         }
-<<<<<<< HEAD
     },[fromDate]);
     useEffect(()=>{
         if(toDate) {
             setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()+ 86400000));
-=======
-    }, [fromDate]);
-    useEffect(() => {
-        if (toDate) {
-            setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()));
->>>>>>> ce99909da0665c5ec6010caf9942fc8bff2e49d9
         }
     }, [toDate]);
 
