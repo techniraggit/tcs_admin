@@ -136,6 +136,9 @@
                     background: #ccc;
                     margin-right: 15px;
                     overflow: hidden;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
 
                     img {
                         width: 100%;

@@ -67,7 +67,8 @@ const CreateNotification = React.lazy(() => import('./components/CreateNotificat
 const Appointements = React.lazy(() => import('./pages/Appointments'));
 const Calendar = React.lazy(() => import('./pages/Calendar'));
 const Meeting = React.lazy(() => import('./pages/Meeting'));
-
+const Settings = React.lazy(() => import('./pages/Settings'));
+const AppointmentsDetail = React.lazy(() => import('./pages/AppointmentsDetail'));
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -84,9 +85,20 @@ function App() {
                   <Route path="/create-notification" element={<CreateNotification />} />
                   <Route path="/add-doctor" element={<AddDoctor />} />
                   <Route path='/view-doctor/:doctor_id' element={<ViewDoctor />} />
-                  <Route path='/appointments' element={<Appointements />} />
+                  <Route path='appointments' >
+
+
+                    <Route path='' element={<Appointements />} />
+
+                    <Route path=':appid' element={<AppointmentsDetail />} />
+                  </Route>
+
                   <Route path='/calendar' element={<Calendar />} />
                   <Route path='/meeting/:room_name' element={<Meeting />} />
+                  <Route path='/setting' >
+                    <Route path='' element={<Settings />} />
+
+                  </Route>
                 </Route>
               </Route>
             </Routes>
