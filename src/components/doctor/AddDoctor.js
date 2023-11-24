@@ -895,7 +895,7 @@ const AddDoctor = () => {
 
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={60}
+        autoHideDuration={6000}
         onClose={() => setOpenSnackbar(false)}
       >
         <div>

@@ -59,8 +59,8 @@ const Appointments = () => {
     }
     const resetFilters = () => {
         setSearchQuery("");
-        setFromDate();
-        setToDate();
+        setFromDate(null);
+        setToDate(null);
         setStatusListing(null);
         setFilteredListing(appointmentListing);
     }
