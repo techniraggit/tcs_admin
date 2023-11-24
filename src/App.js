@@ -1,5 +1,5 @@
 import './assets/scss/main.scss';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from './layouts';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import PrivateRoute from './routes/PrivateRoute';
@@ -77,8 +77,12 @@ function App() {
           <Suspense fallback={<Loader />}>
             <Routes>
               <Route path="/" element={<Login />} />
+
               <Route element={<Layout />}>
                 <Route element={<PrivateRoute />}>
+                  <Route path="*" element={<Navigate to='/dashboard' replace />} />
+
+
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route path="/doctor" element={<Doctor />} />
                   <Route path="/notifications" element={<Notifications />} />
@@ -100,7 +104,10 @@ function App() {
 
                   </Route>
                 </Route>
+
+
               </Route>
+
             </Routes>
           </Suspense>
         </BrowserRouter>

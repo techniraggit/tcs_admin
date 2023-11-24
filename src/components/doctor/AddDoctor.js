@@ -43,7 +43,7 @@ const weekDays = [
   'Wednesday',
   'Thursday',
   'Friday',
-  'Saterday',
+  'Saturday',
   'Sunday',
 ];
 
