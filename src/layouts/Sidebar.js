@@ -14,7 +14,7 @@ function Sidebar() {
 
   return (
     <>
-      <Link to="/"> <img src={SidebarLogo} alt="POS EyeMyeye" /></Link>
+      <Link to="/dashboard"> <img src={SidebarLogo} alt="POS EyeMyeye" /></Link>
       <nav className='retailerSidebar'>
         <ul>
           <li className={`${location.pathname === '/dashboard' ? 'active' : ''} `}>
