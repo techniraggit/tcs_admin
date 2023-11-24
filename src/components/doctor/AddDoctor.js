@@ -27,6 +27,7 @@ import { Hidden } from "@mui/material";
 import axios from "../../apis/axiosConfig";
 import { Bars } from 'react-loader-spinner'
 import Loader from "../Loader";
+import AddRemoveMultipleInputFields from "./AddRemoveMultipleInputFields";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -306,7 +307,6 @@ const AddDoctor = () => {
     setOpenSnackbar(true)
     const newAvailabilityRows = [...availabilityRows];
     const newRow = {
-
       start_working_hr: "",
       end_working_hr: "",
       working_days: [],
@@ -662,7 +662,7 @@ const AddDoctor = () => {
             </div>
             </Grid>
           </Grid> */}
-
+<AddRemoveMultipleInputFields />
 
           {availabilityRows.map((row, index) => {
 
