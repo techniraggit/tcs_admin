@@ -70,8 +70,8 @@ const Appointments = () => {
         myHeaders5.append("Authorization", "Bearer " + localStorage.getItem("token"));
 
         let raw5 = JSON.stringify({
-            "from_date":  fromDate  ,
-            "to_date": toDate ,
+            "from_date":  moment(fromDate).format("YYYY-MM-DD")  ,
+            "to_date":  moment(toDate).format("YYYY-MM-DD")  ,
             "status": statusListing
         });
 

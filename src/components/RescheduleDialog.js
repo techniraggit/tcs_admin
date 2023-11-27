@@ -8,6 +8,8 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import {es} from 'date-fns/locale'
+
 import {
   AppointmentTimeSlot,
   saveRescheduleAppointment,
@@ -127,7 +129,7 @@ const RescheduleDialog = ({
           <div className="reschedule-wrap">
             <h4>Select date</h4>
             <div className="date-drodown">
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider locale={es} dateAdapter={AdapterDayjs}>
                 <DemoContainer components={["DatePicker"]}>
                   <DatePicker
                     value={selectedDate}
