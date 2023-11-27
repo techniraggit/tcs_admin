@@ -12,7 +12,7 @@ function DocterCard(props) {
             <Grid item xs={12} md={4}>
                 <div className="doc-profile">
                     <span>
-                        <img src={`${images}${doctorDetails?.user.profile_image}`} alt="Doctor" />
+                        <img src={`${images}${doctorDetails?.user?.profile_image}`} alt="Doctor" />
                     </span>
                     <h4>Dr. {doctorDetails?.user.first_name} {doctorDetails?.user.last_name}</h4>
                     <p>{doctorDetails?.specialization}</p>
@@ -21,11 +21,11 @@ function DocterCard(props) {
                 <Grid container pb={2}>
                     <Grid item xs={12} md={6} className="item-wrap">
                         <h6>Email</h6>
-                        <p>{doctorDetails?.user.email}</p>
+                        <p>{doctorDetails?.user?.email}</p>
                     </Grid>
                     <Grid item xs={12} md={6} className="item-wrap">
                         <h6>Phone</h6>
-                        <p>{doctorDetails?.user.phone_number}</p>
+                        <p>{doctorDetails?.user?.phone_number}</p>
                     </Grid>
                 </Grid>
 
@@ -44,9 +44,12 @@ function DocterCard(props) {
                             <h6>Specialisation</h6>
                             <p>{doctorDetails?.specialization}</p>
                         </Grid>
+                        
                         <Grid item xs={12} md={4} className="item-wrap">
                             <h6>Medical License</h6>
+                        {doctorDetails?.medical_license ? (<>
                             <a href={`${axios.defaults.baseURL}${doctorDetails?.medical_license}`} target="_blank">Click to view</a>
+                            </>):""}
                         </Grid>
                         <Grid item xs={12} md={4} className="item-wrap">
                             <h6>Education</h6>

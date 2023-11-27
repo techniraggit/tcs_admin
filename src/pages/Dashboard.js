@@ -427,7 +427,7 @@ const Dashboard = () => {
                   <li>
                     <img src={BlueIcon} alt='Last Month' />
                     <p>Last Month
-                      <span>₹{dashboardData?dashboardData.appointment_graph?.last_month_gp.reduce((acc,curr)=>{
+                      <span>{dashboardData?dashboardData.appointment_graph?.last_month_gp.reduce((acc,curr)=>{
               acc += curr.count;
               return acc;
             },0):0}</span>
@@ -438,7 +438,7 @@ const Dashboard = () => {
                     <img src={GreenIcon} alt='This Month' />
                     <p>
                       This Month
-                      <span>₹{dashboardData?dashboardData.appointment_graph.current_month_gp.reduce((acc,curr)=>{
+                      <span>{dashboardData?dashboardData.appointment_graph.current_month_gp.reduce((acc,curr)=>{
               acc += curr.count;
               return acc;
             },0):0}</span>
