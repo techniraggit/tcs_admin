@@ -217,7 +217,7 @@ const Notifications = () => {
               </TableHead>
               <TableBody>
 
-                {filteredNotifications?.map((notification, index) => (
+                {filteredNotifications?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((notification, index) => (
                   <Row key={index} row={notification} index={index} />
                 ))}
               </TableBody>
@@ -231,16 +231,16 @@ const Notifications = () => {
           }
         </TableContainer>
       </Paper>
-      {/* <TablePagination
+      <TablePagination
         className="customTablePagination"
         rowsPerPageOptions={[14, 28, 50]}
         component="div"
-        count={notifications.length} 
+        count={filteredNotifications?filteredNotifications.length:0} 
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      /> */}
+      />
 
     </div>
   );
