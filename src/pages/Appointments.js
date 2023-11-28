@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -46,11 +46,18 @@ const Appointments = () => {
     const [filteredListing, setFilteredListing] = useState([]);
     const [fromDate, setFromDate] = useState();
     const [toDate, setToDate] = useState();
-    console.log(fromDate, toDate);
     const [statusListing, setStatusListing] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedType, setSelectedType] = useState({});
     const [openRecheduleDialog, setRescheduleDialog] = useState({ open: false });
+    let formatDate = (dt) => {
+        const date = new Date(dt)
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const localDate = `${year}-${month}-${day}`;
+        return localDate;
+    };
     const filterData = (data) => {
         setFilteredListing(appointmentListing.filter((value) => {
             return value.patient.name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.first_name.toLowerCase().includes(data.toLowerCase()) || value.doctor.user.last_name.toLowerCase().includes(data.toLowerCase()) || value.patient.email.toLowerCase().includes(data.toLowerCase()) || value.patient.phone.includes(data);
@@ -59,8 +66,8 @@ const Appointments = () => {
     }
     const resetFilters = () => {
         setSearchQuery("");
-        setFromDate(null);
-        setToDate(null);
+        setFromDate('');
+        setToDate('');
         setStatusListing(null);
         setFilteredListing(appointmentListing);
     }
@@ -68,10 +75,9 @@ const Appointments = () => {
         let myHeaders5 = new Headers();
         myHeaders5.append("Content-Type", "application/json");
         myHeaders5.append("Authorization", "Bearer " + localStorage.getItem("token"));
-
         let raw5 = JSON.stringify({
-            "from_date":  moment(fromDate).format("YYYY-MM-DD")  ,
-            "to_date":  moment(toDate).format("YYYY-MM-DD")  ,
+            "from_date":fromDate,
+            "to_date": toDate,
             "status": statusListing
         });
 
@@ -140,10 +146,10 @@ const Appointments = () => {
         if (fromDate) {
             setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() >= new Date(fromDate).getTime()));
         }
-    },[fromDate]);
-    useEffect(()=>{
-        if(toDate) {
-            setFilteredListing(filteredListing.filter(value=>new Date(value.schedule_date).getTime() <= new Date(toDate).getTime()+ 86400000));
+    }, [fromDate]);
+    useEffect(() => {
+        if (toDate) {
+            setFilteredListing(filteredListing.filter(value => new Date(value.schedule_date).getTime() <= new Date(toDate).getTime() + 86400000));
         }
     }, [toDate]);
 
@@ -225,10 +231,21 @@ const Appointments = () => {
                         <div class="filter-outer">
                             <div class="filter-wrap custom-datepicker">
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <DatePicker     inputFormat="YYYY-MM-DD" // 13-09-2022
- label="From Date" value={fromDate} onChange={(newValue) => setFromDate(newValue)} />
-                                    <DatePicker     inputFormat="YYYY-MM-DD" // 13-09-2022
- label="To Date" value={toDate} onChange={(newValue) => setToDate(newValue)} />
+                                    <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
+                                        label="From Date" value={fromDate} onChange={(newValue) =>
+                                              setFromDate(formatDate(newValue))
+                                            // console.log(formatDate(newValue))
+
+
+                                        } />
+                                    <DatePicker inputFormat="YYYY-MM-DD" // 13-09-2022
+                                        label="To Date" value={toDate} onChange={(newValue) =>
+                                            // console.log(formatDate(newValue))
+
+                                             setToDate(formatDate(newValue))
+                                        }
+
+                                    />
                                 </LocalizationProvider>
                             </div>
                         </div>
@@ -344,7 +361,7 @@ const Appointments = () => {
                             </TableBody>
                         </Table>
                         :
-                      <Loader />
+                        <Loader />
                     }
                 </TableContainer>
             </Paper>
